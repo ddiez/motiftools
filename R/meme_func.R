@@ -1,12 +1,3 @@
-setClass("MotifSet",
-	representation(
-		nmotif = "numeric",
-		motif = "list",
-		nseq = "numeric",
-		sequence = "character"
-	)
-)
-
 readMEME = function(filename) {
 	con = file(filename, "r")
     lines = readLines(con)

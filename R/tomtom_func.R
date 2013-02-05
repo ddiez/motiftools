@@ -1,19 +1,3 @@
-setOldClass("dendrogram")
-setClass("TomTom", representation(
-	matrix = "matrix",
-	cutoff.type = "character",
-	cutoff = "numeric",
-	matrix_key = "matrix",
-	color_key = "character",
-	dendrogram = "dendrogram"
-))
-setGeneric("getPWMnames", function(object) standardGeneric("getPWMnames"))
-setMethod("getPWMnames", "TomTom",
-function(object) {
-	colnames(object@matrix)
-})
-
-
 cleanMatrix = function(m) {
 	#k = 0
 	for(i in colnames(m)) {
