@@ -99,3 +99,18 @@ writePWMuniprobe = function(listPWM, file, ann = NULL) {
 		})
 	})
 }
+
+# this can be used with HOMER.
+writePWMtable = function (listPWM, file, ann = NULL) {
+  file.create(file)
+  foo = lapply(names(listPWM), function(pwm) {
+    s = paste(">", pwm, sep = "")
+    if (!is.null(ann)) 
+      s = paste(s, paste(pwm, ann[pwm], sep = "_"), 0, sep = "\t")
+    else
+      s = paste(s, pwm, 0, sep = "\t")
+    write(s, file = file, append = TRUE)
+    m = listPWM[[pwm]]
+    write(t(m), file, append = TRUE, sep = "\t")
+  })
+}
