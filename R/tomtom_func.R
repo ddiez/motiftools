@@ -1,3 +1,5 @@
+
+# TODO: rework, very inefficient (slow)
 cleanMatrix = function(m) {
 	#k = 0
 	for(i in colnames(m)) {
@@ -195,6 +197,8 @@ plotTomTom = function(t, h, tree.size = ifelse(missing(zoom), 2, 4), colkey.size
 	if(missing(col.c))
 		col.c = "black" # by default, no cluster colors.	
 	
+	op = par(no.readonly = TRUE)
+	
 	# layout plot.
 	if (!bottom.colkey)
 		l = layout(matrix(c(0,1,2,3), 2, 2, byrow = TRUE),
@@ -207,8 +211,8 @@ plotTomTom = function(t, h, tree.size = ifelse(missing(zoom), 2, 4), colkey.size
 	
 
 	# plot tree.
-	op = par(mar = c(ifelse(plot.labels, 8.5,.5),.5,.5,.5))
 	if(! missing(dendro)) {
+	  par(mar = c(ifelse(plot.labels, 8.5,.5),.5,.5,.5))
 		if (missing(h) | !missing(zoom))
 			plot(dendro, leaflab = ifelse(plot.labels, "perpendicular", "none"), xaxs = "i", yaxt = "n", edgePar = list(col = col.c))
 		else {
