@@ -44,10 +44,10 @@ plotMatrix = function(... , tree, highlight, sep = 2, adj = 10, cex = 0.5, high.
     else
       mn = main[k]
     par(mar = c(0, 0, 0.5,sep))
-    barplot(c, names.arg = NA, space = 0, xaxs = "i", las = 1, ylim = c(0, 105), main = mn)
+    barplot(c, names.arg = NA, space = 0, xaxs = "i", las = 1, ylim = c(0, 105), main = mn, , xlab = NA, ylab = NA)
     
     par(mar = c(0.5,0,0.5,sep))
-    image(1:ncol(m), 1:nrow(m), t(m), col = c("white", "gray"), axes = FALSE)
+    image(1:ncol(m), 1:nrow(m), t(m), col = c("white", "gray"), axes = FALSE, xlab = NA, ylab = NA)
     box()
   }
 }
