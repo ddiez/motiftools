@@ -1,4 +1,4 @@
-plotMatrix = function(... , tree, highlight, sep = 2, adj = 10, cex = 0.5, high.col) {
+plotMatrix = function(... , tree, highlight, sep = 2, adj = 10, cex = 0.5, high.col, main) {
   X = list(...)
   M = lapply(X, getMotifMatrix)
   C = lapply(X, function(x) getMotifCount(x, percentage = TRUE))
@@ -39,8 +39,12 @@ plotMatrix = function(... , tree, highlight, sep = 2, adj = 10, cex = 0.5, high.
   for(k in 1:length(M)) {
     m = M[[k]]
     c = C[[k]]
+    if(missing(main))
+      mn = NA
+    else
+      mn = main[k]
     par(mar = c(0, 0, 0.5,sep))
-    barplot(c, names.arg = NA, space = 0, xaxs = "i", las = 1, ylim = c(0, 105))
+    barplot(c, names.arg = NA, space = 0, xaxs = "i", las = 1, ylim = c(0, 105), main = mn)
     
     par(mar = c(0.5,0,0.5,sep))
     image(1:ncol(m), 1:nrow(m), t(m), col = c("white", "gray"), axes = FALSE)
