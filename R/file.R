@@ -164,6 +164,7 @@ readMAST = function(filename) {
     data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
   })
   names(motifs)=sub("motif_","",unique(res$motif))
+  names(seqs)=NULL
   
   new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = seqs)
 }
