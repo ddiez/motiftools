@@ -52,7 +52,6 @@ readMEME = function(filename) {
 }
 
 readMAST = function(filename) {
-  require(XML)
   doc = xmlToList(filename)
   
   # get motifs.
@@ -90,7 +89,6 @@ readMAST = function(filename) {
   
   new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = seqs)
 }
-foo=readMAST("mast.xml")
 
 
 readMASTold = function(filename, meme) {
@@ -260,28 +258,45 @@ exportTreedyn = function(x, filename) {
 	invisible(d)
 }
 
-getMotifArch = function(M, motifs) {
-	if (missing(motifs)) motifs = 1:M@nmotif
-	M = M@motif
-	
-	seq = list()
-	
-	for(m in names(M[motifs])) {
-		if(nrow(M[[m]])>0) {
-			apply(M[[m]], 1, function(x) {
-				if (length(seq[[x[1]]]) == 0)
-					seq[[x[1]]] <<- data.frame(Motif = m, Start = as.numeric(x[2]), P = as.numeric(x[3]))
-				else {
-					d = data.frame(Motif = m, Start = as.numeric(x[2]), P = as.numeric(x[3]))
-					seq[[x[1]]] <<- rbind(seq[[x[1]]], d)
-				}	
-			})
-		}
-	}
+# getMotifArch = function(M, motifs) {
+# 	if (missing(motifs)) motifs = 1:M@nmotif
+# 	M = M@motif
+# 	
+# 	seq = list()
+# 	
+# 	for(m in names(M[motifs])) {
+# 		if(nrow(M[[m]])>0) {
+# 			apply(M[[m]], 1, function(x) {
+# 				if (length(seq[[x[1]]]) == 0)
+# 					seq[[x[1]]] <<- data.frame(Motif = m, Start = as.numeric(x[2]), P = as.numeric(x[3]))
+# 				else {
+# 					d = data.frame(Motif = m, Start = as.numeric(x[2]), P = as.numeric(x[3]))
+# 					seq[[x[1]]] <<- rbind(seq[[x[1]]], d)
+# 				}	
+# 			})
+# 		}
+# 	}
+# 
+# 	# reorder based on start
+# 	reorderMotifs(seq)
+# 	#seq
+# }
 
-	# reorder based on start
-	reorderMotifs(seq)
-	#seq
+getMotifBySeq = function(object) {
+  res=list()
+  for(n in names(object@motif)) {
+    tmp=object@motif[[n]]
+    #apply(tmp,1,function(x) {
+    all_ids = unique(tmp$Id)
+    for(id in all_ids) {
+      tmp2 = tmp[tmp$Id == id,]
+      if(is.null(res[[id]]))
+        res[[id]]=data.frame(Motif=rep(n,nrow(tmp2)),Start=tmp2$Start)
+      else
+        res[[id]]=rbind(res[[id]], data.frame(Motif=rep(n,nrow(tmp2)),Start=tmp2$Start))
+    }
+  }
+  reorderMotifs(res)
 }
 
 reorderMotifs = function(M) {
@@ -292,6 +307,29 @@ reorderMotifs = function(M) {
 	}
 	M
 }
+
+.architecture.code=c(LETTERS,letters,as.character(0:9))
+getMotifArchString = function(object, convert.to.letter=FALSE,return.unique=FALSE) {
+  tmp = lapply(getMotifBySeq(object),function(x)x[,1])
+  if(convert.to.letter) {
+    if(max(as.numeric(unlist(tmp)))>length(.architecture.code)) stop("more motifs than architectures! cannot convert to letters.")
+    tmp=sapply(tmp, num2letter)
+  }
+  else
+    tmp=sapply(tmp, function(x) paste(x, collapse="-"))
+  if(return.unique) unique(tmp) else tmp
+}
+
+# convert architectures.
+letter2num = function(x){
+  x=strsplit(x,"")[[1]]
+  sapply(x,function(z) which(.architecture.code %in% z),USE.NAMES=FALSE)
+}
+
+num2letter = function(x){
+  paste(.architecture.code[as.numeric(x)],collapse="")
+}
+
 
 countArchs = function(M, min.motif = 3, check.coherence = TRUE, model, remove.rep = TRUE) {
 	if (check.coherence && missing(model)) stop("model is needed to check coherence")

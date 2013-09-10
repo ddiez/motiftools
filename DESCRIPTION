@@ -4,7 +4,7 @@ Title: Tools to analyze motifs
 Version: 0.6
 Date: 2013-09-10
 Author: Diego Diez
-Depends: 
+Depends: XML
 Maintainer: Diego Diez <diego10ruiz@gmail.com>
 Description: This packages contains several function that may be useful to \
 	analyze and interpret results from sequence motif tools like the MEME suite.
