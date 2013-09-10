@@ -51,8 +51,49 @@ readMEME = function(filename) {
     new("MotifSet", nmotif = length(motifs), motif = motifs, nseq = length(ts), sequence = ts)
 }
 
+readMAST = function(filename) {
+  require(XML)
+  doc = xmlToList(filename)
+  
+  # get motifs.
+  motifs=doc[["motifs"]]
+  motifs=motifs[names(motifs) == "motif"]
+  nmotif=length(motifs)
+  # TODO: parse additional information.
+  
+  # get sequences.
+  seq=doc[["sequences"]]
+  nseq=as.numeric(seq[["database"]]["seq_count"]) # number of sequences.
+  
+  seq=seq[names(seq)=="sequence"]
+  seqs=c()
+  res=list()
+  for(seg in seq) {
+    seq_id=seg$.attrs["name"]
+    seqs=c(seqs,seq_id)
+    seg=seg[names(seg)=="seg"]
+    for(hit in seg) {
+      hit=hit[names(hit)=="hit"]
+      for(h in hit) {
+        res=c(res, list(data.frame(seq_id=seq_id,motif_id=h["motif"],pos=as.numeric(h["pos"]),pvalue=as.numeric(h["pvalue"]))))
+      }
+    }
+  }
+  res=do.call(rbind, res)
+  #res
+  ## convert to old style (for now!)
+  motifs=lapply(unique(res$motif), function(m) {
+    tmp=res[res$motif_id==m,]
+    data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
+  })
+  names(motifs)=sub("motif_","",unique(res$motif))
+  
+  new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = seqs)
+}
+foo=readMAST("mast.xml")
 
-readMAST = function(filename, meme) {
+
+readMASTold = function(filename, meme) {
 	con = file(filename, "r")
     lines = readLines(con)
     close(con)
@@ -226,14 +267,16 @@ getMotifArch = function(M, motifs) {
 	seq = list()
 	
 	for(m in names(M[motifs])) {
-		apply(M[[m]], 1, function(x) {
-			if (length(seq[[x[1]]]) == 0)
-				seq[[x[1]]] <<- data.frame(Motif = m, Start = as.numeric(x[2]), P = as.numeric(x[3]))
-			else {
-				d = data.frame(Motif = m, Start = as.numeric(x[2]), P = as.numeric(x[3]))
-				seq[[x[1]]] <<- rbind(seq[[x[1]]], d)
-			}
-		})
+		if(nrow(M[[m]])>0) {
+			apply(M[[m]], 1, function(x) {
+				if (length(seq[[x[1]]]) == 0)
+					seq[[x[1]]] <<- data.frame(Motif = m, Start = as.numeric(x[2]), P = as.numeric(x[3]))
+				else {
+					d = data.frame(Motif = m, Start = as.numeric(x[2]), P = as.numeric(x[3]))
+					seq[[x[1]]] <<- rbind(seq[[x[1]]], d)
+				}	
+			})
+		}
 	}
 
 	# reorder based on start
