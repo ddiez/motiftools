@@ -1,7 +1,9 @@
 plotMatrix = function(... , tree, highlight, sep = 2, adj = 10, cex = 0.5, high.col, main) {
   X = list(...)
-  M = lapply(X, getMotifMatrix)
-  C = lapply(X, function(x) getMotifCount(x, percentage = TRUE))
+  #M = lapply(X, getMotifMatrix)
+  M = X
+  #C = lapply(X, function(x) getMotifCount(x, percentage = TRUE))
+  C = lapply(M, function(x) 100*colSums(x)/nrow(x))
   
   if (missing(tree)) {
     # the first matrix is used to construct the tree.
@@ -11,15 +13,19 @@ plotMatrix = function(... , tree, highlight, sep = 2, adj = 10, cex = 0.5, high.
     tree = as.phylo(h)
   }
   
-  # reorder matrices according to tree.
-  M = lapply(M, function(x) {
-    x[tree$tip,]
-  })
-  
   l = layout(matrix(c(0,1,seq(2,length(M)*2+1)), 2, length(M) + 1), heights = c(1, 10), widths = c(5, rep(5, length(M)*2+1)))
   
   op = par(mar = c(0.5,0.5,0.5,0))
   plot(tree, cex = 0.6, show.tip.label = FALSE, root.edge = TRUE, use.edge.length = FALSE, yaxs = "i")
+  
+  # reorder matrices according to tree (needs to be done after the tree is plotted: conversation with Emmanuel Paradis)
+  lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+  tip <- 1:lastPP$Ntip # or seq_len(lastPP$Ntip)
+  YY <- lastPP$yy[tip]
+  o <- order(YY)
+  M = lapply(M, function(x) {
+    x[o,]
+  })
   
   if(!missing(highlight)) {
     l = tree$tip.label
@@ -34,6 +40,7 @@ plotMatrix = function(... , tree, highlight, sep = 2, adj = 10, cex = 0.5, high.
       }
     }
     tiplabels(pch = 22, col = col, cex = cex, adj = adj, bg = col)
+    legend("topleft", legend = highlight, fill = high.col)
   }
   
   for(k in 1:length(M)) {
