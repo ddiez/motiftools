@@ -76,7 +76,7 @@ readFIMO = function(file, meme) {
 }
 
 
-readMEME = function(filename) {
+readMEMEold = function(filename) {
 	con = file(filename, "r")
     lines = readLines(con)
     close(con)
@@ -129,8 +129,71 @@ readMEME = function(filename) {
     new("MotifSet", nmotif = length(motifs), motif = motifs, nseq = length(ts), sequence = ts)
 }
 
-readMAST = function(filename) {
+readMEME = function(filename) {
+  message("reading XML file ... ",appendLF=FALSE)
   doc = xmlToList(filename)
+  message("DONE")
+  
+  # get sequence ids and number.
+  seqset=doc[["training_set"]]
+  seqset=seqset[names(seqset)=="sequence"]
+  seqset
+  seqs=c()
+  seqs_id=c()
+  for(seq in seqset) {
+    seqs=c(seqs, seq["name"])
+    seqs_id=c(seqs_id, seq["id"])
+  }
+  names(seqs)=seqs_id
+  nseq=length(seqs)
+  
+  # model.
+  model=doc[["model"]]
+  nmotif=as.numeric(model$nmotifs) # get motif number.
+  
+  # motifs.
+  motifset=doc[["motifs"]] # TODO get PSSM?
+  motifset=motifset[seq(5,100,5)]
+  motifs=c()
+  for(m in motifset) {
+    motifs=c(motifs,m["id"])
+  }
+  
+  # sequences.
+  seqset=doc[["scanned_sites_summary"]]
+  seqset=seqset[names(seqset)=="scanned_sites"]
+  res=list()
+  for(seq in seqset) {
+    if(is.list(seq)) { # if no motifs this results in a vector with the values in .attrs
+      seq_id=seq$.attrs[["sequence_id"]]
+      seq_name=seqs[seq_id]
+      l=length(seq)-1
+      for(s in seq(1,l,4)) {
+        motif_id=seq[[s]]
+        pos=seq[[s+2]]
+        pvalue=seq[[s+3]]
+        res=c(res,list(data.frame(seq_id=seq_name, motif_id=motif_id, pos=as.numeric(pos), pvalue=as.numeric(pvalue))))
+      }
+    }
+  }
+  res=do.call(rbind,res)
+  
+  ## convert to old style (for now!)
+  motifs=lapply(unique(res$motif), function(m) {
+    tmp=res[res$motif_id==m,]
+    data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
+  })
+  names(motifs)=sub("motif_","",unique(res$motif))
+  names(seqs)=NULL
+  
+  #list(seqs=seqs, nseq=nseq, nmotif=nmotif, motifs=motifs, results=res)
+  new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = seqs)
+}
+
+readMAST = function(filename) {
+  message("reading XML file ... ",appendLF=FALSE)
+  doc = xmlToList(filename)
+  message("DONE")
   
   # get motifs.
   motifs=doc[["motifs"]]
