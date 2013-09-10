@@ -1,13 +1,13 @@
 Package: motifTools
 Type: Package
 Title: Tools to analyze motifs
-Version: 0.6
+Version: 0.7
 Date: 2013-09-10
 Author: Diego Diez
-Depends: XML
+Depends: XML, ape
 Maintainer: Diego Diez <diego10ruiz@gmail.com>
 Description: This packages contains several function that may be useful to \
 	analyze and interpret results from sequence motif tools like the MEME suite.
-License: GPL version 3
+License: GPL-3
 LazyLoad: yes
 ByteCompile: yes
