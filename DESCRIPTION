@@ -1,8 +1,8 @@
 Package: motifTools
 Type: Package
 Title: Tools to analyze motifs
-Version: 0.5
-Date: 2013-02-08
+Version: 0.6
+Date: 2013-09-10
 Author: Diego Diez
 Depends: 
 Maintainer: Diego Diez <diego10ruiz@gmail.com>
