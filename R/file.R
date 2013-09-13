@@ -191,40 +191,47 @@ readMEME = function(filename) {
 }
 
 readMAST = function(filename) {
-  message("reading XML file ... ",appendLF=FALSE)
-  doc = xmlToList(filename)
-  message("DONE")
+  doc=xmlParse(filename)
+  top=xmlRoot(doc)
   
   # get motifs.
-  motifs=doc[["motifs"]]
-  motifs=motifs[names(motifs) == "motif"]
-  nmotif=length(motifs)
-  motif_info=lapply(motifs, function(x)
-    data.frame(motif_id=x["id"],motif_name=x["name"],width=x["width"],consensus=x["best_f"])
-  )
-  motif_info=do.call(rbind, motif_info)
+  motif_info=xmlApply(top[["motifs"]],function(m) {
+    if(xmlName(m)=="motif") {
+      attr=xmlAttrs(m)
+      bad=FALSE
+      if("bad" %in% names(attr)) bad=TRUE
+      data.frame(motif_id=attr[["id"]],motif_name=attr[["name"]],width=attr[["width"]],best_f=attr[["best_f"]],bad=bad)
+    }
+  })
+  motif_info=do.call(rbind,motif_info)
   rownames(motif_info)=motif_info$motif_id
   
-  # get sequences.
-  seq=doc[["sequences"]]
-  nseq=as.numeric(seq[["database"]]["seq_count"]) # number of sequences.
+  nmotif=nrow(motif_info)
+  nseq=as.numeric(xmlAttrs(top[["sequences"]][["database"]])[["seq_count"]])
   
-  seq=seq[names(seq)=="sequence"]
-  seqs=c() # store all sequence ids.
-  res=list()
-  for(seg in seq) {
-    seq_id=seg$.attrs["name"]
-    seqs=c(seqs,seq_id)
-    seg=seg[names(seg)=="seg"]
-    for(hit in seg) {
-      hit=hit[names(hit)=="hit"]
-      for(h in hit) {
-        res=c(res, list(data.frame(seq_id=seq_id,motif_id=h["motif"],motif_name=motif_info[h["motif"],"motif_name"],pos=as.numeric(h["pos"]),pvalue=as.numeric(h["pvalue"]))))
-      }
+  # get sequences.
+  all_seqs=c()
+  res=xmlApply(top[["sequences"]],function(s) {
+    if(xmlName(s)=="sequence") {
+      seq_id=xmlAttrs(s)[["name"]]
+      all_seqs<<-c(all_seqs,seq_id)
+      xmlApply(s, function(ss) {
+        if(xmlName(ss)=="seg") {
+          xmlApply(ss, function(h) {
+            if(xmlName(h)=="hit") {
+              data.frame(seq_id=seq_id, motif_name=motif_info[xmlAttrs(h)[["motif"]],"motif_name"], pvalue=as.numeric(xmlAttrs(h)[["pvalue"]]),pos=as.numeric(xmlAttrs(h)[["pos"]]))
+            }
+          })
+        }
+      })
     }
-  }
-  res=do.call(rbind, res)
-
+  })
+  
+  res=unlist(res,recursive=FALSE,use.names=FALSE)
+  res=unlist(res,recursive=FALSE,use.names=FALSE)
+  res=res[!sapply(res,is.null)]
+  res=do.call(rbind,res)
+  
   ## convert to old style (for now!)
   motifs=lapply(motif_info$motif_name, function(m) {
     tmp=res[res$motif_name==m,]
@@ -235,10 +242,67 @@ readMAST = function(filename) {
   })
   names(motifs)=motif_info$motif_name
   
-  names(seqs)=NULL
-  
-  new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = seqs)
+  new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = all_seqs)
+  #list(motif_info=motif_info, result=res)
 }
+
+# readMASTxmlold = function(filename) {
+#   message("reading XML file ... ",appendLF=FALSE)
+#   doc = xmlToList(filename)
+#   message("DONE")
+#   
+#   # get motifs.
+#   motifs=doc[["motifs"]]
+#   motifs=motifs[names(motifs) == "motif"]
+#   nmotif=length(motifs)
+#   motif_info=lapply(motifs, function(x)
+#     data.frame(motif_id=x["id"],motif_name=x["name"],width=x["width"],consensus=x["best_f"])
+#   )
+#   motif_info=do.call(rbind, motif_info)
+#   rownames(motif_info)=motif_info$motif_id
+#   
+#   # get sequences.
+#   seq=doc[["sequences"]]
+#   nseq=as.numeric(seq[["database"]]["seq_count"]) # number of sequences.
+#   
+#   seq=seq[names(seq)=="sequence"]
+#   seqs=c() # store all sequence ids.
+#   res=list()
+#   for(seg in seq) {
+#     seq_id=seg$.attrs["name"]
+#     seqs=c(seqs,seq_id)
+#     if(seq_id=="PVX_044190") {
+#       message("OK!")
+#       print(seg)
+#     }
+#     seg=seg[names(seg)=="seg"]
+#     if(seq_id=="PVX_044190") {
+#       print(seg)
+#     }
+#     for(hit in seg) {
+#       hit=hit[names(hit)=="hit"]
+#       for(h in hit) {
+#         res=c(res, list(data.frame(seq_id=seq_id,motif_id=h["motif"],motif_name=motif_info[h["motif"],"motif_name"],pos=as.numeric(h["pos"]),pvalue=as.numeric(h["pvalue"]))))
+#       }
+#     }
+#   }
+#   res=do.call(rbind, res)
+# }
+# 
+#   ## convert to old style (for now!)
+#   motifs=lapply(motif_info$motif_name, function(m) {
+#     tmp=res[res$motif_name==m,]
+#     if(nrow(tmp)==0)
+#       data.frame()
+#     else
+#       data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
+#   })
+#   names(motifs)=motif_info$motif_name
+#   
+#   names(seqs)=NULL
+#   
+#   new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = seqs)
+#}
 
 readMASTold = function(filename, meme) {
 	con = file(filename, "r")
