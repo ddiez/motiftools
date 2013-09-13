@@ -20,8 +20,6 @@ plotMotifCount = function(M, percentage = FALSE, ...) {
   box()
 }
 
-
-
 plotMatrix = function(... , tree, highlight, sep = 2, adj = 10, cex = 0.5, high.col, main) {
   X = list(...)
   #M = lapply(X, getMotifMatrix)

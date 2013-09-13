@@ -199,14 +199,18 @@ readMAST = function(filename) {
   motifs=doc[["motifs"]]
   motifs=motifs[names(motifs) == "motif"]
   nmotif=length(motifs)
-  # TODO: parse additional information.
+  motif_info=lapply(motifs, function(x)
+    data.frame(motif_id=x["id"],motif_name=x["name"],width=x["width"],consensus=x["best_f"])
+  )
+  motif_info=do.call(rbind, motif_info)
+  rownames(motif_info)=motif_info$motif_id
   
   # get sequences.
   seq=doc[["sequences"]]
   nseq=as.numeric(seq[["database"]]["seq_count"]) # number of sequences.
   
   seq=seq[names(seq)=="sequence"]
-  seqs=c()
+  seqs=c() # store all sequence ids.
   res=list()
   for(seg in seq) {
     seq_id=seg$.attrs["name"]
@@ -215,23 +219,26 @@ readMAST = function(filename) {
     for(hit in seg) {
       hit=hit[names(hit)=="hit"]
       for(h in hit) {
-        res=c(res, list(data.frame(seq_id=seq_id,motif_id=h["motif"],pos=as.numeric(h["pos"]),pvalue=as.numeric(h["pvalue"]))))
+        res=c(res, list(data.frame(seq_id=seq_id,motif_id=h["motif"],motif_name=motif_info[h["motif"],"motif_name"],pos=as.numeric(h["pos"]),pvalue=as.numeric(h["pvalue"]))))
       }
     }
   }
   res=do.call(rbind, res)
-  #res
+
   ## convert to old style (for now!)
-  motifs=lapply(unique(res$motif), function(m) {
-    tmp=res[res$motif_id==m,]
-    data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
+  motifs=lapply(motif_info$motif_name, function(m) {
+    tmp=res[res$motif_name==m,]
+    if(nrow(tmp)==0)
+      data.frame()
+    else
+      data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
   })
-  names(motifs)=sub("motif_","",unique(res$motif))
+  names(motifs)=motif_info$motif_name
+  
   names(seqs)=NULL
   
   new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = seqs)
 }
-
 
 readMASTold = function(filename, meme) {
 	con = file(filename, "r")
