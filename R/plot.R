@@ -24,6 +24,8 @@ plotMatrix = function(... , tree, highlight, sep = 2, adj = 10, cex = 0.5, high.
   X = list(...)
   #M = lapply(X, getMotifMatrix)
   M = X
+  M = lapply(M, function(m) m[order(rownames(m)),])
+  
   #C = lapply(X, function(x) getMotifCount(x, percentage = TRUE))
   C = lapply(M, function(x) 100*colSums(x)/nrow(x))
   
