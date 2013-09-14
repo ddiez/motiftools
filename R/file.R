@@ -59,7 +59,7 @@ readTOMTOM = function(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05, 
   new("TomTom", matrix = pwmm, cutoff.type = cut.col, cutoff = cutoff, matrix_key = mat.key, color_key = col.key, dendrogram = d)
 }
 
-readFIMO = function(filename) {
+readFIMO = function(filename,return.old=TRUE) {
   doc = xmlParse(filename)
   top = xmlRoot(doc)
   
@@ -117,7 +117,17 @@ readFIMO = function(filename) {
   })
   names(motifs)=motif_info$motif_name
   
-  new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = sort(seqset))
+  if(return.old)
+    new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = sort(seqset))
+  else {
+    irl=lapply(names(motifs), function(n) {
+      require(IRanges)
+      m=motifs[[n]]
+      IRanges(start=m[,"Start"],width=motif_info[motif_info$motif_name==n,"width"], names=m[,"Id"])
+    })
+    names(irl)=names(motifs)
+    IRangesList(irl)
+  }
   
   #list(nseq=nseq, nmotif=nmotif, motif_info=motif_info, result=res, sequences=seqset)
 }
