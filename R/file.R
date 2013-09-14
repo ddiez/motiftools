@@ -130,65 +130,118 @@ readMEMEold = function(filename) {
 }
 
 readMEME = function(filename) {
-  message("reading XML file ... ",appendLF=FALSE)
-  doc = xmlToList(filename)
-  message("DONE")
+  doc = xmlParse(filename)
+  top = xmlRoot(doc)
   
-  # get sequence ids and number.
-  seqset=doc[["training_set"]]
-  seqset=seqset[names(seqset)=="sequence"]
-  seqset
-  seqs=c()
-  seqs_id=c()
-  for(seq in seqset) {
-    seqs=c(seqs, seq["name"])
-    seqs_id=c(seqs_id, seq["id"])
-  }
-  names(seqs)=seqs_id
-  nseq=length(seqs)
-  
-  # model.
-  model=doc[["model"]]
-  nmotif=as.numeric(model$nmotifs) # get motif number.
+  # get sequence ids and number:
+  seqset=xmlApply(top[["training_set"]], function(s) {
+    if(xmlName(s)=="sequence") {
+      data.frame(seq_id=xmlGetAttr(s, "id"),seq_name=xmlGetAttr(s,"name"))
+    }
+  })
+  seqset=seqset[! sapply(seqset,is.null)]
+  seqset=do.call(rbind,seqset)
+  rownames(seqset)=seqset$seq_id
+  nseq=nrow(seqset)
   
   # motifs.
-  motifset=doc[["motifs"]] # TODO get PSSM?
-  motifset=motifset[seq(5,100,5)]
-  motifs=c()
-  for(m in motifset) {
-    motifs=c(motifs,m["id"])
-  }
+  nmotif=as.numeric(xmlValue(top[["model"]][["nmotifs"]]))
   
-  # sequences.
-  seqset=doc[["scanned_sites_summary"]]
-  seqset=seqset[names(seqset)=="scanned_sites"]
-  res=list()
-  for(seq in seqset) {
-    if(is.list(seq)) { # if no motifs this results in a vector with the values in .attrs
-      seq_id=seq$.attrs[["sequence_id"]]
-      seq_name=seqs[seq_id]
-      l=length(seq)-1
-      for(s in seq(1,l,4)) {
-        motif_id=seq[[s]]
-        pos=seq[[s+2]]
-        pvalue=seq[[s+3]]
-        res=c(res,list(data.frame(seq_id=seq_name, motif_id=motif_id, pos=as.numeric(pos), pvalue=as.numeric(pvalue))))
-      }
+  motif_info=xmlApply(top[["motifs"]], function(m) {
+    if(xmlName(m)=="motif")
+      data.frame(motif_id=xmlGetAttr(m,"id"),motif_name=xmlGetAttr(m,"name"),width=xmlGetAttr(m,"width"))
+  })
+  motif_info=do.call(rbind,motif_info)
+  rownames(motif_info)=motif_info$motif_id
+  
+  # sequence hits:
+  res=xmlApply(top[["scanned_sites_summary"]], function(s) {
+    if(xmlName(s)=="scanned_sites") {
+      seq_id=xmlGetAttr(s,"sequence_id")
+      tmp=xmlApply(s, function(ss) {
+        if(xmlName(ss)=="scanned_site") {
+          data.frame(seq_id=seqset[seq_id,"seq_name"],motif_name=motif_info[xmlGetAttr(ss,"motif_id"),"motif_name"],pos=as.numeric(xmlGetAttr(ss,"position")),pvalue=as.numeric(xmlGetAttr(ss,"pvalue")))
+        }
+      })
+      do.call(rbind,tmp)
     }
-  }
+  })
   res=do.call(rbind,res)
   
   ## convert to old style (for now!)
-  motifs=lapply(unique(res$motif), function(m) {
-    tmp=res[res$motif_id==m,]
-    data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
+  motifs=lapply(motif_info$motif_name, function(m) {
+    tmp=res[res$motif_name==m,]
+    if(nrow(tmp)==0)
+      data.frame()
+    else
+      data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
   })
-  names(motifs)=sub("motif_","",unique(res$motif))
-  names(seqs)=NULL
+  names(motifs)=motif_info$motif_name
   
-  #list(seqs=seqs, nseq=nseq, nmotif=nmotif, motifs=motifs, results=res)
-  new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = seqs)
+  new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = sort(seqset$seq_name))
+  #list(nseq=nseq, nmotif=nmotif, sequence=sort(seqset$seq_name), motif_info=motif_info, result=res)
 }
+
+# readMEME = function(filename) {
+#   message("reading XML file ... ",appendLF=FALSE)
+#   doc = xmlToList(filename)
+#   message("DONE")
+#   
+#   # get sequence ids and number.
+#   seqset=doc[["training_set"]]
+#   seqset=seqset[names(seqset)=="sequence"]
+#   seqset
+#   seqs=c()
+#   seqs_id=c()
+#   for(seq in seqset) {
+#     seqs=c(seqs, seq["name"])
+#     seqs_id=c(seqs_id, seq["id"])
+#   }
+#   names(seqs)=seqs_id
+#   nseq=length(seqs)
+#   
+#   # model.
+#   model=doc[["model"]]
+#   nmotif=as.numeric(model$nmotifs) # get motif number.
+#   
+#   # motifs.
+#   motifset=doc[["motifs"]] # TODO get PSSM?
+#   motifset=motifset[seq(5,100,5)]
+#   motifs=c()
+#   for(m in motifset) {
+#     motifs=c(motifs,m["id"])
+#   }
+#   
+#   # sequences.
+#   seqset=doc[["scanned_sites_summary"]]
+#   seqset=seqset[names(seqset)=="scanned_sites"]
+#   res=list()
+#   for(seq in seqset) {
+#     if(is.list(seq)) { # if no motifs this results in a vector with the values in .attrs
+#       seq_id=seq$.attrs[["sequence_id"]]
+#       seq_name=seqs[seq_id]
+#       l=length(seq)-1
+#       for(s in seq(1,l,4)) {
+#         motif_id=seq[[s]]
+#         pos=seq[[s+2]]
+#         pvalue=seq[[s+3]]
+#         res=c(res,list(data.frame(seq_id=seq_name, motif_id=motif_id, pos=as.numeric(pos), pvalue=as.numeric(pvalue))))
+#       }
+#     }
+#   }
+#   res=do.call(rbind,res)
+#   
+#   ## convert to old style (for now!)
+#   motifs=lapply(unique(res$motif), function(m) {
+#     tmp=res[res$motif_id==m,]
+#     data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
+#   })
+#   names(motifs)=sub("motif_","",unique(res$motif))
+#   names(seqs)=NULL
+#   
+#   #list(seqs=seqs, nseq=nseq, nmotif=nmotif, motifs=motifs, results=res)
+#   new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = seqs)
+# }
 
 readMAST = function(filename) {
   doc=xmlParse(filename)
