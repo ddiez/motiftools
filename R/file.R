@@ -59,8 +59,70 @@ readTOMTOM = function(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05, 
   new("TomTom", matrix = pwmm, cutoff.type = cut.col, cutoff = cutoff, matrix_key = mat.key, color_key = col.key, dendrogram = d)
 }
 
+readFIMO = function(filename) {
+  doc = xmlParse(filename)
+  top = xmlRoot(doc)
+  
+  # sequences.
+  nseq=as.numeric(xmlGetAttr(top[["sequence-data"]],"num-sequences"))
+  
+  # motifs.
+  motif_info=xmlApply(top, function(m) {
+    if(xmlName(m)=="motif") {
+      data.frame(motif_name=xmlGetAttr(m,"name"),width=as.numeric(xmlGetAttr(m,"width")),best_f=xmlGetAttr(m,"best-possible-match"))
+    }
+  })
+  motif_info=motif_info[!sapply(motif_info,is.null)]
+  motif_info=do.call(rbind,motif_info)
+  
+  nmotif=nrow(motif_info)
+  
+  # get cisml.
+  cismlfile=xmlValue(top[["cisml-file"]])
+  free(doc)
+  doc=xmlParse(file.path(dirname(filename),cismlfile))
+  top=xmlRoot(doc)
+  
+  all_seq=c()
+  res=xmlApply(top, function(p) {
+    if(xmlName(p)=="pattern") {
+      motif_name=xmlGetAttr(p,"name")
+      tmp_seq=xmlApply(p, function(s) {
+        if(xmlName(s)=="scanned-sequence") {
+          seq_id=xmlGetAttr(s,"accession")
+          all_seq<<-c(all_seq,seq_id)
+          tmp_match=xmlApply(s, function(m) {
+            if(xmlName(m)=="matched-element") {
+              data.frame(motif_name=motif_name,seq_id=seq_id,pos=as.numeric(xmlGetAttr(m,"start")),pvalue=as.numeric(xmlGetAttr(m,"pvalue")))
+            }
+          })
+          do.call(rbind,tmp_match)
+        }
+      })
+      do.call(rbind,tmp_seq)
+    }
+  })
+  res=res[!sapply(res,is.null)]
+  res=do.call(rbind,res)
+  
+  seqset=unique(all_seq)
+  
+  ## convert to old style (for now!)
+  motifs=lapply(motif_info$motif_name, function(m) {
+    tmp=res[res$motif_name==m,]
+    if(nrow(tmp)==0)
+      data.frame()
+    else
+      data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
+  })
+  names(motifs)=motif_info$motif_name
+  
+  new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = sort(seqset))
+  
+  #list(nseq=nseq, nmotif=nmotif, motif_info=motif_info, result=res, sequences=seqset)
+}
 
-readFIMO = function(file, meme) {
+readFIMOold = function(file, meme) {
   d = read.table(file, as.is = TRUE)
   tm = unique(d[,1])
   seqs = unique(d[,2])
