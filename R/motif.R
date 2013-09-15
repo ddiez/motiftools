@@ -1,4 +1,31 @@
 getMotifBySeq = function(object) {
+  lapply(object@ranges,names)
+}
+setGeneric("getMotifBySeq")
+
+getMotifArchBySeq = function(object) {
+  sapply(getMotifBySeq(object),function(x) paste(x,collapse="-"))
+}
+setGeneric("getMotifArchBySeq")
+
+getMotifMatrix = function(object) {
+  m = matrix(0,nrow=nseq(object),ncol=nmotif(object))
+  rownames(m)=object@info$sequence_info
+  colnames(m)=object@info$motif_info$motif_name
+  for(n in names(object@ranges)) {
+    r=object@ranges[[n]]
+    h=unique(names(r))
+    m[n,h]=1
+  }
+  m
+}
+setGeneric("getMotifMatrix")
+
+
+## for old classes.
+
+setMethod("getMotifBySeq","MotifSet",
+function(object) {
   res=list()
   for(n in names(object@motif)) {
     tmp=object@motif[[n]]
@@ -13,7 +40,7 @@ getMotifBySeq = function(object) {
     }
   }
   reorderMotifs(res)
-}
+})
 
 reorderMotifs = function(M) {
   for(s in names(M)) {
@@ -25,8 +52,18 @@ reorderMotifs = function(M) {
 }
 
 
+setMethod("getMotifMatrix","MotifSet",
+function(object) {
+  M = object
+  r = matrix(0, nrow = M@nseq, ncol = M@nmotif)
+  rownames(r) = M@sequence
+  colnames(r) = 1:M@nmotif
+  for(n in 1:M@nmotif) {
+    r[as.character(M@motif[[n]]$Id), n] = 1
+  }
+  r
+})
 
-## OLD
 
 getMotifDistribution = function(m) {
   n = sub("(..).*", "\\1", rownames(m))
@@ -44,16 +81,6 @@ getMotifDistribution = function(m) {
     100*r[,x]/nc[x]
   })
   rr
-}
-
-getMotifMatrix = function(M) {
-  r = matrix(0, nrow = M@nseq, ncol = M@nmotif)
-  rownames(r) = M@sequence
-  colnames(r) = 1:M@nmotif
-  for(n in 1:M@nmotif) {
-    r[as.character(M@motif[[n]]$Id), n] = 1
-  }
-  r
 }
 
 getMotifCount = function(M, percentage = FALSE) {

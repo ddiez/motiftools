@@ -15,11 +15,11 @@ setMethod("show", "MotifSearchResult",
           })
 
 
-getNumberMotifs = function(object) object@info$nmotif
-setGeneric("getNumberMotifs")
+nmotif = function(object) object@info$nmotif
+setGeneric("nmotif")
 
-getNumberSeq = function(object) object@info$nseq
-setGeneric("getNumberSeq")
+nseq = function(object) object@info$nseq
+setGeneric("nseq")
 
 
 setClass("MotifSet",
