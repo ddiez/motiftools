@@ -120,13 +120,23 @@ readFIMO = function(filename,return.old=TRUE) {
   if(return.old)
     new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = sort(seqset))
   else {
-    irl=lapply(names(motifs), function(n) {
-      require(IRanges)
-      m=motifs[[n]]
-      IRanges(start=m[,"Start"],width=motif_info[motif_info$motif_name==n,"width"], names=m[,"Id"])
+    require(IRanges)
+#     irl=lapply(names(motifs), function(n) {
+#       m=motifs[[n]]
+#       IRanges(start=m[,"Start"],width=motif_info[motif_info$motif_name==n,"width"], names=m[,"Id"])
+#     })
+#     names(irl)=names(motifs)
+#     IRangesList(irl)
+    all_seq=unique(res$seq_id)
+    irl=lapply(all_seq, function(s) {
+      tmp=res[res$seq_id==s,]
+      # order by start position:
+      tmp=tmp[order(tmp$pos),]
+      w=sapply(tmp$motif_name, function(m) motif_info$width[motif_info$motif_name==m])
+      IRanges(start=tmp[,"pos"],width=w,names=tmp[,"motif_name"])
     })
-    names(irl)=names(motifs)
-    IRangesList(irl)
+    names(irl)=all_seq
+    list(info=list(nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(seqset)), ranges=IRangesList(irl))
   }
   
   #list(nseq=nseq, nmotif=nmotif, motif_info=motif_info, result=res, sequences=seqset)
