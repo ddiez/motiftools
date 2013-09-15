@@ -1,3 +1,26 @@
+plotMotifMatrix = function(object, ...) {
+  X = list(object, ...)
+  M = lapply(X,getMotifMatrix)
+  h = hclust(dist(M[[1]]))
+  M = lapply(M,function(m) m[h$order,])
+  d = as.dendrogram(h)
+  
+  l = layout(matrix(c(0,1,seq(2,length(M)*2+1)), 2, length(M) + 1), heights = c(1, 10), widths = c(5, rep(5, length(M)*2+1)))
+  op = par(mar = c(1,0.5,1,0))
+  plot(d,horiz=TRUE,leaflab="none",yaxs="i",axes=FALSE)
+  for(k in 1:length(M)) {
+    m=M[[k]]
+    par(mar = c(0, 1, 1,1))
+    barplot(100*apply(m,2,sum)/nseq(object),las=1,xaxs="i",ylim=c(0,100))
+    title(X[[k]]@info$tool,line=0)
+    par(mar = c(1, 1, 1,1))
+    image(t(m),axes=FALSE,col=c("white","grey"))
+    box()
+  }
+  par(op)
+}
+setGeneric("plotMotifMatrix")
+
 plotCounts = function(x, cut) {
   plot(x$Counts, ylim = c(0, 100), xlab = "Architectures", ylab = "Counts/Percentage", axes = FALSE, type = "l")
   points(x$Counts, col = "black", pch = 21, bg = "gray")
