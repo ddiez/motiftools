@@ -107,20 +107,20 @@ readFIMO = function(filename,return.old=TRUE) {
   
   seqset=unique(all_seq)
   
-  ## convert to old style (for now!)
-  motifs=lapply(motif_info$motif_name, function(m) {
-    tmp=res[res$motif_name==m,]
-    if(nrow(tmp)==0)
-      data.frame()
-    else
-      data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
-  })
-  names(motifs)=motif_info$motif_name
-  
-  if(return.old)
+  if(return.old) {
+    ## convert to old style (for now!)
+    motifs=lapply(motif_info$motif_name, function(m) {
+      tmp=res[res$motif_name==m,]
+      if(nrow(tmp)==0)
+        data.frame()
+      else
+        data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
+    })
+    names(motifs)=motif_info$motif_name
+    
     new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = sort(seqset))
+  }
   else {
-    require(IRanges)
 #     irl=lapply(names(motifs), function(n) {
 #       m=motifs[[n]]
 #       IRanges(start=m[,"Start"],width=motif_info[motif_info$motif_name==n,"width"], names=m[,"Id"])
@@ -136,10 +136,8 @@ readFIMO = function(filename,return.old=TRUE) {
       IRanges(start=tmp[,"pos"],width=w,names=tmp[,"motif_name"])
     })
     names(irl)=all_seq
-    list(info=list(nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(seqset)), ranges=IRangesList(irl))
+    new("MotifSearchResult", info=list(tool="FIMO", nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(seqset)), ranges=IRangesList(irl))
   }
-  
-  #list(nseq=nseq, nmotif=nmotif, motif_info=motif_info, result=res, sequences=seqset)
 }
 
 readFIMOold = function(file, meme) {
@@ -211,7 +209,7 @@ readMEMEold = function(filename) {
     new("MotifSet", nmotif = length(motifs), motif = motifs, nseq = length(ts), sequence = ts)
 }
 
-readMEME = function(filename) {
+readMEME = function(filename, return.old=TRUE) {
   doc = xmlParse(filename)
   top = xmlRoot(doc)
   
@@ -231,7 +229,7 @@ readMEME = function(filename) {
   
   motif_info=xmlApply(top[["motifs"]], function(m) {
     if(xmlName(m)=="motif")
-      data.frame(motif_id=xmlGetAttr(m,"id"),motif_name=xmlGetAttr(m,"name"),width=xmlGetAttr(m,"width"))
+      data.frame(motif_id=xmlGetAttr(m,"id"),motif_name=xmlGetAttr(m,"name"),width=as.numeric(xmlGetAttr(m,"width")))
   })
   motif_info=do.call(rbind,motif_info)
   rownames(motif_info)=motif_info$motif_id
@@ -250,18 +248,31 @@ readMEME = function(filename) {
   })
   res=do.call(rbind,res)
   
-  ## convert to old style (for now!)
-  motifs=lapply(motif_info$motif_name, function(m) {
-    tmp=res[res$motif_name==m,]
-    if(nrow(tmp)==0)
-      data.frame()
-    else
-      data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
-  })
-  names(motifs)=motif_info$motif_name
-  
-  new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = sort(seqset$seq_name))
-  #list(nseq=nseq, nmotif=nmotif, sequence=sort(seqset$seq_name), motif_info=motif_info, result=res)
+  if(return.old) {
+    ## convert to old style (for now!)
+    motifs=lapply(motif_info$motif_name, function(m) {
+      tmp=res[res$motif_name==m,]
+      if(nrow(tmp)==0)
+        data.frame()
+      else
+        data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
+    })
+    names(motifs)=motif_info$motif_name
+    
+    new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = sort(seqset$seq_name))
+  }
+  else {
+    all_seq=unique(res$seq_id)
+    irl=lapply(all_seq, function(s) {
+      tmp=res[res$seq_id==s,]
+      # order by start position:
+      tmp=tmp[order(tmp$pos),]
+      w=sapply(tmp$motif_name, function(m) motif_info$width[motif_info$motif_name==m])
+      IRanges(start=tmp[,"pos"],width=w,names=tmp[,"motif_name"])
+    })
+    names(irl)=all_seq
+    new("MotifSearchResult", info=list(tool="MEME", nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(seqset$seq_name)), ranges=IRangesList(irl))
+  }
 }
 
 # readMEME = function(filename) {
@@ -325,7 +336,7 @@ readMEME = function(filename) {
 #   new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = seqs)
 # }
 
-readMAST = function(filename) {
+readMAST = function(filename, return.old=TRUE) {
   doc=xmlParse(filename)
   top=xmlRoot(doc)
   
@@ -335,7 +346,7 @@ readMAST = function(filename) {
       attr=xmlAttrs(m)
       bad=FALSE
       if("bad" %in% names(attr)) bad=TRUE
-      data.frame(motif_id=attr[["id"]],motif_name=attr[["name"]],width=attr[["width"]],best_f=attr[["best_f"]],bad=bad)
+      data.frame(motif_id=attr[["id"]],motif_name=attr[["name"]],width=as.numeric(attr[["width"]]),best_f=attr[["best_f"]],bad=bad)
     }
   })
   motif_info=do.call(rbind,motif_info)
@@ -367,18 +378,31 @@ readMAST = function(filename) {
   res=res[!sapply(res,is.null)]
   res=do.call(rbind,res)
   
-  ## convert to old style (for now!)
-  motifs=lapply(motif_info$motif_name, function(m) {
-    tmp=res[res$motif_name==m,]
-    if(nrow(tmp)==0)
-      data.frame()
-    else
-      data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
-  })
-  names(motifs)=motif_info$motif_name
-  
-  new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = all_seqs)
-  #list(motif_info=motif_info, result=res)
+  if(return.old) {
+    ## convert to old style (for now!)
+    motifs=lapply(motif_info$motif_name, function(m) {
+      tmp=res[res$motif_name==m,]
+      if(nrow(tmp)==0)
+        data.frame()
+      else
+        data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
+    })
+    names(motifs)=motif_info$motif_name
+    
+    new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = all_seqs)
+  }
+  else {
+    all_seq=unique(res$seq_id)
+    irl=lapply(all_seq, function(s) {
+      tmp=res[res$seq_id==s,]
+      # order by start position:
+      tmp=tmp[order(tmp$pos),]
+      w=sapply(tmp$motif_name, function(m) motif_info$width[motif_info$motif_name==m])
+      IRanges(start=tmp[,"pos"],width=w,names=tmp[,"motif_name"])
+    })
+    names(irl)=all_seq
+    new("MotifSearchResult", info=list(tool="MAST", nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(all_seqs)), ranges=IRangesList(irl))
+  }
 }
 
 # readMASTxmlold = function(filename) {

@@ -1,3 +1,27 @@
+
+setClass("MotifSearchResult",
+         representation(
+           info = "list",
+           ranges = "IRangesList"
+           )
+         )
+
+setMethod("show", "MotifSearchResult",
+          function(object) {
+            message(class(object), " object.")
+            message("Motif tool: ", object@info$tool)
+            message("Number of sequences: ", object@info$nseq)
+            message("Number of motifs: ", object@info$nmotif)
+          })
+
+
+getNumberMotifs = function(object) object@info$nmotif
+setGeneric("getNumberMotifs")
+
+getNumberSeq = function(object) object@info$nseq
+setGeneric("getNumberSeq")
+
+
 setClass("MotifSet",
          representation(
            nmotif = "numeric",
