@@ -1,5 +1,5 @@
-.architecture.code=c(LETTERS,letters,as.character(0:9))
 getMotifArchString = function(object, convert.to.letter=FALSE,return.unique=FALSE) {
+  .architecture.code=c(LETTERS,letters,as.character(0:9))
   tmp = lapply(getMotifBySeq(object),function(x)x[,1])
   if(convert.to.letter) {
     if(max(as.numeric(unlist(tmp)))>length(.architecture.code)) stop("more motifs than architectures! cannot convert to letters.")
@@ -10,15 +10,6 @@ getMotifArchString = function(object, convert.to.letter=FALSE,return.unique=FALS
   if(return.unique) unique(tmp) else tmp
 }
 
-# convert architectures.
-.letter2num = function(x){
-  x=strsplit(x,"")[[1]]
-  sapply(x,function(z) which(.architecture.code %in% z),USE.NAMES=FALSE)
-}
-
-.num2letter = function(x){
-  paste(.architecture.code[as.numeric(x)],collapse="")
-}
 
 
 
