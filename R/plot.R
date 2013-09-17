@@ -1,13 +1,26 @@
-plotMotifMatrix = function(object, ...) {
+plotMotifMatrix = function(object, ..., tree) {
   X = list(object, ...)
   M = lapply(X,getMotifMatrix)
-  h = hclust(dist(M[[1]]))
-  M = lapply(M,function(m) m[h$order,])
-  d = as.dendrogram(h)
+  
+  if (missing(tree)) {
+    # the first matrix is used to construct the tree.
+    d = dist(M[[1]])
+    h = hclust(d)
+    tree=as.phylo(h)
+  }
   
   l = layout(matrix(c(0,1,seq(2,length(M)*2+1)), 2, length(M) + 1), heights = c(1, 10), widths = c(5, rep(5, length(M)*2+1)))
   op = par(mar = c(1,0.5,1,0))
-  plot(d,horiz=TRUE,leaflab="none",yaxs="i",axes=FALSE)
+  plot(tree, cex = 0.6, show.tip.label = FALSE, root.edge = TRUE, use.edge.length = FALSE, yaxs = "i")
+  
+  # reorder matrices according to tree (needs to be done *after* the tree is plotted: conversation with Emmanuel Paradis)
+  lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+  tip <- 1:lastPP$Ntip # or seq_len(lastPP$Ntip)
+  YY <- lastPP$yy[tip]
+  o <- order(YY)
+  M = lapply(M, function(m) m[o,])
+  
+  # plot matrix panels.
   for(k in 1:length(M)) {
     m=M[[k]]
     par(mar = c(0, 1, 1,1))
