@@ -1,4 +1,4 @@
-plotMotifMatrix = function(object, ..., tree) {
+plotMotifMatrix = function(object, ..., tree, annot, annot.col) {
   X = list(object, ...)
   M = lapply(X,getMotifMatrix)
   
@@ -9,22 +9,46 @@ plotMotifMatrix = function(object, ..., tree) {
     tree=as.phylo(h)
   }
   
-  l = layout(matrix(c(0,1,seq(2,length(M)*2+1)), 2, length(M) + 1), heights = c(1, 10), widths = c(5, rep(5, length(M)*2+1)))
+  extra_panels=0
+  if(!missing(annot)) {
+    if(is.matrix(annot))
+      extra_panels=ncol(annot)
+    else
+      stop("annotations must be provided as a matrix.")
+  }
+  
+  l = layout(matrix(c(0,1,seq(2,length(M)*2+1+extra_panels*2)), 2, length(M) + 1 + extra_panels), heights = c(1, 10), widths = c(5, rep(.5, extra_panels), rep(5, length(M))))
   op = par(mar = c(1,0.5,1,0))
   plot(tree, cex = 0.6, show.tip.label = FALSE, root.edge = TRUE, use.edge.length = FALSE, yaxs = "i")
   
   # reorder matrices according to tree (needs to be done *after* the tree is plotted: conversation with Emmanuel Paradis)
+  # fixed by Diego Sep 24/2013
   lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
   tip <- 1:lastPP$Ntip # or seq_len(lastPP$Ntip)
   YY <- lastPP$yy[tip]
-  o <- order(YY)
+  #o <- order(YY) # This get indexes that cannot reorder the matrix. [DD]
+  o = tree$tip.label[YY] # better reorder based on labels. [DD]
   M = lapply(M, function(m) m[o,])
+  if(!missing(annot)) annot=annot[o,,drop=FALSE]
+
+  
+  # plot annotations:
+  if(!missing(annot)) {
+    if(missing(annot.col)) 
+      annot.col=rainbow(max(annot))
+    for(k in 1:ncol(annot)) {
+      plot(0,axes=FALSE)
+      par(mar = c(1, 0, 1,0))
+      image(t(annot[,k,drop=FALSE]),axes=FALSE,col=annot.col)
+      box()
+    }
+  }
   
   # plot matrix panels.
   for(k in 1:length(M)) {
     m=M[[k]]
     par(mar = c(0, 1, 1,1))
-    barplot(100*apply(m,2,sum)/nseq(object),las=1,xaxs="i",ylim=c(0,100))
+    barplot(100*apply(m,2,sum)/nseq(object),las=1,xaxs="i",ylim=c(0,100),names=FALSE)
     title(X[[k]]@info$tool,line=0)
     par(mar = c(1, 1, 1,1))
     image(t(m),axes=FALSE,col=c("white","grey"))
