@@ -59,7 +59,7 @@ readTOMTOM = function(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05, 
   new("TomTom", matrix = pwmm, cutoff.type = cut.col, cutoff = cutoff, matrix_key = mat.key, color_key = col.key, dendrogram = d)
 }
 
-readFIMO = function(filename,return.old=FALSE) {
+readFIMO = function(filename, description=NULL, return.old=FALSE) {
   doc = xmlParse(filename)
   top = xmlRoot(doc)
   
@@ -136,7 +136,7 @@ readFIMO = function(filename,return.old=FALSE) {
       IRanges(start=tmp[,"pos"],width=w,names=tmp[,"motif_name"])
     })
     names(irl)=all_seq
-    new("MotifSearchResult", info=list(tool="FIMO", nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(seqset)), ranges=IRangesList(irl))
+    new("MotifSearchResult", info=list(tool="FIMO", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(seqset)), ranges=IRangesList(irl))
   }
 }
 
@@ -209,7 +209,7 @@ readMEMEold = function(filename) {
     new("MotifSet", nmotif = length(motifs), motif = motifs, nseq = length(ts), sequence = ts)
 }
 
-readMEME = function(filename, return.old=FALSE) {
+readMEME = function(filename, description=NULL, return.old=FALSE) {
   doc = xmlParse(filename)
   top = xmlRoot(doc)
   
@@ -271,11 +271,11 @@ readMEME = function(filename, return.old=FALSE) {
       IRanges(start=tmp[,"pos"],width=w,names=tmp[,"motif_name"])
     })
     names(irl)=all_seq
-    new("MotifSearchResult", info=list(tool="MEME", nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(seqset$seq_name)), ranges=IRangesList(irl))
+    new("MotifSearchResult", info=list(tool="MEME", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(seqset$seq_name)), ranges=IRangesList(irl))
   }
 }
 
-readMAST = function(filename, return.old=FALSE) {
+readMAST = function(filename, description=NULL, return.old=FALSE) {
   doc=xmlParse(filename)
   top=xmlRoot(doc)
   
@@ -340,7 +340,7 @@ readMAST = function(filename, return.old=FALSE) {
       IRanges(start=tmp[,"pos"],width=w,names=tmp[,"motif_name"])
     })
     names(irl)=all_seq
-    new("MotifSearchResult", info=list(tool="MAST", nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(all_seqs)), ranges=IRangesList(irl))
+    new("MotifSearchResult", info=list(tool="MAST", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(all_seqs)), ranges=IRangesList(irl))
   }
 }
 
