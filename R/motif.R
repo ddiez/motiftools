@@ -41,6 +41,29 @@ getMotifMatrix = function(object) {
 }
 setGeneric("getMotifMatrix")
 
+getMotifDistribution=function(object,convert.func) {
+  m=object
+  if(!missing(convert.func))
+    rownames(m)=convert.func(rownames(m))
+  
+  nu=unique(rownames(m))
+  tmp=lapply(nu,function(n) {
+    sel.n=rownames(m) %in% n
+    l=length(which(sel.n))
+    100*apply(m[sel.n,,drop=FALSE],2,sum)/l
+  })
+  names(tmp)=nu
+  do.call(rbind,tmp)
+}
+setGeneric("getMotifDistribution")
+
+setMethod("getMotifDistribution","MotifSearchResult",
+function(object,convert.func) {
+  m=getMotifMatrix(object)
+  getMotifDistribution(m,convert.func)
+})
+
+
 
 ## for old classes.
 
@@ -85,23 +108,23 @@ function(object) {
 })
 
 
-getMotifDistribution = function(m) {
-  n = sub("(..).*", "\\1", rownames(m))
-  r = t(apply(m, 2, function(x) {
-    sel = which(x == 1)
-    nn = n[sel]
-    nn = factor(nn, levels = unique(n))
-    table(nn)
-  }))
-  
-  nt = table(n)
-  nc = as.vector(nt)
-  names(nc) = names(nt)
-  rr = sapply(colnames(r), function(x) {
-    100*r[,x]/nc[x]
-  })
-  rr
-}
+# getMotifDistribution = function(m) {
+#   n = sub("(..).*", "\\1", rownames(m))
+#   r = t(apply(m, 2, function(x) {
+#     sel = which(x == 1)
+#     nn = n[sel]
+#     nn = factor(nn, levels = unique(n))
+#     table(nn)
+#   }))
+#   
+#   nt = table(n)
+#   nc = as.vector(nt)
+#   names(nc) = names(nt)
+#   rr = sapply(colnames(r), function(x) {
+#     100*r[,x]/nc[x]
+#   })
+#   rr
+# }
 
 getMotifCount = function(M, percentage = FALSE) {
   #x = unlist(lapply(M@motif, nrow))
