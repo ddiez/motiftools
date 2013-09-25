@@ -1,7 +1,7 @@
 Package: motifTools
 Type: Package
 Title: Tools to analyze motifs
-Version: 0.9.4
+Version: 0.9.5
 Date: 2013-09-25
 Author: Diego Diez
 Depends: XML, IRanges, ape
