@@ -1,4 +1,12 @@
 plotMotifMatrix = function(object, ..., tree, annot, annot.col) {
+  extra_panels=0
+  if(!missing(annot)) {
+    if(is.matrix(annot))
+      extra_panels=ncol(annot)
+    else
+      stop("annotations must be provided as a matrix.")
+  }
+  
   X = list(object, ...)
   M = lapply(X,getMotifMatrix)
   
@@ -9,15 +17,6 @@ plotMotifMatrix = function(object, ..., tree, annot, annot.col) {
     tree=as.phylo(h)
   }
   
-  extra_panels=0
-  if(!missing(annot)) {
-    if(is.matrix(annot))
-      extra_panels=ncol(annot)
-    else
-      stop("annotations must be provided as a matrix.")
-  }
-  
- 
   # compute layout matrix:
   lm=matrix(c(0,1),ncol=1)
   if(extra_panels>0)
