@@ -17,7 +17,16 @@ plotMotifMatrix = function(object, ..., tree, annot, annot.col) {
       stop("annotations must be provided as a matrix.")
   }
   
-  l = layout(matrix(c(0,1,seq(2,length(M)*2+1+extra_panels*2)), 2, length(M) + 1 + extra_panels), heights = c(1, 10), widths = c(5, rep(.5, extra_panels), rep(5, length(M))))
+ 
+  # compute layout matrix:
+  lm=matrix(c(0,1),ncol=1)
+  if(extra_panels>0)
+    lm=cbind(lm,rbind(rep(0,extra_panels),seq(2,extra_panels+1)))
+  lm=cbind(lm, matrix(seq(2+extra_panels,length(M)*2+extra_panels+1),nrow=2))
+  
+  l = layout(lm, heights = c(1, 10), widths = c(5, rep(.5, extra_panels), rep(5, length(M))))
+  
+  # plot tree.
   op = par(mar = c(1,0.5,1,0))
   plot(tree, cex = 0.6, show.tip.label = FALSE, root.edge = TRUE, use.edge.length = FALSE, yaxs = "i")
   
@@ -31,13 +40,11 @@ plotMotifMatrix = function(object, ..., tree, annot, annot.col) {
   M = lapply(M, function(m) m[o,])
   if(!missing(annot)) annot=annot[o,,drop=FALSE]
 
-  
-  # plot annotations:
+  # plot annotations.
   if(!missing(annot)) {
     if(missing(annot.col)) 
       annot.col=rainbow(max(annot))
     for(k in 1:ncol(annot)) {
-      plot(0,axes=FALSE)
       par(mar = c(1, 0, 1,0))
       image(t(annot[,k,drop=FALSE]),axes=FALSE,col=annot.col)
       box()
