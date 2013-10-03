@@ -1,0 +1,13 @@
+\documentclass{article}
+
+\begin{document}
+
+\title{motifTools: analysis and intepretation of sequence motifs}
+\maketitle
+
+\section{Introduction}
+
+motifTools is a package for the analysis and interpretation of sequence motifs. Its initial implementation is focused on protein motif analysis obtained from the MEME suite, but its functionality may extend to other applications and tools, including analysis of nucleotide sequences and motif analysis tools found in Bioconductor or CRAN.
+
+
+\end{document}

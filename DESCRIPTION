@@ -4,7 +4,7 @@ Title: Tools to analyze sequence motifs
 Version: 0.9.6
 Date: 2013-10-03
 Author: Diego Diez
-Depends: methods, XML, IRanges, ape
+Depends: methods, XML, IRanges, ape, knitr
 Maintainer: Diego Diez <diego10ruiz@gmail.com>
 Description: This packages contains several functions useful to analyze and \
 	interpret results from sequence motif tools. Currently this package is \
@@ -12,3 +12,4 @@ Description: This packages contains several functions useful to analyze and \
 License: GPL-3
 LazyLoad: yes
 ByteCompile: yes
+VignetteBuilder: knitr
