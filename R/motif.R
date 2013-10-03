@@ -28,10 +28,18 @@ convertArch = function(object,to="string") {
   )
 }
 
+#getMotifMatrix = function(object,seqnames) {
 getMotifMatrix = function(object) {
+  #if(missing(seqnames))
+  #  seqnames=object@info$sequence_info
+  #nseq=length(seqnames)
+  
   m = matrix(0,nrow=nseq(object),ncol=nmotif(object))
   rownames(m)=object@info$sequence_info
   colnames(m)=object@info$motif_info$motif_name
+  #m = matrix(0,nrow=nseq,ncol=nmotif(object))
+  #rownames(m)=seqnames
+  #colnames(m)=object@info$motif_info$motif_name
   for(n in names(object@ranges)) {
     r=object@ranges[[n]]
     h=unique(names(r))
@@ -64,6 +72,15 @@ function(object,convert.func) {
 })
 
 
+getMotifCount = function(object, percentage = FALSE) {
+  apply(getMotifMatrix(object),2,function(m) {
+    if(percentage)
+      100*sum(m)/nseq(object)
+    else
+      sum(m)
+  })
+}
+setGeneric("getMotifCount")
 
 ## for old classes.
 
@@ -107,7 +124,6 @@ function(object) {
   r
 })
 
-
 # getMotifDistribution = function(m) {
 #   n = sub("(..).*", "\\1", rownames(m))
 #   r = t(apply(m, 2, function(x) {
@@ -126,10 +142,11 @@ function(object) {
 #   rr
 # }
 
-getMotifCount = function(M, percentage = FALSE) {
-  #x = unlist(lapply(M@motif, nrow))
-  x = unlist(lapply(M@motif, function(m) length(unique(m$Id))))
+setMethod("getMotifCount", "MotifSet",
+function(object, percentage = FALSE) {
+  x = unlist(lapply(object@motif, function(m) length(unique(m$Id))))
   if (percentage)
-    x = 100 * x / M@nseq
-  x
-}
+    100 * x / object@nseq
+  else
+    x
+})
