@@ -3,13 +3,10 @@
 \alias{motifTools}
 \docType{package}
 \title{
-What the package does (short line)
-%~~ package title ~~
-motifTools
+motifTools: tools to analyze sequence motifs
 }
 \description{
-More about what it does (maybe more than one line)
-%~~ A concise (1-5 lines) description of the package ~~
+This packages contains several functions useful to analyze and interpret results from sequence motif tools. Currently this package is focused on the MEME suite.
 }
 \details{
 \tabular{ll}{
@@ -20,25 +17,10 @@ Date: \tab 2010-02-02\cr
 License: \tab What license is it under?\cr
 LazyLoad: \tab yes\cr
 }
-%~~ An overview of how to use the package, including the most important ~~
-%~~ functions ~~
 }
 \author{
-Who wrote it
+Diego Diez
 
-Maintainer: Who to complain to <yourfault@somewhere.net>
-%~~ The author and/or maintainer of the package ~~
+Maintainer: Diego Diez <diego10ruiz@gmail.com>
 }
-\references{
-%~~ Literature or other references for background information ~~
-}
-%~~ Optionally other standard keywords, one per line, from file KEYWORDS in ~~
-%~~ the R documentation directory ~~
 \keyword{ package }
-\seealso{
-%~~ Optional links to other man pages, e.g. ~~
-%~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
-}
-\examples{
-%~~ simple examples of the most important functions ~~
-}
