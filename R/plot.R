@@ -23,10 +23,10 @@ plotMotifMatrix = function(object, ..., tree, annot, annot.col) {
     lm=cbind(lm,rbind(rep(0,extra_panels),seq(2,extra_panels+1)))
   lm=cbind(lm, matrix(seq(2+extra_panels,length(M)*2+extra_panels+1),nrow=2))
   
-  l = layout(lm, heights = c(1, 10), widths = c(5, rep(.5, extra_panels), rep(5, length(M))))
   
-  # plot tree.
   op = par(mar = c(1,0.5,1,0))
+  l = layout(lm, heights = c(1, 10), widths = c(5, rep(.5, extra_panels), rep(5, length(M))))
+  # plot tree.
   plot(tree, cex = 0.6, show.tip.label = FALSE, root.edge = TRUE, use.edge.length = FALSE, yaxs = "i")
   
   # reorder matrices according to tree (needs to be done *after* the tree is plotted: conversation with Emmanuel Paradis)
