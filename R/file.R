@@ -59,7 +59,8 @@ readTOMTOM = function(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05, 
   new("TomTom", matrix = pwmm, cutoff.type = cut.col, cutoff = cutoff, matrix_key = mat.key, color_key = col.key, dendrogram = d)
 }
 
-readFIMO = function(filename, description=NULL, return.old=FALSE) {
+## reads XML FIMO output.
+readFIMO = function(filename, description=NULL) {
   doc = xmlParse(filename)
   top = xmlRoot(doc)
   
@@ -74,6 +75,7 @@ readFIMO = function(filename, description=NULL, return.old=FALSE) {
   })
   motif_info=motif_info[!sapply(motif_info,is.null)]
   motif_info=do.call(rbind,motif_info)
+  rownames(motif_info)=motif_info$motif_name
   
   nmotif=nrow(motif_info)
   
@@ -93,8 +95,8 @@ readFIMO = function(filename, description=NULL, return.old=FALSE) {
           all_seq<<-c(all_seq,seq_id)
           tmp_match=xmlApply(s, function(m) {
             if(xmlName(m)=="matched-element") {
-              qvalue=as.numeric(xmlSApply(m, function(dd) if(xmlName(dd)=="mem:qvalue") xmlGetValue))
-              data.frame(motif_name=motif_name,seq_id=seq_id,pos=as.numeric(xmlGetAttr(m,"start")),score=as.numeric(xmlGetAttr(m,"score")), pvalue=as.numeric(xmlGetAttr(m,"pvalue")),qvalue=qvalue)
+              qvalue=xmlValue(m[["qvalue"]])
+              data.frame(motif_name=motif_name,seq_id=seq_id,pos=as.numeric(xmlGetAttr(m,"start")),score=as.numeric(xmlGetAttr(m,"score")), pvalue=as.numeric(xmlGetAttr(m,"pvalue")),qvalue=as.numeric(qvalue))
             }
           })
           do.call(rbind,tmp_match)
@@ -106,110 +108,14 @@ readFIMO = function(filename, description=NULL, return.old=FALSE) {
   res=res[!sapply(res,is.null)]
   res=do.call(rbind,res)
   
-  seqset=unique(all_seq)
+  res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
   
-  if(return.old) {
-    ## convert to old style (for now!)
-    motifs=lapply(motif_info$motif_name, function(m) {
-      tmp=res[res$motif_name==m,]
-      if(nrow(tmp)==0)
-        data.frame()
-      else
-        data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
-    })
-    names(motifs)=motif_info$motif_name
-    
-    new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = sort(seqset))
-  }
-  else {
-#     irl=lapply(names(motifs), function(n) {
-#       m=motifs[[n]]
-#       IRanges(start=m[,"Start"],width=motif_info[motif_info$motif_name==n,"width"], names=m[,"Id"])
-#     })
-#     names(irl)=names(motifs)
-#     IRangesList(irl)
-    all_seq=unique(res$seq_id)
-    irl=lapply(all_seq, function(s) {
-      tmp=res[res$seq_id==s,]
-      # order by start position:
-      tmp=tmp[order(tmp$pos),]
-      w=sapply(tmp$motif_name, function(m) motif_info$width[motif_info$motif_name==m])
-      IRanges(start=tmp[,"pos"],width=w,names=tmp[,"motif_name"])
-    })
-    names(irl)=all_seq
-    new("MotifSearchResult", info=list(tool="FIMO", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(seqset)), ranges=IRangesList(irl))
-  }
+  ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=res$score, pvalue=res$pvalue, qvalue=res$qvalue, evalue=rep(NA, nrow(res)), space=res$seq_id)
+
+  new("MotifSearchResult", info=list(tool="FIMO", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(unique(all_seq))), ranges= ranges)
 }
 
-readFIMOold = function(file, meme) {
-  d = read.table(file, as.is = TRUE)
-  tm = unique(d[,1])
-  seqs = unique(d[,2])
-  
-  motifs = list()
-  for(m in tm) {
-    tmp = d[d[,1] == m,]
-    motifs[[as.character(m)]] = data.frame(Id = tmp[,2], Start = as.numeric(tmp[,3]), P = as.numeric(tmp[,6]))
-  }
-  
-  #new("MotifSet", nmotif = length(motifs), motif = motifs, nseq = length(seqs), sequence = seqs)
-  new("MotifSet", nmotif = length(motifs), motif = motifs, nseq = meme@nseq, sequence = meme@sequence)
-}
-
-
-readMEMEold = function(filename) {
-	con = file(filename, "r")
-    lines = readLines(con)
-    close(con)
-    gms = 0
-    gtm = 0
-    motifs = list()
-    mn = 0
-    rts = 0
-    rs = 0
-    ts = c()
-    for(line in lines) {
-		if (grepl("^TRAINING SET", line)) { rts = 1; next }
-		
-		if (rts) {
-			if (grepl("^Sequence name", line)) { rs = 1; next }
-			if (rs & grepl("^\\*\\*\\*", line)) { rts = 0; rs = 0; next }
-			if (rs & grepl("^-------------", line)) next
-			if (rs) {
-				cks = unlist(strsplit(line, " +"))
-				if (length(cks) == 6)
-					cks = cks[c(1, 4)]
-				else
-					cks = cks[1]
-				#print(cks)
-				ts = c(ts, cks)
-			}
-		}
-		
-		if (grepl("^MOTIF", line)) { gms = 1; mn = mn + 1; next }
-		if (gms) {
-			if (grepl("^Sequence name", line)) { gtm = 1; next }
-			if (gtm & grepl("^-----------------------------------------", line)) { gms = 0; gtm = 0; next }
-			if (gtm & grepl("^-------------", line)) next
-			if (gtm) {
-				cks = unlist(strsplit(line, " +"))
-				mnc = as.character(mn)
-				#print(cks[1:3])
-				if (length(motifs[[mnc]]) == 0)
-					motifs[[mnc]] = data.frame(Id = cks[1], Start = as.numeric(cks[2]), P = as.numeric(cks[3]))
-				else {
-					d = data.frame(Id = cks[1], Start = as.numeric(cks[2]), P = as.numeric(cks[3]))
-					motifs[[mnc]] = rbind(motifs[[mnc]], d)
-				}
-			}
-		}
-    }
-    #lines
-    #print(paste("Number of sequences:", length(ts)))
-    #motifs
-    new("MotifSet", nmotif = length(motifs), motif = motifs, nseq = length(ts), sequence = ts)
-}
-
+## reads XML MEME output.
 readMEME = function(filename, description=NULL, return.old=FALSE) {
   doc = xmlParse(filename)
   top = xmlRoot(doc)
@@ -249,33 +155,15 @@ readMEME = function(filename, description=NULL, return.old=FALSE) {
   })
   res=do.call(rbind,res)
   
-  if(return.old) {
-    ## convert to old style (for now!)
-    motifs=lapply(motif_info$motif_name, function(m) {
-      tmp=res[res$motif_name==m,]
-      if(nrow(tmp)==0)
-        data.frame()
-      else
-        data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
-    })
-    names(motifs)=motif_info$motif_name
-    
-    new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = sort(seqset$seq_name))
-  }
-  else {
-    all_seq=unique(res$seq_id)
-    irl=lapply(all_seq, function(s) {
-      tmp=res[res$seq_id==s,]
-      # order by start position:
-      tmp=tmp[order(tmp$pos),]
-      w=sapply(tmp$motif_name, function(m) motif_info$width[motif_info$motif_name==m])
-      IRanges(start=tmp[,"pos"],width=w,names=tmp[,"motif_name"])
-    })
-    names(irl)=all_seq
-    new("MotifSearchResult", info=list(tool="MEME", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(seqset$seq_name)), ranges=IRangesList(irl))
-  }
+  rownames(motif_info)=motif_info$motif_name
+  res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
+  
+  ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=rep(NA,nrow(res)), pvalue=res$pvalue, qvalue=rep(NA, nrow(res)), evalue=rep(NA, nrow(res)), space=res$seq_id)
+  
+  new("MotifSearchResult", info=list(tool="MEME", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(seqset$seq_name)), ranges= ranges)
 }
 
+## reads XML MAST output.
 readMAST = function(filename, description=NULL, return.old=FALSE) {
   doc=xmlParse(filename)
   top=xmlRoot(doc)
@@ -318,155 +206,10 @@ readMAST = function(filename, description=NULL, return.old=FALSE) {
   res=res[!sapply(res,is.null)]
   res=do.call(rbind,res)
   
-  if(return.old) {
-    ## convert to old style (for now!)
-    motifs=lapply(motif_info$motif_name, function(m) {
-      tmp=res[res$motif_name==m,]
-      if(nrow(tmp)==0)
-        data.frame()
-      else
-        data.frame(Id=tmp$seq_id,Start=tmp$pos,P=tmp$pvalue)
-    })
-    names(motifs)=motif_info$motif_name
-    
-    new("MotifSet", nmotif = nmotif, motif = motifs, nseq = nseq, sequence = all_seqs)
-  }
-  else {
-    all_seq=unique(res$seq_id)
-    irl=lapply(all_seq, function(s) {
-      tmp=res[res$seq_id==s,]
-      # order by start position:
-      tmp=tmp[order(tmp$pos),]
-      w=sapply(tmp$motif_name, function(m) motif_info$width[motif_info$motif_name==m])
-      IRanges(start=tmp[,"pos"],width=w,names=tmp[,"motif_name"])
-    })
-    names(irl)=all_seq
-    new("MotifSearchResult", info=list(tool="MAST", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(all_seqs)), ranges=IRangesList(irl))
-  }
+  rownames(motif_info)=motif_info$motif_name
+  res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
+  
+  ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=rep(NA,nrow(res)), pvalue=res$pvalue, qvalue=rep(NA, nrow(res)), evalue=rep(NA, nrow(res)), space=res$seq_id)
+  
+  new("MotifSearchResult", info=list(tool="MAST", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(all_seqs)), ranges= ranges)
 }
-
-readMASTold = function(filename, meme) {
-	con = file(filename, "r")
-    lines = readLines(con)
-    close(con)
-
-    motifs = list()
-    sn = 0
-    ts = c()
-    rm = 0
-    rms = 0
-	rs = 0
-	cs = ""
-	tm = NULL
-	tw = NULL
-	pval = list()
-    for(line in lines) {
-		if (grepl("Database contains", line)) {
-			sn = as.numeric(gsub(".+Database contains (.+?) .+", "\\1", line))
-			#print(sn)
-			next
-		}
-
-		if (grepl("MOTIF WIDTH", line)) {
-			rm = 1
-			next
-		}
-
-		if (grepl("^SECTION II", line)) {
-			rms = 1
-			next
-		}
-
-		if (rms) {
-			if (grepl("^-------------", line)) { rs = 1; next }
-		}
-
-		if (rs) {
-			if (grepl("^\\*\\*\\*\\*", line)) { rs = 0; rms = 0; next }
-			cks = unlist(strsplit(line, " +"))
-			if (is.na(cks[1])) { #print("end?");
-			next }
-			if (cks[1] == "") {
-				#print("previous seq")
-				#print(cs)
-				#print(cks[2])
-				motifs[[cs]] = paste(motifs[[cs]], cks[2], collapse = "")
-			} else {
-				cs = cks[1]
-				#print(cks[1])
-				#print(cks[2])
-				#print(cks[3])
-				motifs[[cks[1]]] = cks[3]
-				pval[[cks[1]]] = cks[2]
-			}
-			#print(cks[1])
-			#if (length(motifs[[mnc]]) == 0)
-            #	motifs[[mnc]] = data.frame(Id = cks[1], Start = as.numeric(cks[2]), P = as.numeric(cks[3]))
-            #else {
-            #	d = data.frame(Id = cks[1], Start = as.numeric(cks[2]), P = as.numeric(cks[3]))
-            #	motifs[[mnc]] = rbind(motifs[[mnc]], d)
-            #}
-		}
-
-		if (rm) {
-			if (grepl("-----", line)) next
-			#if (grepl("", line)) { rm = 0; next }
-			m = unlist(strsplit(line, " +"))
-			if (is.na(m[1])) { #print("end?");
-				rm = 0;
-				next
-			}
-			#print(m)
-			if (is.null(tm)) tm = m[2]
-			else tm = c(tm, m[2])
-			if (is.null(tw)) tw = m[3]
-			else tw = c(tw, m[3])
-		}
-		#if (grepl("^SECTION I", line)) { rts = 1; next }
-	}
-	ts = names(motifs)
-	parse_motifs = function(x, p, m, w) {
-		#print(x)
-		#print(w)
-		#print(m)
-		ml = list()
-		for(n in 1:length(m)) {
-			ml[[m[n]]] = data.frame()
-		}
-		for(n in 1:length(x)) {
-			nn = names(x)[n]
-			#print(paste(">Doing sequence", nn))
-			tmp = gsub(" ", "", x[n])
-			tmp = gsub("^\\[", "0_\\[", tmp)
-			tmp = gsub("\\]_\\[", "\\]_0_\\[", tmp)
-			#print(tmp)
-			cks = unlist(strsplit(tmp, "_"))
-			sel = grepl("\\[", cks)
-			ss = cks[!sel]
-			mm = cks[sel]
-			mm = gsub("\\[|\\]", "", mm)
-			#print(mm)
-			if (length(mm) > 0) {
-			for(k in 1:length(mm)) {
-			#print(paste("  +Found motif: ", mm[k]))
-			#print(paste("     -Eval: ", p[k]))
-			#print(paste("     -Start:", ss[k]))
-				if (is.null(ml[[mm[k]]]))
-					ml[[mm[nn]]] = data.frame(Id = nn, Start = ss[k], P = p[n])
-				else {
-					d = data.frame(Id = nn, Start = ss[k], P = p[n])
-					ml[[mm[k]]] = rbind(ml[[mm[k]]], d)
-				}
-			}
-			}
-		}
-		ml
-	}
-	motifs = parse_motifs(unlist(motifs), unlist(pval), tm, tw)
-	if(missing(meme))
-		new("MotifSet", nmotif = length(motifs), motif = motifs, nseq = sn, sequence = ts)
-	else
-		new("MotifSet", nmotif = length(motifs), motif = motifs, nseq = meme@nseq, sequence = meme@sequence)
-	#motifs
-}
-

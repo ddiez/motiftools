@@ -9,5 +9,7 @@
 
 motifTools is a package for the analysis and interpretation of sequence motifs. Its initial implementation is focused on protein motif analysis obtained from the MEME suite, but its functionality may extend to other applications and tools, including analysis of nucleotide sequences and motif analysis tools found in Bioconductor or CRAN.
 
+Motif ranges are stored as \texttt{RangedData} objects (\texttt{IRanges} package). This allows to include metadata, like p-value, score and other output from the search process.
+
 
 \end{document}

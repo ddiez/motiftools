@@ -2,7 +2,7 @@
 setClass("MotifSearchResult",
          representation(
            info = "list",
-           ranges = "IRangesList"
+           ranges = "RangedData"
            )
          )
 
@@ -22,6 +22,9 @@ nseq = function(object) object@info$nseq
 setGeneric("nseq")
 
 
+
+
+##### DEPRECATED.
 setClass("MotifSet",
          representation(
            nmotif = "numeric",
