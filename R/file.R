@@ -93,7 +93,8 @@ readFIMO = function(filename, description=NULL, return.old=FALSE) {
           all_seq<<-c(all_seq,seq_id)
           tmp_match=xmlApply(s, function(m) {
             if(xmlName(m)=="matched-element") {
-              data.frame(motif_name=motif_name,seq_id=seq_id,pos=as.numeric(xmlGetAttr(m,"start")),pvalue=as.numeric(xmlGetAttr(m,"pvalue")))
+              qvalue=as.numeric(xmlSApply(m, function(dd) if(xmlName(dd)=="mem:qvalue") xmlGetValue))
+              data.frame(motif_name=motif_name,seq_id=seq_id,pos=as.numeric(xmlGetAttr(m,"start")),score=as.numeric(xmlGetAttr(m,"score")), pvalue=as.numeric(xmlGetAttr(m,"pvalue")),qvalue=qvalue)
             }
           })
           do.call(rbind,tmp_match)
