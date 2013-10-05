@@ -96,7 +96,8 @@ readFIMO = function(filename, description=NULL) {
           tmp_match=xmlApply(s, function(m) {
             if(xmlName(m)=="matched-element") {
               qvalue=xmlValue(m[["qvalue"]])
-              data.frame(motif_name=motif_name,seq_id=seq_id,pos=as.numeric(xmlGetAttr(m,"start")),score=as.numeric(xmlGetAttr(m,"score")), pvalue=as.numeric(xmlGetAttr(m,"pvalue")),qvalue=as.numeric(qvalue))
+              sequence=xmlValue(m[["sequence"]])
+              data.frame(motif_name=motif_name,seq_id=seq_id,pos=as.numeric(xmlGetAttr(m,"start")),score=as.numeric(xmlGetAttr(m,"score")), pvalue=as.numeric(xmlGetAttr(m,"pvalue")),qvalue=as.numeric(qvalue),sequence_hit=sequence)
             }
           })
           do.call(rbind,tmp_match)
@@ -110,7 +111,7 @@ readFIMO = function(filename, description=NULL) {
   
   res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
   
-  ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=res$score, pvalue=res$pvalue, qvalue=res$qvalue, evalue=rep(NA, nrow(res)), space=res$seq_id)
+  ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=res$score, pvalue=res$pvalue, qvalue=res$qvalue, evalue=rep(NA, nrow(res)), sequence_hit=res$sequence_hit, space=res$seq_id)
 
   new("MotifSearchResult", info=list(tool="FIMO", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(unique(all_seq))), ranges= ranges)
 }
