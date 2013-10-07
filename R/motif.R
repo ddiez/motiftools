@@ -1,6 +1,5 @@
 getMotifBySeq = function(object) {
   lapply(object@ranges, function(x) x$motif_name) # for RangedData.
-  #lapply(object@ranges,names) # for old IRanges.
 }
 setGeneric("getMotifBySeq")
 
@@ -29,21 +28,12 @@ convertArch = function(object,to="string") {
   )
 }
 
-#getMotifMatrix = function(object,seqnames) {
 getMotifMatrix = function(object) {
-  #if(missing(seqnames))
-  #  seqnames=object@info$sequence_info
-  #nseq=length(seqnames)
-  
   m = matrix(0,nrow=nseq(object),ncol=nmotif(object))
-  rownames(m)=object@info$sequence_info
+  rownames(m)=featureNames(object@sequences)
   colnames(m)=featureNames(object@motifs)
-  #m = matrix(0,nrow=nseq,ncol=nmotif(object))
-  #rownames(m)=seqnames
-  #colnames(m)=featureNames(object@motifs)
+
   for(n in names(object@ranges)) {
-    #r=object@ranges[[n]] # for old IRanges.
-    #h=unique(names(r))
     h=unique(object@ranges[n]$motif_name) # for RangedData.
     m[n,h]=1
   }
