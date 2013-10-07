@@ -60,7 +60,7 @@ readTOMTOM = function(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05, 
 }
 
 ## reads XML FIMO output.
-readFIMO = function(filename, description=NULL) {
+readFIMO = function(filename, sequenceData, description=NULL) {
   doc = xmlParse(filename)
   top = xmlRoot(doc)
   
@@ -111,13 +111,20 @@ readFIMO = function(filename, description=NULL) {
   
   res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
   
+  # build sequenceData.
+  all_seq=sort(unique(all_seq))
+  if(missing(sequenceData))
+    sequenceData=AnnotatedDataFrame(data.frame(all_seq,sequence_id=all_seq,row.names=1))
+  # motifData.
+  motifData=AnnotatedDataFrame(data.frame(motif_info, row.names="motif_name"))
+  
   ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=res$score, pvalue=res$pvalue, qvalue=res$qvalue, evalue=rep(NA, nrow(res)), sequence_hit=res$sequence_hit, space=res$seq_id)
 
-  new("MotifSearchResult", info=list(tool="FIMO", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(unique(all_seq))), ranges= ranges)
+  new("MotifSearchResult", info=list(tool="FIMO", description=description, nseq=nseq,nmotif=nmotif), sequences=sequenceData,motifs=motifData,ranges=ranges)
 }
 
 ## reads XML MEME output.
-readMEME = function(filename, description=NULL, return.old=FALSE) {
+readMEME = function(filename, sequenceData, description=NULL) {
   doc = xmlParse(filename)
   top = xmlRoot(doc)
   
@@ -155,17 +162,23 @@ readMEME = function(filename, description=NULL, return.old=FALSE) {
     }
   })
   res=do.call(rbind,res)
-  
-  rownames(motif_info)=motif_info$motif_name
   res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
+  
+  # build sequenceData.
+  all_seqs=sort(unique(seqset$seq_name))
+  if(missing(sequenceData))
+    sequenceData=AnnotatedDataFrame(data.frame(all_seqs, sequence_id=all_seqs,row.names=1))
+  # motifData.
+  rownames(motif_info)=motif_info$motif_name
+  motifData=AnnotatedDataFrame(data.frame(motif_info, row.names="motif_name"))
   
   ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=rep(NA,nrow(res)), pvalue=res$pvalue, qvalue=rep(NA, nrow(res)), evalue=rep(NA, nrow(res)), space=res$seq_id)
   
-  new("MotifSearchResult", info=list(tool="MEME", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(seqset$seq_name)), ranges= ranges)
+  new("MotifSearchResult", info=list(tool="MEME", description=description, nseq=nseq,nmotif=nmotif), sequences=sequenceData,motifs=motifData,ranges= ranges)
 }
 
 ## reads XML MAST output.
-readMAST = function(filename, description=NULL, return.old=FALSE) {
+readMAST = function(filename, sequenceData, description=NULL) {
   doc=xmlParse(filename)
   top=xmlRoot(doc)
   
@@ -207,10 +220,17 @@ readMAST = function(filename, description=NULL, return.old=FALSE) {
   res=res[!sapply(res,is.null)]
   res=do.call(rbind,res)
   
-  rownames(motif_info)=motif_info$motif_name
   res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
+  
+  # build sequenceData.
+  all_seqs=sort(unique(all_seqs))
+  if(missing(sequenceData))
+    sequenceData=AnnotatedDataFrame(data.frame(all_seqs,sequence_id=all_seqs,row.names=1))
+  # motifData.
+  rownames(motif_info)=motif_info$motif_name
+  motifData=AnnotatedDataFrame(data.frame(motif_info, row.names="motif_name"))
   
   ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=rep(NA,nrow(res)), pvalue=res$pvalue, qvalue=rep(NA, nrow(res)), evalue=rep(NA, nrow(res)), space=res$seq_id)
   
-  new("MotifSearchResult", info=list(tool="MAST", description=description, nseq=nseq,nmotif=nmotif,motif_info=motif_info,sequence_info=sort(all_seqs)), ranges= ranges)
+  new("MotifSearchResult", info=list(tool="MAST", description=description, nseq=nseq,nmotif=nmotif), sequences=sequenceData,motifs=motifData,ranges= ranges)
 }

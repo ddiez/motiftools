@@ -37,10 +37,10 @@ getMotifMatrix = function(object) {
   
   m = matrix(0,nrow=nseq(object),ncol=nmotif(object))
   rownames(m)=object@info$sequence_info
-  colnames(m)=object@info$motif_info$motif_name
+  colnames(m)=featureNames(object@motifs)
   #m = matrix(0,nrow=nseq,ncol=nmotif(object))
   #rownames(m)=seqnames
-  #colnames(m)=object@info$motif_info$motif_name
+  #colnames(m)=featureNames(object@motifs)
   for(n in names(object@ranges)) {
     #r=object@ranges[[n]] # for old IRanges.
     #h=unique(names(r))

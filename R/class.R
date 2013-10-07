@@ -2,6 +2,8 @@
 setClass("MotifSearchResult",
          representation(
            info = "list",
+           sequences = "AnnotatedDataFrame",
+           motifs = "AnnotatedDataFrame",
            ranges = "RangedData"
            )
          )
