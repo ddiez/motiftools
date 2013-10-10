@@ -109,8 +109,6 @@ readFIMO = function(filename, sequenceData, description=NULL) {
   res=res[!sapply(res,is.null)]
   res=do.call(rbind,res)
   
-  res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
-  
   # build sequenceData.
   all_seq=sort(unique(all_seq))
   if(missing(sequenceData))
@@ -118,8 +116,13 @@ readFIMO = function(filename, sequenceData, description=NULL) {
   # motifData.
   motifData=AnnotatedDataFrame(data.frame(motif_info, row.names="motif_name"))
   
-  ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=res$score, pvalue=res$pvalue, qvalue=res$qvalue, evalue=rep(NA, nrow(res)), sequence_hit=res$sequence_hit, space=res$seq_id)
-
+  if(is.null(res)) {
+    ranges=RangedData()
+  } else {
+    res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
+    ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=res$score, pvalue=res$pvalue, qvalue=res$qvalue, evalue=rep(NA, nrow(res)), sequence_hit=res$sequence_hit, space=res$seq_id)
+  }
+    
   new("MotifSearchResult", info=list(tool="FIMO", description=description, nseq=nseq,nmotif=nmotif), sequences=sequenceData,motifs=motifData,ranges=ranges)
 }
 
@@ -162,7 +165,6 @@ readMEME = function(filename, sequenceData, description=NULL) {
     }
   })
   res=do.call(rbind,res)
-  res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
   
   # build sequenceData.
   all_seqs=sort(unique(seqset$seq_name))
@@ -172,7 +174,12 @@ readMEME = function(filename, sequenceData, description=NULL) {
   rownames(motif_info)=motif_info$motif_name
   motifData=AnnotatedDataFrame(data.frame(motif_info, row.names="motif_name"))
   
-  ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=rep(NA,nrow(res)), pvalue=res$pvalue, qvalue=rep(NA, nrow(res)), evalue=rep(NA, nrow(res)), space=res$seq_id)
+  if(is.null(res)) {
+    ranges=RangedData()
+  } else {
+    res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
+    ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=rep(NA,nrow(res)), pvalue=res$pvalue, qvalue=rep(NA, nrow(res)), evalue=rep(NA, nrow(res)), space=res$seq_id)
+  }
   
   new("MotifSearchResult", info=list(tool="MEME", description=description, nseq=nseq,nmotif=nmotif), sequences=sequenceData,motifs=motifData,ranges= ranges)
 }
@@ -219,9 +226,7 @@ readMAST = function(filename, sequenceData, description=NULL) {
   res=unlist(res,recursive=FALSE,use.names=FALSE)
   res=res[!sapply(res,is.null)]
   res=do.call(rbind,res)
-  
-  res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
-  
+    
   # build sequenceData.
   all_seqs=sort(unique(all_seqs))
   if(missing(sequenceData))
@@ -230,7 +235,13 @@ readMAST = function(filename, sequenceData, description=NULL) {
   rownames(motif_info)=motif_info$motif_name
   motifData=AnnotatedDataFrame(data.frame(motif_info, row.names="motif_name"))
   
-  ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=rep(NA,nrow(res)), pvalue=res$pvalue, qvalue=rep(NA, nrow(res)), evalue=rep(NA, nrow(res)), space=res$seq_id)
+  if(is.null(res)) {
+    ranges=RangedData()
+  } else {
+    res=res[with(res, order(seq_id,pos)),] # reorder by sequence and then position.
+    
+    ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=rep(NA,nrow(res)), pvalue=res$pvalue, qvalue=rep(NA, nrow(res)), evalue=rep(NA, nrow(res)), space=res$seq_id)
+  }
   
   new("MotifSearchResult", info=list(tool="MAST", description=description, nseq=nseq,nmotif=nmotif), sequences=sequenceData,motifs=motifData,ranges= ranges)
 }

@@ -1,8 +1,8 @@
 Package: motifTools
 Type: Package
 Title: Tools to analyze sequence motifs
-Version: 0.9.8
-Date: 2013-10-07
+Version: 0.9.9
+Date: 2013-10-10
 Author: Diego Diez
 Depends: methods, XML, Biobase, IRanges, ape, knitr
 Maintainer: Diego Diez <diego10ruiz@gmail.com>
