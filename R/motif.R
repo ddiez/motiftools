@@ -41,10 +41,10 @@ getMotifMatrix = function(object) {
 }
 setGeneric("getMotifMatrix")
 
-getMotifDistribution=function(object,convert.func) {
+getMotifDistribution=function(object,by.groups) {
   m=object
-  if(!missing(convert.func))
-    rownames(m)=convert.func(rownames(m))
+  if(!missing(by.groups))
+    rownames(m)=by.groups
   
   nu=unique(rownames(m))
   tmp=lapply(nu,function(n) {
@@ -58,9 +58,9 @@ getMotifDistribution=function(object,convert.func) {
 setGeneric("getMotifDistribution")
 
 setMethod("getMotifDistribution","MotifSearchResult",
-function(object,convert.func) {
+function(object,by.groups) {
   m=getMotifMatrix(object)
-  getMotifDistribution(m,convert.func)
+  getMotifDistribution(m,by.groups)
 })
 
 
