@@ -30,7 +30,7 @@ sequenceNames=function(object) sequenceNames(object@sequences)
 setGeneric("sequenceNames")
 
 
-getMotifMatchMatrix = function(object, motif) {
+getMotifMatchMatrix = function(object, motif, extend=TRUE) {
   r=object@ranges
   r_motif=r[r$motif_name==motif,]
   
@@ -45,9 +45,14 @@ getMotifMatchMatrix = function(object, motif) {
   colnames(m)=bs
   rownames(m)=space(r_motif)
   
+  data(BLOSUM62)
   for(k in 1:length(bs)) {
-    m[ms[,k]==bs[k],k]=1
+    m[,k]=BLOSUM62[bs[k],ms[,k]]
   }
+  
+  #for(k in 1:length(bs)) {
+  #  m[ms[,k]==bs[k],k]=1
+  #}
   m
 }
 setGeneric("getMotifMatchMatrix")
@@ -55,7 +60,7 @@ setGeneric("getMotifMatchMatrix")
 plotMotifMatchMatrix = function(object, motif, ...) {
   op=par(mar=c(2,1,2,1))
   m=getMotifMatchMatrix(object, motif)
-  image(x=1:ncol(m),1:nrow(m),t(m[order(rowSums(m)),]),col=c("white","blue4"),main=paste("motif",motif),axes=FALSE,xlab="",ylab="")
+  image(x=1:ncol(m),1:nrow(m),t(m[order(rowSums(m)),]),main=paste("motif",motif),axes=FALSE,xlab="",ylab="")
   mtext(colnames(m),at=1:ncol(m),side=1, ...)
   box()
   par(op)
