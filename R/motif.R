@@ -28,14 +28,28 @@ convertArch = function(object,to="string") {
   )
 }
 
-getMotifMatrix = function(object) {
-  m = matrix(0,nrow=nseq(object),ncol=nmotif(object))
-  rownames(m)=featureNames(object@sequences)
-  colnames(m)=featureNames(object@motifs)
+# getMotifMatrix = function(object) {
+#   m = matrix(0,nrow=nseq(object),ncol=nmotif(object))
+#   rownames(m)=featureNames(object@sequences)
+#   colnames(m)=featureNames(object@motifs)
+# 
+#   for(n in names(object@ranges)) {
+#     h=unique(object@ranges[n]$motif_name) # for RangedData.
+#     m[n,h]=1
+#   }
+#   m
+# }
+# setGeneric("getMotifMatrix")
 
-  for(n in names(object@ranges)) {
-    h=unique(object@ranges[n]$motif_name) # for RangedData.
-    m[n,h]=1
+getMotifMatrix = function(object) {
+  r=object@ranges
+  m = matrix(0,nrow=nseq(object),ncol=nmotif(object))
+  rownames(m)=sequenceNames(object)
+  colnames(m)=motifNames(object)
+  
+  for(n in unique(r$motif_name)) {
+    s=unique(names(r[r$motif_name==n,])) # for RangedData.
+    m[s,n]=1
   }
   m
 }
