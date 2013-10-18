@@ -5,8 +5,8 @@ setClass("MotifSearchResult",
            sequences = "AnnotatedDataFrame",
            motifs = "AnnotatedDataFrame",
            ranges = "RangedData"
-           )
          )
+)
 
 setMethod("show", "MotifSearchResult",
           function(object) {
@@ -26,11 +26,11 @@ setGeneric("nseq")
 motifNames=function(object) featureNames(object@motifs)
 setGeneric("motifNames")
 
-sequenceNames=function(object) sequenceNames(object@sequences)
+sequenceNames=function(object) featureNames(object@sequences)
 setGeneric("sequenceNames")
 
 
-getMotifMatchMatrix = function(object, motif, extend=TRUE) {
+getMotifMatchMatrix = function(object, motif, pssm="BLOSUM62") {
   r=object@ranges
   r_motif=r[r$motif_name==motif,]
   
@@ -45,24 +45,26 @@ getMotifMatchMatrix = function(object, motif, extend=TRUE) {
   colnames(m)=bs
   rownames(m)=space(r_motif)
   
-  data(BLOSUM62)
+  PSSM=get(data(list=pssm))
   for(k in 1:length(bs)) {
-    m[,k]=BLOSUM62[bs[k],ms[,k]]
+    m[,k]=PSSM[bs[k],ms[,k]]
   }
-  
-  #for(k in 1:length(bs)) {
-  #  m[ms[,k]==bs[k],k]=1
-  #}
   m
 }
 setGeneric("getMotifMatchMatrix")
 
-plotMotifMatchMatrix = function(object, motif, ...) {
+plotMotifMatchMatrix = function(object, motif, pssm="BLOSUM62", ylim=NULL,...) {
+  l=layout(matrix(c(1,2),ncol=2),width=c(10,10))
   op=par(mar=c(2,1,2,1))
-  m=getMotifMatchMatrix(object, motif)
-  image(x=1:ncol(m),1:nrow(m),t(m[order(rowSums(m)),]),main=paste("motif",motif),axes=FALSE,xlab="",ylab="")
+  m=getMotifMatchMatrix(object, motif, pssm=pssm)
+  s=rowSums(m)
+  so=order(s)
+  s=s[so]
+  m=m[so,]
+  image(t(m),main=paste("motif",motif),axes=FALSE,xlab="",ylab="",ylim=ylim)
   mtext(colnames(m),at=1:ncol(m),side=1, ...)
   box()
+  barplot(s,horiz=TRUE,names=NA)
   par(op)
 }
 setGeneric("plotMotifMatchMatrix")
