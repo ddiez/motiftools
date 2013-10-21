@@ -53,18 +53,61 @@ getMotifMatchMatrix = function(object, motif, pssm="BLOSUM62") {
 }
 setGeneric("getMotifMatchMatrix")
 
-plotMotifMatchMatrix = function(object, motif, pssm="BLOSUM62", ylim=NULL,...) {
-  l=layout(matrix(c(1,2),ncol=2),width=c(10,10))
-  op=par(mar=c(2,1,2,1))
+.plotBoxPlot=function(x, ...) {
+  xs=.4
+  xss=.1
+  
+  plot(NA,xlim=c(1-.5,ncol(x)+.5),xaxs="i", ...)
+  abline(h=0,col="grey")
+  for(k in 1:ncol(x)) {
+    tmp=fivenum(x[,k])
+    lines(c(k-xs,k+xs),c(tmp[3],tmp[3]),lwd=2)
+    rect(k-xs,tmp[2],k+xs,tmp[4])
+    lines(c(k,k),c(tmp[2],tmp[1]),lty="dotted")
+    lines(c(k-xss,k+xss),c(tmp[1],tmp[1]),lwd=1)
+    lines(c(k,k),c(tmp[4],tmp[5]),lty="dotted")
+    lines(c(k-xss,k+xss),c(tmp[5],tmp[5]),lwd=1)
+  }
+}
+
+plotMotifMatchMatrix = function(object, motif, pssm="BLOSUM62", ...) {
+  l=layout(matrix(c(1,0,2,3),ncol=2,byrow=TRUE),width=c(15,5),height=c(5,15))
   m=getMotifMatchMatrix(object, motif, pssm=pssm)
-  s=rowSums(m)
-  so=order(s)
-  s=s[so]
-  m=m[so,]
-  image(t(m),main=paste("motif",motif),axes=FALSE,xlab="",ylab="",ylim=ylim)
-  mtext(colnames(m),at=1:ncol(m),side=1, ...)
+  
+  bmotif=object@motifs[motif,]$best_f
+  bmotif=strsplit(as.character(object@motifs[motif,]$best_f),"")[[1]]
+  max_score=diag(BLOSUM62[bmotif,bmotif])
+  ylim=range(BLOSUM62[bmotif,bmotif]) + c(-1,1)
+  limit=range(BLOSUM62[bmotif,bmotif])
+  
+  cs=colMeans(m)
+#  cs=100*cs/max_score
+    
+  rs=rowMeans(m)
+  
+  mm=t(t(m)/max_score)
+  
+  rso=order(rs)
+  rs=rs[rso]
+  m=m[rso,]
+  mm=mm[rso,]
+  
+  op=par(mar=c(0,2,2,0))
+  .plotBoxPlot(m, xlab="Position",ylab="PSSM score",axes=FALSE,ylim=ylim)
+  axis(2,las=1,lwd=0,line=-.5)
+  points(1:length(max_score),max_score, col="red",pch=19,bg="red")
+  abline(h=limit,col="blue")
   box()
-  barplot(s,horiz=TRUE,names=NA)
+  
+  op=par(mar=c(2,2,.5,0))
+  col=colorRampPalette(c("white","blue","orange"))(128)
+  image(1:ncol(mm), 1:nrow(mm),t(mm),main="",axes=FALSE,xlab="",ylab="",xaxs="i",yaxs="i",col=col)
+  mtext(colnames(mm),at=1:ncol(mm),side=1,line=.5, ...)
+  box()
+  par(mar=c(2,.5,.5,2))
+  plot(rs,1:length(rs),xaxs="i",yaxs="i",axes=FALSE,type="l",col="red")
+  axis(3,las=1,lwd=0,line=-.5)
+  box()
   par(op)
 }
 setGeneric("plotMotifMatchMatrix")
