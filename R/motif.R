@@ -7,8 +7,18 @@ getCoverage = function(object) {
     100*sum(width(r[n]))/pdata[n,"length"]
   })
 }
-setGeneric("getMotifBySeq")
+setGeneric("getCoverage")
 
+#'
+#'
+getTotalCoverage = function(object) {
+  r=reduce(object@ranges)
+  pdata=pData(object@sequences)
+  100*sum(width(r))/sum(pdata[,"length"])
+}
+setGeneric("getTotalCoverage")
+
+#'
 getMotifBySeq = function(object) {
   lapply(object@ranges, function(x) x$motif_name) # for RangedData.
 }
