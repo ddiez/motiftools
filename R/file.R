@@ -132,22 +132,22 @@ readMEME = function(filename, sequenceData, description=NULL) {
   top = xmlRoot(doc)
   
   # get sequence ids and number:
-  seqset=xmlApply(top[["training_set"]], function(s) {
+  seq_info=xmlApply(top[["training_set"]], function(s) {
     if(xmlName(s)=="sequence") {
-      data.frame(seq_id=xmlGetAttr(s, "id"),seq_name=xmlGetAttr(s,"name"))
+      data.frame(seq_id=xmlGetAttr(s, "id"),seq_name=xmlGetAttr(s,"name"),length=as.integer(xmlGetAttr(s,"length")), weight=as.numeric(xmlGetAttr(s,"weight")),stringsAsFactors=FALSE)
     }
   })
-  seqset=seqset[! sapply(seqset,is.null)]
-  seqset=do.call(rbind,seqset)
-  rownames(seqset)=seqset$seq_id
-  nseq=nrow(seqset)
+  seq_info=seq_info[! sapply(seq_info,is.null)]
+  seq_info=do.call(rbind,seq_info)
+  rownames(seq_info)=seq_info$seq_id
+  nseq=nrow(seq_info)
   
   # motifs.
-  nmotif=as.numeric(xmlValue(top[["model"]][["nmotifs"]]))
+  nmotif=as.integer(xmlValue(top[["model"]][["nmotifs"]]))
   
   motif_info=xmlApply(top[["motifs"]], function(m) {
     if(xmlName(m)=="motif")
-      data.frame(motif_id=xmlGetAttr(m,"id"),motif_name=xmlGetAttr(m,"name"),width=as.numeric(xmlGetAttr(m,"width")))
+      data.frame(motif_id=xmlGetAttr(m,"id"), motif_name=xmlGetAttr(m,"name"), width=as.integer(xmlGetAttr(m,"width")),stringsAsFactors=FALSE)
   })
   motif_info=do.call(rbind,motif_info)
   rownames(motif_info)=motif_info$motif_id
@@ -158,21 +158,22 @@ readMEME = function(filename, sequenceData, description=NULL) {
       seq_id=xmlGetAttr(s,"sequence_id")
       tmp=xmlApply(s, function(ss) {
         if(xmlName(ss)=="scanned_site") {
-          data.frame(seq_id=seqset[seq_id,"seq_name"],motif_name=motif_info[xmlGetAttr(ss,"motif_id"),"motif_name"],pos=as.numeric(xmlGetAttr(ss,"position")),pvalue=as.numeric(xmlGetAttr(ss,"pvalue")))
+          data.frame(seq_id=seq_info[seq_id,"seq_name"],motif_name=motif_info[xmlGetAttr(ss,"motif_id"),"motif_name"],pos=as.numeric(xmlGetAttr(ss,"position")),pvalue=as.numeric(xmlGetAttr(ss,"pvalue")),stringsAsFactors = FALSE)
         }
       })
       do.call(rbind,tmp)
     }
   })
   res=do.call(rbind,res)
+  rownames(res)=NULL
   
-  # build sequenceData.
-  all_seqs=sort(unique(seqset$seq_name))
-  if(missing(sequenceData))
-    sequenceData=AnnotatedDataFrame(data.frame(all_seqs, sequence_id=all_seqs,row.names=1))
+  # sequenceData.
+  rownames(seq_info)=seq_info$seq_name
+  sequenceData=AnnotatedDataFrame(seq_info)
+  
   # motifData.
   rownames(motif_info)=motif_info$motif_name
-  motifData=AnnotatedDataFrame(data.frame(motif_info, row.names="motif_name"))
+  motifData=AnnotatedDataFrame(motif_info)
   
   if(is.null(res)) {
     ranges=RangedData()
@@ -181,7 +182,7 @@ readMEME = function(filename, sequenceData, description=NULL) {
     ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=rep(NA,nrow(res)), pvalue=res$pvalue, qvalue=rep(NA, nrow(res)), evalue=rep(NA, nrow(res)), space=res$seq_id)
   }
   
-  new("MotifSearchResult", info=list(tool="MEME", description=description, nseq=nseq,nmotif=nmotif), sequences=sequenceData,motifs=motifData,ranges= ranges)
+  new("MotifSearchResult", info=list(tool="MEME", description=description, nseq=nseq, nmotif=nmotif), sequences=sequenceData, motifs=motifData, ranges=ranges)
 }
 
 ## reads XML MAST output.
