@@ -16,6 +16,15 @@ setMethod("show", "MotifSearchResult",
             message("Number of motifs: ", object@info$nmotif)
           })
 
+setMethod("[", "MotifSearchResult",
+          function(x, i, j, ..., drop = FALSE) {
+            x@motifs=x@motifs[j,,drop=drop]
+            x@sequences=x@sequences[i,,drop=drop]
+            x@info$nseq = unname(nrow(x@sequences))
+            x@info$nmotif = unname(nrow(x@motifs))
+            x@ranges = x@ranges[space(x@ranges) %in% sequenceNames(x) & x@ranges$motif_name %in% motifNames(x),]
+            x
+          })
 
 nmotif = function(object) object@info$nmotif
 setGeneric("nmotif")
