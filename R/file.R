@@ -128,6 +128,27 @@ readFIMO = function(filename, sequenceData, description=NULL) {
 
 ## reads XML MEME output.
 readMEME = function(filename, sequenceData, description=NULL) {
+  .readAlphabet = function(top) {
+    alphabet=xmlApply(top[["training_set"]][["alphabet"]], function(s) {
+      data.frame(id=xmlGetAttr(s, "id"),symbol=xmlGetAttr(s, "symbol"), stringsAsFactors = TRUE)
+    })
+    alphabet=do.call(rbind,alphabet)
+    rownames(alphabet)=alphabet$id
+    alphabet
+  }
+  
+  .readProbabilities = function(x, alphabet) {
+    res=xmlApply(x[["motifs"]], function(m) {
+      w=as.numeric(xmlGetAttr(m, "width"))
+      tmp=t(as.matrix(xmlToDataFrame(m[["probabilities"]][["alphabet_matrix"]],colClasses = rep("numeric",20),collectNames = FALSE)))
+      rownames(tmp)=alphabet$symbol
+      colnames(tmp)=1:w
+      tmp
+    })
+    names(res) = unlist(xmlApply(top[["motifs"]], function(x) xmlGetAttr(x,"name")))
+    res
+  }
+  
   doc = xmlParse(filename)
   top = xmlRoot(doc)
   
@@ -151,6 +172,10 @@ readMEME = function(filename, sequenceData, description=NULL) {
   })
   motif_info=do.call(rbind,motif_info)
   rownames(motif_info)=motif_info$motif_id
+  
+  motif_alf = .readAlphabet(top)
+  
+  motif_list = .readProbabilities(top, motif_alf)
   
   # sequence hits:
   res=xmlApply(top[["scanned_sites_summary"]], function(s) {
@@ -182,7 +207,7 @@ readMEME = function(filename, sequenceData, description=NULL) {
     ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=rep(NA,nrow(res)), pvalue=res$pvalue, qvalue=rep(NA, nrow(res)), evalue=rep(NA, nrow(res)), space=res$seq_id)
   }
   
-  new("MotifSearchResult", info=list(tool="MEME", description=description, nseq=nseq, nmotif=nmotif), sequences=sequenceData, motifs=motifData, ranges=ranges)
+  new("MotifSearchResult", info=list(tool="MEME", description=description, nseq=nseq, nmotif=nmotif), sequences=sequenceData, motifs=motifData, models = motif_list, ranges=ranges)
 }
 
 ## reads XML MAST output.
