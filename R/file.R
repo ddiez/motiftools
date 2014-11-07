@@ -70,7 +70,7 @@ readFIMO = function(filename, sequenceData, description=NULL) {
   # motifs.
   motif_info=xmlApply(top, function(m) {
     if(xmlName(m)=="motif") {
-      data.frame(motif_name=xmlGetAttr(m,"name"),width=as.numeric(xmlGetAttr(m,"width")),best_f=xmlGetAttr(m,"best-possible-match"))
+      data.frame(motif_name=xmlGetAttr(m,"name"),width=as.numeric(xmlGetAttr(m,"width")),best_f=xmlGetAttr(m,"best-possible-match"),stringsAsFactors = FALSE)
     }
   })
   motif_info=motif_info[!sapply(motif_info,is.null)]
@@ -97,7 +97,7 @@ readFIMO = function(filename, sequenceData, description=NULL) {
             if(xmlName(m)=="matched-element") {
               qvalue=xmlValue(m[["qvalue"]])
               sequence=xmlValue(m[["sequence"]])
-              data.frame(motif_name=motif_name,seq_id=seq_id,pos=as.numeric(xmlGetAttr(m,"start")),score=as.numeric(xmlGetAttr(m,"score")), pvalue=as.numeric(xmlGetAttr(m,"pvalue")),qvalue=as.numeric(qvalue),sequence_hit=sequence)
+              data.frame(motif_name=motif_name,seq_id=seq_id,pos=as.numeric(xmlGetAttr(m,"start")),score=as.numeric(xmlGetAttr(m,"score")), pvalue=as.numeric(xmlGetAttr(m,"pvalue")),qvalue=as.numeric(qvalue),sequence_hit=sequence,stringsAsFactors = FALSE)
             }
           })
           do.call(rbind,tmp_match)
@@ -112,9 +112,9 @@ readFIMO = function(filename, sequenceData, description=NULL) {
   # build sequenceData.
   all_seq=sort(unique(all_seq))
   if(missing(sequenceData))
-    sequenceData=AnnotatedDataFrame(data.frame(all_seq,sequence_id=all_seq,row.names=1))
+    sequenceData=AnnotatedDataFrame(data.frame(all_seq,sequence_id=all_seq,row.names=1,stringsAsFactors = FALSE))
   # motifData.
-  motifData=AnnotatedDataFrame(data.frame(motif_info, row.names="motif_name"))
+  motifData=AnnotatedDataFrame(data.frame(motif_info, row.names="motif_name",stringsAsFactors = FALSE))
   
   if(is.null(res)) {
     ranges=RangedData()
@@ -123,7 +123,7 @@ readFIMO = function(filename, sequenceData, description=NULL) {
     ranges=RangedData(IRanges(start=res$pos,width=motif_info[res$motif_name,"width"]), motif_name=res$motif_name, score=res$score, pvalue=res$pvalue, qvalue=res$qvalue, evalue=rep(NA, nrow(res)), sequence_hit=res$sequence_hit, space=res$seq_id)
   }
     
-  new("MotifSearchResult", info=list(tool="FIMO", description=description, nseq=nseq,nmotif=nmotif), sequences=sequenceData,motifs=motifData,ranges=ranges)
+  new("MotifSearchResult", info=list(tool="FIMO", description=description, nseq=nseq,nmotif=nmotif), sequences=sequenceData, motifs=motifData, ranges=ranges)
 }
 
 ## reads XML MEME output.
