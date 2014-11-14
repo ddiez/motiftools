@@ -51,14 +51,27 @@ convertArch = function(object,to="string") {
 
 #' @title 
 #' @param object a MotifSearchResult object.
-#' @param simplify whether to return an indicence matrix.
-getMotifMatrix = function(object, simplify=TRUE) {
+#' @param simplify whether to return an presence/absence matrix.
+#' @param filter whether remove columns/rows with all zero entries.
+getMotifMatrix = function(object, simplify=TRUE, filter=FALSE) {
+#   r=object@ranges
+#   tmp=data.frame(seq_id=space(r), motif_name=r$motif_name, stringsAsFactors = FALSE)    
+#   tmp=unclass(table(tmp))
+#   if(simplify)
+#     tmp[tmp!=0]=1
+#   tmp
   r=object@ranges
-  tmp=data.frame(seq_id=space(r), motif_name=r$motif_name, stringsAsFactors = FALSE)    
-  tmp=unclass(table(tmp))
+  tmp=data.frame(sequence=as.character(space(r)),
+                 motif=r$motif_name,stringsAsFactors = FALSE)
+  tmp$sequence <- factor(tmp$sequence, levels = sequenceNames(object))
+  tmp$motif <- factor(tmp$motif, levels = motifNames(object))
+  tmp <- table(tmp)
   if(simplify)
     tmp[tmp!=0]=1
-  tmp
+  if(filter)
+    tmp[rowSums(tmp)>0, colSums(tmp)>0]
+  else
+    tmp
 }
 setGeneric("getMotifMatrix")
 
