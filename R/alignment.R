@@ -211,8 +211,8 @@ align <- function(x1, x2, score.matrix, gap.score=-1, type="local", debug = TRUE
     list(alignment=al, score=st)
 }
 
-motifAlign <- function(x1, x2, method="PCC") {
-  method <- match.arg(method, c("PCC"))
+motifAlign <- function(x1, x2, align.method="local", score.method="PCC", debug=TRUE) {
+  score.method <- match.arg(score.method, c("PCC","euclid"))
   
   # rename columns for motifs A and B.
   m1 <- x1
@@ -221,15 +221,19 @@ motifAlign <- function(x1, x2, method="PCC") {
   colnames(m2) <- paste0("B",1:ncol(m2))
   
   # generate motifs column scoring matrix.
-  switch(method,
+  switch(score.method,
          "PCC" = {
            s <- cor(m1,m2)
+         },
+         "euclid" = {
+           m <- cbind(m1,m2)
+           s <- as.matrix(dist(t(m), diag = TRUE, upper = TRUE))
          })
   
   # align columns.
-  align(colnames(m1), colnames(m2), score.matrix = s, debug=FALSE)$score
+  align(colnames(m1), colnames(m2), score.matrix = s, debug=debug, type = align.method)
 }
 
-motifDistance <- function(x1, x2, method="PCC") {
-  motifAlign(x1,x2,method=method)$score
+motifDistance <- function(x1, x2, score.method="PCC", align.method="local", debug=TRUE) {
+  motifAlign(x1,x2,score.method=score.method, align.method=align.method, debug=debug)$score
 }
