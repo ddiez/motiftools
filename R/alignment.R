@@ -121,7 +121,7 @@ align <- function(x1, x2, score.matrix, gap.score=-1, type="local", debug = TRUE
   
   # results.
   if(debug)
-    list(score.matrix=score.matrix, gap.score=gap.score, scores=m, traceback=res, total_score=st, sequences=list(s1=x1,s2=x2), alignment=al)
+    list(score.matrix=score.matrix, gap.score=gap.score, scores=m, traceback=res, score=st, sequences=list(s1=x1,s2=x2), alignment=al)
   else
     list(alignment=al, score=st)
 }
@@ -206,7 +206,30 @@ align <- function(x1, x2, score.matrix, gap.score=-1, type="local", debug = TRUE
   
   # results.
   if(debug)
-    list(score.matrix=score.matrix, gap.score=gap.score, scores=m, traceback=res, total_score=st, sequences=list(s1=x1,s2=x2), alignment=al)
+    list(score.matrix=score.matrix, gap.score=gap.score, scores=m, traceback=res, score=st, sequences=list(s1=x1,s2=x2), alignment=al)
   else
     list(alignment=al, score=st)
+}
+
+motifAlign <- function(x1, x2, method="PCC") {
+  method <- match.arg(method, c("PCC"))
+  
+  # rename columns for motifs A and B.
+  m1 <- x1
+  m2 <- x2
+  colnames(m1) <- paste0("A",1:ncol(m1))
+  colnames(m2) <- paste0("B",1:ncol(m2))
+  
+  # generate motifs column scoring matrix.
+  switch(method,
+         "PCC" = {
+           s <- cor(m1,m2)
+         })
+  
+  # align columns.
+  align(colnames(m1), colnames(m2), score.matrix = s, debug=FALSE)$score
+}
+
+motifDistance <- function(x1, x2, method="PCC") {
+  motifAlign(x1,x2,method=method)$score
 }
