@@ -121,7 +121,7 @@ align <- function(x1, x2, score.matrix, gap.score=-1, type="local", debug = TRUE
   
   # results.
   if(debug)
-    list(score.matrix=score.matrix, gap.score=gap.score, scores=m, traceback=res, score=st, sequences=list(s1=x1,s2=x2), alignment=al)
+    list(score.matrix=score.matrix, gap.score=gap.score, scores=m, traceback=res, sequences=list(s1=x1,s2=x2), score=st, alignment=al)
   else
     list(alignment=al, score=st)
 }
@@ -206,7 +206,7 @@ align <- function(x1, x2, score.matrix, gap.score=-1, type="local", debug = TRUE
   
   # results.
   if(debug)
-    list(score.matrix=score.matrix, gap.score=gap.score, scores=m, traceback=res, score=st, sequences=list(s1=x1,s2=x2), alignment=al)
+    list(score.matrix=score.matrix, gap.score=gap.score, scores=m, traceback=res, sequences=list(s1=x1,s2=x2), score=st, alignment=al)
   else
     list(alignment=al, score=st)
 }
