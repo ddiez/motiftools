@@ -5,27 +5,38 @@
 #' @param score.matrix substitution matrix.
 #' @param gap.score gap score.
 #' @param type type of alignment (global, local), default to local.
-align <- function(x1, x2, score.matrix, gap.score=-1, type="local") {
-  type <- match.arg(type, c("sw", "nw", "global", "local"))
+align <- function(x1, x2, score.matrix, gap.score=-1, type="local", debug = TRUE) {
+  if(length(x1) == 1 && length(x2) == 1) {
+    x1 = strsplit(x1, "")[[1]]
+    x2 = strsplit(x2, "")[[1]]
+  }
+  
+  type <- match.arg(type, c("global", "local"))
   
   switch(type,
-         "local","sw" = {
-           .sw(x1, x2, score.matrix=score.matrix, gap.score=gap.score) 
+         "local" = {
+           .sw(x1, x2, score.matrix=score.matrix, gap.score=gap.score, debug = debug) 
          },
-         "global","nw" = {
-           .nw(x1, x2, score.matrix=score.matrix, gap.score=gap.score) 
+         "global" = {
+           .nw(x1, x2, score.matrix=score.matrix, gap.score=gap.score, debug=debug)
          })
 }
 
 .checkMax <- function(x) x[which.max(x)]
 
-.sw <- function(x1, x2, score.matrix, gap.score=-1) {
+.generateScoreMatrix <- function(x,match.score=1,mismatch.score=-1) {
+  x <- unique(x)
+  m <- matrix(mismatch.score, ncol=length(x),nrow=length(x),dimnames = list(x,x))
+  diag(m) <- match.score
+  m
+}
+
+.sw <- function(x1, x2, score.matrix, gap.score=-1,debug=FALSE) {
   l1 = length(x1)
   l2 = length(x2)
   
-  if(missing(score.matrix)) {
-    score.matrix <- generateScoreMatrix(c(x1,x2))
-  }
+  if(missing(score.matrix))
+    score.matrix <- .generateScoreMatrix(c(x1,x2))
   
   # initialize.
   m <- matrix(NA, ncol=l1+1, nrow=l2+1)
@@ -109,13 +120,19 @@ align <- function(x1, x2, score.matrix, gap.score=-1, type="local") {
     al=data.frame()
   
   # results.
-  list(score.matrix=score.matrix, gap.score=gap.score, scores=m, traceback=res, total_score=st, sequences=list(s1=x1,s2=x2), alignment=al)
+  if(debug)
+    list(score.matrix=score.matrix, gap.score=gap.score, scores=m, traceback=res, total_score=st, sequences=list(s1=x1,s2=x2), alignment=al)
+  else
+    list(alignment=al, score=st)
 }
 
 
-.nw <- function(x1, x2, score.matrix, gap.score=-1) {
+.nw <- function(x1, x2, score.matrix, gap.score=-1, debug=FALSE) {
   l1 = length(x1)
   l2 = length(x2)
+  
+  if(missing(score.matrix))
+    score.matrix <- .generateScoreMatrix(c(x1,x2))
   
   # initialize.
   m <- matrix(NA, ncol=l1+1, nrow=l2+1)
@@ -188,5 +205,8 @@ align <- function(x1, x2, score.matrix, gap.score=-1, type="local") {
   al=data.frame(rbind(rev(r1),rev(r2)),row.names = c("s1","s2"),check.names = FALSE)
   
   # results.
-  list(score.matrix=score.matrix, gap.score=gap.score, scores=m, traceback=res, total_score=st, sequences=list(s1=x1,s2=x2), alignment=al)
+  if(debug)
+    list(score.matrix=score.matrix, gap.score=gap.score, scores=m, traceback=res, total_score=st, sequences=list(s1=x1,s2=x2), alignment=al)
+  else
+    list(alignment=al, score=st)
 }
