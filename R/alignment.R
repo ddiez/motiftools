@@ -223,7 +223,7 @@ motifAlign <- function(x1, x2, align.method="local", score.method="PCC", debug=T
   # generate motifs column scoring matrix.
   switch(score.method,
          "PCC" = {
-           s <- cor(m1,m2)
+           s <- cor(m1, m2)
          },
          "euclid" = {
            m <- cbind(m1,m2)
