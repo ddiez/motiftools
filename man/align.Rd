@@ -20,4 +20,7 @@ align(x1, x2, score.matrix, gap.score = -1, type = "local", debug = TRUE)
 \description{
 aligns two sequences x1 and x2.
 }
+\examples{
+align("AHSSFOO", "GOODFDKD", type = "global")$alignment
+}
 

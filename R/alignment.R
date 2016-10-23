@@ -5,6 +5,11 @@
 #' @param score.matrix substitution matrix.
 #' @param gap.score gap score.
 #' @param type type of alignment (global, local), default to local.
+#' 
+#' @export
+#' 
+#' @examples
+#' align("AHSSFOO", "GOODFDKD", type = "global")$alignment
 align <- function(x1, x2, score.matrix, gap.score=-1, type="local", debug = TRUE) {
   if(length(x1) == 1 && length(x2) == 1) {
     x1 = strsplit(x1, "")[[1]]
