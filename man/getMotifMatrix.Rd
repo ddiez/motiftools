@@ -2,6 +2,7 @@
 % Please edit documentation in R/motif.R
 \name{getMotifMatrix}
 \alias{getMotifMatrix}
+\title{getMotifMatrix}
 \usage{
 getMotifMatrix(object, simplify = TRUE, filter = FALSE)
 }
@@ -11,5 +12,8 @@ getMotifMatrix(object, simplify = TRUE, filter = FALSE)
 \item{simplify}{whether to return an presence/absence matrix.}
 
 \item{filter}{whether remove columns/rows with all zero entries.}
+}
+\description{
+getMotifMatrix
 }
 

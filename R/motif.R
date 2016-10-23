@@ -1,5 +1,3 @@
-#' @title
-#' @param object
 getCoverage = function(object) {
   r=reduce(object@ranges)
   pdata=pData(object@sequences)
@@ -9,8 +7,6 @@ getCoverage = function(object) {
 }
 setGeneric("getCoverage")
 
-#'
-#'
 getTotalCoverage = function(object) {
   r=reduce(object@ranges)
   pdata=pData(object@sequences)
@@ -18,7 +14,6 @@ getTotalCoverage = function(object) {
 }
 setGeneric("getTotalCoverage")
 
-#'
 getMotifBySeq = function(object) {
   lapply(object@ranges, function(x) x$motif_name) # for RangedData.
 }
@@ -49,7 +44,10 @@ convertArch = function(object,to="string") {
   )
 }
 
-#' @title 
+#' getMotifMatrix
+#' 
+#' getMotifMatrix
+#' 
 #' @param object a MotifSearchResult object.
 #' @param simplify whether to return an presence/absence matrix.
 #' @param filter whether remove columns/rows with all zero entries.
