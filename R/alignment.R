@@ -216,14 +216,28 @@ align <- function(x1, x2, score.matrix, gap.score=-1, type="local", debug = TRUE
     list(alignment=al, score=st)
 }
 
-motifAlign <- function(x1, x2, align.method="local", score.method="PCC", debug=TRUE) {
-  score.method <- match.arg(score.method, c("PCC","euclid"))
+#' Align two motifs represented as PWMs
+#' 
+#' 
+#'
+#' @param x1 motif 1.
+#' @param x2 motif 2.
+#' @param align.method align method, one of "global" or "local" (default = local).
+#' @param score.method scoring method, one of "PCC" or "euclid" (default = PCC).
+#' @param debug logical; whether to show debugging information.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+motifAlign <- function(x1, x2, align.method = "local", score.method = "PCC", debug = FALSE) {
+  score.method <- match.arg(score.method, c("PCC", "euclid"))
   
   # rename columns for motifs A and B.
   m1 <- x1
   m2 <- x2
-  colnames(m1) <- paste0("A",1:ncol(m1))
-  colnames(m2) <- paste0("B",1:ncol(m2))
+  colnames(m1) <- paste0("A", 1:ncol(m1))
+  colnames(m2) <- paste0("B", 1:ncol(m2))
   
   # generate motifs column scoring matrix.
   switch(score.method,
@@ -231,12 +245,12 @@ motifAlign <- function(x1, x2, align.method="local", score.method="PCC", debug=T
            s <- cor(m1, m2)
          },
          "euclid" = {
-           m <- cbind(m1,m2)
+           m <- cbind(m1, m2)
            s <- as.matrix(dist(t(m), diag = TRUE, upper = TRUE))
          })
   
   # align columns.
-  align(colnames(m1), colnames(m2), score.matrix = s, debug=debug, type = align.method)
+  align(colnames(m1), colnames(m2), score.matrix = s, debug = debug, type = align.method)
 }
 
 motifDistance <- function(x1, x2, score.method="PCC", align.method="local", debug=TRUE) {
