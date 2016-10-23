@@ -218,7 +218,9 @@ align <- function(x1, x2, score.matrix, gap.score=-1, type="local", debug = TRUE
 
 #' Align two motifs represented as PWMs
 #' 
-#' 
+#' Takes to motifs represented by PWMs and computes an alignment using some 
+#' measure of motif similarity as scoring method. By default this is Pearson 
+#' Correlation Coefficient (PCC). Alternatively can be Euclidean distance.
 #'
 #' @param x1 motif 1.
 #' @param x2 motif 2.
