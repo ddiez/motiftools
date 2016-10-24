@@ -32,20 +32,20 @@ setMethod("[", "MotifSearchResult",
             x
           })
 
-nmotif = function(object) object@info$nmotif
+nmotif <- function(object) object@info$nmotif
 setGeneric("nmotif")
 
-nseq = function(object) object@info$nseq
+nseq <- function(object) object@info$nseq
 setGeneric("nseq")
 
-motifNames=function(object) featureNames(object@motifs)
+motifNames <- function(object) featureNames(object@motifs)
 setGeneric("motifNames")
 
-sequenceNames=function(object) featureNames(object@sequences)
+sequenceNames <- function(object) featureNames(object@sequences)
 setGeneric("sequenceNames")
 
 
-getMotifMatchMatrix = function(object, motif, pssm="BLOSUM62") {
+getMotifMatchMatrix <- function(object, motif, pssm="BLOSUM62") {
   r=object@ranges
   r_motif=r[r$motif_name==motif,]
   
@@ -68,7 +68,7 @@ getMotifMatchMatrix = function(object, motif, pssm="BLOSUM62") {
 }
 setGeneric("getMotifMatchMatrix")
 
-.plotBoxPlot=function(x, ...) {
+.plotBoxPlot <- function(x, ...) {
   xs=.4
   xss=.1
   
@@ -85,7 +85,7 @@ setGeneric("getMotifMatchMatrix")
   }
 }
 
-plotMotifMatchMatrix = function(object, motif, pssm="BLOSUM62", ...) {
+plotMotifMatchMatrix <- function(object, motif, pssm="BLOSUM62", ...) {
   l=layout(matrix(c(1,0,2,3),ncol=2,byrow=TRUE),width=c(15,5),height=c(5,15))
   m=getMotifMatchMatrix(object, motif, pssm=pssm)
   
