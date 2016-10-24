@@ -2,8 +2,10 @@ Package: motifTools
 Type: Package
 Title: Tools to analyze sequence motifs
 Version: 0.13.0
-Date: 2015-05-08
 Author: Diego Diez
+Maintainer: Diego Diez <diego10ruiz@gmail.com>
+Description: Functions useful to analyze and interpret results from sequence \
+    motif tools. Currently focus is on the MEME suite.
 Depends:
     methods,
     XML,
@@ -12,9 +14,6 @@ Depends:
     Biostrings,
     ape,
     knitr
-Maintainer: Diego Diez <diego10ruiz@gmail.com>
-Description: Functions useful to analyze and interpret results from sequence \
-    motif tools. Currently focus is on the MEME suite.
 License: GPL-3
 LazyLoad: yes
 ByteCompile: yes
