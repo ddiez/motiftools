@@ -45,8 +45,8 @@ align <- function(x1, x2, score.matrix, gap.score = -1, type = "local", debug = 
   
   # initialize.
   m <- matrix(NA, ncol = l1 + 1, nrow = l2 + 1)
-  colnames(m) = c("", x1)
-  rownames(m) = c("", x2)
+  colnames(m) <- c("", x1)
+  rownames(m) <- c("", x2)
   m[1, ] <- 0
   m[, 1] <- 0
   
@@ -143,8 +143,8 @@ align <- function(x1, x2, score.matrix, gap.score = -1, type = "local", debug = 
   m <- matrix(NA, ncol = l1 + 1, nrow = l2 + 1)
   colnames(m) <- c("", x1)
   rownames(m) <- c("", x2)
-  m[1, ] = -1 * (0:l1)
-  m[, 1] = -1 * (0:l2)
+  m[1, ] <- -1 * (0:l1)
+  m[, 1] <- -1 * (0:l2)
   
   # fill
   res <- list()
