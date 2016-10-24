@@ -2,6 +2,5 @@
 
 export(align)
 export(motifAlign)
-export(timesTwo)
 importFrom(Rcpp,evalCpp)
 useDynLib(motifTools)
