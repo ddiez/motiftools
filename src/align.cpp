@@ -15,7 +15,7 @@ int whichChar(CharacterVector x, char q) {
 
 //' @export
 // [[Rcpp::export]]
-List alignc(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_score = -1) {
+List sw(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_score = -1) {
 
   // initialize variables.
   CharacterVector srow = as<CharacterVector>(rownames(score_matrix));
@@ -150,6 +150,6 @@ List alignc(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_
 /*** R
 library(Biostrings)
 data("BLOSUM62")
-alignc(c("A", "A"), c("A", "R", "A"), score_matrix = BLOSUM62)
+sw(c("A", "A"), c("A", "R", "A"), score_matrix = BLOSUM62)
 #motifTools:::.sw(c("A", "A"), c("A", "R"), score.matrix = BLOSUM62)
 */

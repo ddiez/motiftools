@@ -2,5 +2,6 @@
 
 export(align)
 export(motifAlign)
+export(sw)
 importFrom(Rcpp,evalCpp)
 useDynLib(motifTools)

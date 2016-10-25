@@ -6,8 +6,8 @@ whichChar <- function(x, q) {
 }
 
 #' @export
-alignc <- function(x, y, score_matrix, gap_score = -1L) {
-    .Call('motifTools_alignc', PACKAGE = 'motifTools', x, y, score_matrix, gap_score)
+sw <- function(x, y, score_matrix, gap_score = -1L) {
+    .Call('motifTools_sw', PACKAGE = 'motifTools', x, y, score_matrix, gap_score)
 }
 
 foo <- function() {

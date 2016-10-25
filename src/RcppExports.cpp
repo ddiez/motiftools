@@ -17,9 +17,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// alignc
-List alignc(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_score);
-RcppExport SEXP motifTools_alignc(SEXP xSEXP, SEXP ySEXP, SEXP score_matrixSEXP, SEXP gap_scoreSEXP) {
+// sw
+List sw(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_score);
+RcppExport SEXP motifTools_sw(SEXP xSEXP, SEXP ySEXP, SEXP score_matrixSEXP, SEXP gap_scoreSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -27,7 +27,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< StringVector >::type y(ySEXP);
     Rcpp::traits::input_parameter< IntegerMatrix >::type score_matrix(score_matrixSEXP);
     Rcpp::traits::input_parameter< int >::type gap_score(gap_scoreSEXP);
-    rcpp_result_gen = Rcpp::wrap(alignc(x, y, score_matrix, gap_score));
+    rcpp_result_gen = Rcpp::wrap(sw(x, y, score_matrix, gap_score));
     return rcpp_result_gen;
 END_RCPP
 }
