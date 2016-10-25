@@ -1,16 +1,19 @@
-#' @title align
-#' @description aligns two sequences x1 and x2.
+#' Align two sequences
+#' 
+#' Align two sequences using local (Smith-Waterman) or global (Needleman–Wunsch) sequence alignment.
+#' 
 #' @param x1 sequence (a character vector).
 #' @param x2 sequence (a character vector).
 #' @param score.matrix substitution matrix.
 #' @param gap.score gap score.
-#' @param type type of alignment (global, local), default to local.
+#' @param type type of alignment: global or local (default: local).
 #' 
 #' @export
 #' 
 #' @examples
 #' align("AHSSFOO", "GOODFDKD", type = "global")$alignment
-align <- function(x1, x2, score.matrix, gap.score = -1, type = "local", debug = TRUE) {
+#' align("AHSSFOO", "GOODFDKD", type = "local")$alignment
+align <- function(x1, x2, score.matrix, gap.score = -1, type = "local", debug = FALSE) {
   if (length(x1) == 1 && length(x2) == 1) {
     x1 <- strsplit(x1, "")[[1]]
     x2 <- strsplit(x2, "")[[1]]
@@ -20,18 +23,18 @@ align <- function(x1, x2, score.matrix, gap.score = -1, type = "local", debug = 
   
   switch(type,
          "local" = {
-           .sw(x1, x2, score.matrix=score.matrix, gap.score=gap.score, debug = debug) 
+           .sw(x1, x2, score.matrix = score.matrix, gap.score = gap.score, debug = debug) 
          },
          "global" = {
-           .nw(x1, x2, score.matrix=score.matrix, gap.score=gap.score, debug=debug)
+           .nw(x1, x2, score.matrix = score.matrix, gap.score = gap.score, debug=debug)
          })
 }
 
 .checkMax <- function(x) x[which.max(x)]
 
-.generateScoreMatrix <- function(x,match.score=1,mismatch.score=-1) {
+.generateScoreMatrix <- function(x, match.score = 1, mismatch.score = -1) {
   x <- unique(x)
-  m <- matrix(mismatch.score, ncol=length(x),nrow=length(x),dimnames = list(x,x))
+  m <- matrix(mismatch.score, ncol = length(x), nrow = length(x), dimnames = list(x,x))
   diag(m) <- match.score
   m
 }
@@ -255,6 +258,6 @@ motifAlign <- function(x1, x2, align.method = "local", score.method = "PCC", deb
   align(colnames(m1), colnames(m2), score.matrix = s, debug = debug, type = align.method)
 }
 
-motifDistance <- function(x1, x2, score.method = "PCC", align.method = "local", debug = TRUE) {
+motifDistance <- function(x1, x2, score.method = "PCC", align.method = "local", debug = FALSE) {
   motifAlign(x1, x2, score.method = score.method, align.method = align.method, debug = debug)$score
 }
