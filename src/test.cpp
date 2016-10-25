@@ -3,6 +3,19 @@ using namespace Rcpp;
 using namespace std;
 
 // [[Rcpp::export]]
+void goo() {
+  CharacterVector x = CharacterVector::create("A", "B", "C", "D");
+  cout << x << endl;
+  for (int i = 0; i < x.length(); i++) {
+    cout << x[i] << endl;
+  }
+}
+
+/*** R
+goo()
+*/
+
+// [[Rcpp::export]]
 int foo() {
   IntegerMatrix x(2, 2);
   int msize = x.nrow() * x.ncol();
@@ -45,5 +58,5 @@ int foo() {
 }
 
 /*** R
-foo()
+#foo()
 */
