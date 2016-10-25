@@ -2,9 +2,9 @@
 % Please edit documentation in R/alignment.R
 \name{align}
 \alias{align}
-\title{align}
+\title{Align two sequences}
 \usage{
-align(x1, x2, score.matrix, gap.score = -1, type = "local", debug = TRUE)
+align(x1, x2, score.matrix, gap.score = -1, type = "local", debug = FALSE)
 }
 \arguments{
 \item{x1}{sequence (a character vector).}
@@ -15,12 +15,13 @@ align(x1, x2, score.matrix, gap.score = -1, type = "local", debug = TRUE)
 
 \item{gap.score}{gap score.}
 
-\item{type}{type of alignment (global, local), default to local.}
+\item{type}{type of alignment: global or local (default: local).}
 }
 \description{
-aligns two sequences x1 and x2.
+Align two sequences using local (Smith-Waterman) or global (Needleman–Wunsch) sequence alignment.
 }
 \examples{
 align("AHSSFOO", "GOODFDKD", type = "global")$alignment
+align("AHSSFOO", "GOODFDKD", type = "local")$alignment
 }
 
