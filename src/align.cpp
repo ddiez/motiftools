@@ -26,8 +26,8 @@ List alignc(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_
   int rsize = nrow * ncol;
   IntegerVector ri(rsize);
   IntegerVector rj(rsize);
-  IntegerVector rii(rsize);
-  IntegerVector rjj(rsize);
+  //IntegerVector rii(rsize);
+  //IntegerVector rjj(rsize);
   CharacterVector rtype(rsize);
   
   // initialize the borders.
@@ -36,8 +36,8 @@ List alignc(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_
     int idx = 0 * nrow + i;
     ri[idx] = i;
     rj[idx] = 0;
-    rii[idx] = i - 1;
-    rjj[idx] = 0;
+    //rii[idx] = i - 1;
+    //rjj[idx] = 0;
     rtype[idx] = "v";
   }
   for (int j = 0; j < ncol; j++) {
@@ -45,8 +45,8 @@ List alignc(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_
     int idx = j * nrow + 0;
     ri[idx] = 0;
     rj[idx] = j;
-    rii[idx] = 0;
-    rjj[idx] = j - 1;
+    //rii[idx] = 0;
+    //rjj[idx] = j - 1;
     rtype[idx] = "h";
   }
   
@@ -54,10 +54,23 @@ List alignc(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_
   for (int i = 1; i < m.nrow(); i++) {
     for (int j = 1; j < m.ncol(); j++) {
       // diagonal.
-      int xi = whichChar(srow, x[j - 1]);
-      int yi = whichChar(srow, y[i - 1]);
-      int s = score_matrix(xi, yi);
-      int d = m(i - 1, j - 1) + s; // has to fix assigning real score above.
+      //int xi = whichChar(srow, x[j - 1]);
+      //int yi = whichChar(srow, y[i - 1]);
+      int xi = 0;
+      for (int k = 0; k < x.length(); k++) {
+        if (srow[k] == x[j - 1]) {
+          xi = k;
+        }
+      }
+      int yi = 0;
+      for (int k = 0; k < x.length(); k++) {
+        if (scol[k] == y[j - 1]) {
+          yi = k;
+        }
+      }
+      int score = score_matrix(xi, yi);
+      //cout << s << endl;
+      int d = m(i - 1, j - 1) + score; // has to fix assigning real score above.
       // horizonal
       int h = m(i, j - 1) + gap_score;
       // vertical
@@ -65,32 +78,30 @@ List alignc(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_
       
       // check max.
       int idx = j * nrow + i;
-      cout << idx << endl;
       if (d > h && d > v) {
         ri[idx] = i;
         rj[idx] = j;
-        rii[idx] = i - 1;
-        rjj[idx] = j - 1;
+        // rii[idx] = i - 1;
+        // rjj[idx] = j - 1;
         rtype[idx] = "d";
         m(i, j) = d;
       } else if (h > d && h > v) {
         ri[idx] = i;
         rj[idx] = j;
-        rii[idx] = i;
-        rjj[idx] = j - 1;
+        // rii[idx] = i;
+        // rjj[idx] = j - 1;
         rtype[idx] = "h";
         m(i, j) = h;
       } else if (v > d && v > h) {
         ri[idx] = i;
         rj[idx] = j;
-        rii[idx] = i - 1;
-        rjj[idx] = j;
+        // rii[idx] = i - 1;
+        // rjj[idx] = j;
         rtype[idx] = "v";
         m(i, j) = v;
       }
     }
   }
-  
   
   // find indexes for max score.
   int mv = 0;
@@ -98,7 +109,7 @@ List alignc(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_
   int j = 0;
   for (int ii = 0; ii < nrow; ii++) {
     for (int jj = 0; jj < ncol; jj++) {
-      if (m(ii, jj) > mv) {
+      if (m(ii, jj) >= mv) {
         //int k = j * nrow + i;
         mv = m(ii, jj);
         i = ii;
@@ -109,6 +120,7 @@ List alignc(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_
   cout << "max_i: " << i << endl;
   cout << "max_j: " << j << endl;
   cout << "max_v: " << mv << endl;
+  cout << "rtype: " << rtype << endl;
   
   // backtrace.
   int s = 0;
@@ -130,7 +142,6 @@ List alignc(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_
     }
   }
 
-  //StringMatrix mm;
   List ret; ret["total_score"] = s; ret["scores"] = m;
   return(ret);
 }
@@ -139,5 +150,6 @@ List alignc(StringVector x, StringVector y, IntegerMatrix score_matrix, int gap_
 /*** R
 library(Biostrings)
 data("BLOSUM62")
-alignc(c("A", "J"), c("H", "K"), score_matrix = BLOSUM62)
+alignc(c("A", "A"), c("A", "R", "A"), score_matrix = BLOSUM62)
+#motifTools:::.sw(c("A", "A"), c("A", "R"), score.matrix = BLOSUM62)
 */
