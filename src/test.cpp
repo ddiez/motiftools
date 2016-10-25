@@ -2,7 +2,6 @@
 using namespace Rcpp;
 using namespace std;
 
-//' @export
 // [[Rcpp::export]]
 int foo() {
   IntegerMatrix x(2, 2);

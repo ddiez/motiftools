@@ -10,7 +10,6 @@ alignc <- function(x, y, score_matrix, gap_score = -1L) {
     .Call('motifTools_alignc', PACKAGE = 'motifTools', x, y, score_matrix, gap_score)
 }
 
-#' @export
 foo <- function() {
     .Call('motifTools_foo', PACKAGE = 'motifTools')
 }
