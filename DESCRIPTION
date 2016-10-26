@@ -15,7 +15,7 @@ Depends:
     ape,
     knitr
 Imports: Rcpp
-Suggests: testhat
+Suggests: testhat, BiocStyle
 LinkingTo: Rcpp
 License: GPL-3
 LazyLoad: yes
