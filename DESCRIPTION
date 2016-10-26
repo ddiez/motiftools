@@ -14,7 +14,9 @@ Depends:
     Biostrings,
     ape,
     knitr
+Imports: Rcpp
 Suggests: testhat
+LinkingTo: Rcpp
 License: GPL-3
 LazyLoad: yes
 ByteCompile: yes
