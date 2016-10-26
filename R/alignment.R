@@ -24,10 +24,13 @@ align <- function(x1, x2, score.matrix, gap.score = -1, type = "local", debug = 
   
   switch(type,
          "local" = {
-           .sw(x1, x2, score.matrix = score.matrix, gap.score = gap.score, debug = debug) 
+           sw(x1, x2, score_matrix = score.matrix, gap.score = gap.score, debug = debug)
          },
          "global" = {
            .nw(x1, x2, score.matrix = score.matrix, gap.score = gap.score, debug=debug)
+         },
+         "local_old" = {
+           .sw(x1, x2, score.matrix = score.matrix, gap.score = gap.score, debug = debug)
          })
 }
 
