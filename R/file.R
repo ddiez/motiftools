@@ -153,7 +153,7 @@ readMEME <- function(filename, sequenceData, description = NULL) {
     res <- xmlApply(x[["motifs"]], function(m) {
       w <- as.numeric(xmlGetAttr(m, "width"))
       tmp <- t(as.matrix(xmlToDataFrame(m[["probabilities"]][["alphabet_matrix"]], colClasses = rep("numeric", 20), collectNames = FALSE)))
-      rownames(tmp) <- alphabet$symbol
+      #rownames(tmp) <- alphabet$symbol
       colnames(tmp) <- 1:w
       tmp
     })
