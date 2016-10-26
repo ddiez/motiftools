@@ -2,8 +2,8 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @export
-sw <- function(x, y, score_matrix, gap_score = -1L) {
-    .Call('motifTools_sw', PACKAGE = 'motifTools', x, y, score_matrix, gap_score)
+sw <- function(x, y, score_matrix, gap_score = -1L, debug = 0L) {
+    .Call('motifTools_sw', PACKAGE = 'motifTools', x, y, score_matrix, gap_score, debug)
 }
 
 goo <- function() {
