@@ -18,9 +18,15 @@ motifAlign(x1, x2, align.method = "local", score.method = "PCC",
 
 \item{debug}{logical; whether to show debugging information.}
 }
+\value{
+AlignResult object.
+}
 \description{
 Takes to motifs represented by PWMs and computes an alignment using some 
 measure of motif similarity as scoring method. By default this is Pearson 
 Correlation Coefficient (PCC). Alternatively can be Euclidean distance.
+}
+\examples{
+NULL
 }
 

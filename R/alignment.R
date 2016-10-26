@@ -231,10 +231,11 @@ align <- function(x1, x2, score.matrix, gap.score = -1, type = "local", debug = 
 #' @param score.method scoring method, one of "PCC" or "euclid" (default = PCC).
 #' @param debug logical; whether to show debugging information.
 #'
-#' @return
+#' @return AlignResult object.
 #' @export
 #'
 #' @examples
+#' NULL
 motifAlign <- function(x1, x2, align.method = "local", score.method = "PCC", debug = FALSE) {
   score.method <- match.arg(score.method, c("PCC", "euclid"))
   
