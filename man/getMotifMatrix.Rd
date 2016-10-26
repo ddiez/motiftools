@@ -9,11 +9,17 @@ getMotifMatrix(object, simplify = TRUE, filter = FALSE)
 \arguments{
 \item{object}{a MotifSearchResult object.}
 
-\item{simplify}{whether to return an presence/absence matrix.}
+\item{simplify}{a MotifSearchResult object.}
 
 \item{filter}{whether remove columns/rows with all zero entries.}
 }
+\value{
+a matrix.
+}
 \description{
 getMotifMatrix
+}
+\examples{
+NULL
 }
 

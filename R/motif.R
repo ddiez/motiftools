@@ -47,27 +47,30 @@ convertArch = function(object,to="string") {
 #' getMotifMatrix
 #' 
 #' getMotifMatrix
-#' 
+#'
 #' @param object a MotifSearchResult object.
-#' @param simplify whether to return an presence/absence matrix.
+#' @param simplify a MotifSearchResult object.
 #' @param filter whether remove columns/rows with all zero entries.
-getMotifMatrix = function(object, simplify=TRUE, filter=FALSE) {
-#   r=object@ranges
-#   tmp=data.frame(seq_id=space(r), motif_name=r$motif_name, stringsAsFactors = FALSE)    
-#   tmp=unclass(table(tmp))
-#   if(simplify)
-#     tmp[tmp!=0]=1
-#   tmp
-  r=object@ranges
-  tmp=data.frame(sequence=as.character(space(r)),
-                 motif=r$motif_name,stringsAsFactors = FALSE)
+#'
+#' @return a matrix.
+#' @export
+#'
+#' @examples
+#' NULL
+getMotifMatrix <- function(object, simplify = TRUE, filter = FALSE) {
+  r <- object@ranges
+  tmp <- data.frame(
+    sequence = as.character(space(r)),
+    motif = r$motif_name,
+    stringsAsFactors = FALSE
+  )
   tmp$sequence <- factor(tmp$sequence, levels = sequenceNames(object))
   tmp$motif <- factor(tmp$motif, levels = motifNames(object))
   tmp <- table(tmp)
   if(simplify)
-    tmp[tmp!=0]=1
-  if(filter)
-    tmp[rowSums(tmp)>0, colSums(tmp)>0]
+    tmp[tmp != 0] = 1
+  if (filter)
+    tmp[rowSums(tmp) > 0, colSums(tmp) > 0]
   else
     tmp
 }
