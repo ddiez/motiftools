@@ -1,31 +1,46 @@
-plotMotifMatrix = function(object, ..., tree, annot, annot.col) {
-  extra_panels=0
-  if(!missing(annot)) {
-    if(is.matrix(annot))
-      extra_panels=ncol(annot)
+#' plotMotifMatrix
+#' 
+#' Plots a tree and associated heatmap and barplot of the distribution of motifs in the sequences.
+#'
+#' @param object a MotifResult object.
+#' @param ... further objects to add
+#' @param tree a tree
+#' @param annot further annotations
+#' @param annot.col colors for the annotations
+#'
+#' @return NULL
+#' @export
+#'
+#' @examples
+#' NULL
+plotMotifMatrix <- function(object, ..., tree, annot, annot.col) {
+  extra_panels <- 0
+  if (!missing(annot)) {
+    if (is.matrix(annot))
+      extra_panels <- ncol(annot)
     else
       stop("annotations must be provided as a matrix.")
   }
   
-  X = list(object, ...)
-  M = lapply(X,getMotifMatrix)
-  
+  X <- list(object, ...)
+  M <- lapply(X, getMotifMatrix)
+
   if (missing(tree)) {
     # the first matrix is used to construct the tree.
-    d = dist(M[[1]])
-    h = hclust(d)
-    tree=as.phylo(h)
+    d <- dist(M[[1]])
+    h <- hclust(d)
+    tree <- as.phylo(h)
   }
   
   # compute layout matrix:
-  lm=matrix(c(0,1),ncol=1)
-  if(extra_panels>0)
-    lm=cbind(lm,rbind(rep(0,extra_panels),seq(2,extra_panels+1)))
-  lm=cbind(lm, matrix(seq(2+extra_panels,length(M)*2+extra_panels+1),nrow=2))
+  lm <- matrix(c(0,1),ncol=1)
+  if (extra_panels>0)
+    lm <- cbind(lm, rbind(rep(0, extra_panels), seq(2, extra_panels + 1)))
+  lm <- cbind(lm, matrix(seq(2 + extra_panels, length(M) * 2 + extra_panels + 1), nrow = 2))
   
   
-  op = par(mar = c(1,0.5,1,0))
-  l = layout(lm, heights = c(1, 10), widths = c(5, rep(.5, extra_panels), rep(5, length(M))))
+  op <- par(mar = c(1,0.5,1,0))
+  l <- layout(lm, heights = c(1, 10), widths = c(5, rep(.5, extra_panels), rep(5, length(M))))
   # plot tree.
   plot(tree, cex = 0.6, show.tip.label = FALSE, root.edge = TRUE, use.edge.length = FALSE, yaxs = "i")
   
@@ -35,29 +50,35 @@ plotMotifMatrix = function(object, ..., tree, annot, annot.col) {
   tip <- 1:lastPP$Ntip # or seq_len(lastPP$Ntip)
   YY <- lastPP$yy[tip]
   #o <- order(YY) # This get indexes that cannot reorder the matrix. [DD]
-  o = tree$tip.label[YY] # better reorder based on labels. [DD]
-  M = lapply(M, function(m) m[o,])
-  if(!missing(annot)) annot=annot[o,,drop=FALSE]
+  o <- tree$tip.label[YY] # better reorder based on labels. [DD]
+  M <- lapply(M, function(m) m[o,])
+  if (!missing(annot)) annot <- annot[o, , drop = FALSE]
 
   # plot annotations.
-  if(!missing(annot)) {
-    if(missing(annot.col)) 
+  if (!missing(annot)) {
+    if (missing(annot.col)) 
       annot.col=rainbow(max(annot))
-    for(k in 1:ncol(annot)) {
-      par(mar = c(1, 0, 1,0))
-      image(t(annot[,k,drop=FALSE]),axes=FALSE,col=annot.col)
+    for (k in 1:ncol(annot)) {
+      par(mar = c(1, 0, 1, 0))
+      image(t(annot[, k, drop = FALSE]), axes = FALSE, col = annot.col)
       box()
     }
   }
   
   # plot matrix panels.
-  for(k in 1:length(M)) {
-    m=M[[k]]
-    par(mar = c(0, 1, 1,1))
-    barplot(100*apply(m,2,sum)/nseq(object),las=1,xaxs="i",ylim=c(0,100),names=FALSE)
-    title(X[[k]]@info$tool,line=0)
-    par(mar = c(1, 1, 1,1))
-    image(t(m),axes=FALSE,col=c("white","grey"))
+  for (k in 1:length(M)) {
+    m <- M[[k]]
+    par(mar = c(0, 1, 1, 1))
+    barplot(
+      100 * apply(m, 2, sum) / nseq(object),
+      las = 1,
+      xaxs = "i",
+      ylim = c(0, 100),
+      names = FALSE
+    )
+    title(X[[k]]@info$tool, line = 0)
+    par(mar = c(1, 1, 1, 1))
+    image(t(m), axes = FALSE, col = c("white", "grey"))
     box()
   }
   par(op)

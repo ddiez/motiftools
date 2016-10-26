@@ -3,4 +3,5 @@
 export(align)
 export(getMotifMatrix)
 export(motifAlign)
+export(plotMotifMatrix)
 export(readMEME)
