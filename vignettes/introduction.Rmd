@@ -40,3 +40,12 @@ align("EGGALAPA", "DGGIVLPSAV", score.matrix = BLOSUM62, type = "global")$alignm
 align("EGGALAPA", "DGGIVFFRF", score.matrix = BLOSUM62, type = "local")$alignment
 ```
 
+## Motif
+
+```{r}
+library(motifTools)
+f <- system.file("files/meme_ras/meme.xml", package = "motifTools")
+x <- readMEME(f)
+motifTools:::plotMotifMatrix(x)
+```
+
