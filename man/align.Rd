@@ -17,6 +17,9 @@ align(x1, x2, score.matrix, gap.score = -1, type = "local", debug = FALSE)
 
 \item{type}{type of alignment: global or local (default: local).}
 }
+\value{
+AlignResult object.
+}
 \description{
 Align two sequences using local (Smith-Waterman) or global (Needleman–Wunsch) sequence alignment.
 }

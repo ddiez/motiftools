@@ -8,6 +8,7 @@
 #' @param gap.score gap score.
 #' @param type type of alignment: global or local (default: local).
 #' 
+#' @return AlignResult object.
 #' @export
 #' 
 #' @examples
