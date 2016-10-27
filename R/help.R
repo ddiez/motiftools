@@ -3,8 +3,6 @@
 #' motifTools
 #' 
 #' @name motifTools
-#' @import methods Biobase IRanges Biostrings XML knitr
+#' @import methods Biobase IRanges Biostrings XML knitr ape
 #' @importFrom Rcpp evalCpp
-#' @importFrom ape as.phylo plot.phylo
-#' @useDynLib motifTools
 NULL
