@@ -1,4 +1,4 @@
-library(motifTools)
+library(motiftools)
 
 test_that("alignment", {
   library(Biostrings)

@@ -176,6 +176,6 @@ List sw(CharacterVector x, CharacterVector y, IntegerMatrix score_matrix, int ga
 /*** R
 library(Biostrings)
 data("BLOSUM62")
-sw(c("A", "L", "D"), c("A", "R", "L", "E"), score_matrix = BLOSUM62, debug = FALSE)
-motifTools:::.sw(c("A", "L", "D"), c("A", "R", "L", "E"), score.matrix = BLOSUM62, debug = FALSE)
+motiftools:::sw(c("A", "L", "D"), c("A", "R", "L", "E"), score_matrix = BLOSUM62, debug = FALSE)
+motiftools:::.sw(c("A", "L", "D"), c("A", "R", "L", "E"), score.matrix = BLOSUM62, debug = FALSE)
 */

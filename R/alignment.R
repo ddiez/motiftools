@@ -14,6 +14,7 @@
 #' 
 #' @examples
 #' library(Biostrings)
+#' library(motiftools)
 #' data(BLOSUM62)
 #' align("ALVDE", "AVRES", score.matrix = BLOSUM62)
 align <- function(x1, x2, score.matrix, gap.score = -1, type = "local", debug = FALSE) {

@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // sw
 List sw(CharacterVector x, CharacterVector y, IntegerMatrix score_matrix, int gap_score, int debug);
-RcppExport SEXP motifTools_sw(SEXP xSEXP, SEXP ySEXP, SEXP score_matrixSEXP, SEXP gap_scoreSEXP, SEXP debugSEXP) {
+RcppExport SEXP motiftools_sw(SEXP xSEXP, SEXP ySEXP, SEXP score_matrixSEXP, SEXP gap_scoreSEXP, SEXP debugSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;

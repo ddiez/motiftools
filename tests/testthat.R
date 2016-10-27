@@ -1,4 +1,4 @@
 library(testthat)
-library(motifTools)
+library(motiftools)
 
-test_check("motifTools")
+test_check("motiftools")

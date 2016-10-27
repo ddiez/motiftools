@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 sw <- function(x, y, score_matrix, gap_score = -1L, debug = 0L) {
-    .Call('motifTools_sw', PACKAGE = 'motifTools', x, y, score_matrix, gap_score, debug)
+    .Call('motiftools_sw', PACKAGE = 'motiftools', x, y, score_matrix, gap_score, debug)
 }
 
