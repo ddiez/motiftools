@@ -3,6 +3,7 @@
 export(align)
 export(getMotifMatrix)
 export(motifAlign)
+export(plotConservation)
 export(plotMotifMatrix)
 export(readMEME)
 import(Biobase)

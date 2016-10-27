@@ -21,11 +21,19 @@ conservationMatrix = function(object) {
   m
 }
 
-#' @title plotConservation
+#' plotConservation
+#'
+#'plotConservation
+#'
 #' @param x a matrix as obtained with conservationMatrix()
-#' @param seq.names logical whether to plot seq names
+#' @param seq.names logical; whether to plot seq names
 #' @param cluster.row logical whether to cluster rows
-# This function will be superseeded by plotConservationMatrix()
+#' 
+#' @note This function will be superseeded by plotConservationMatrix()
+#'
+#' @return NULL
+#' @export
+#'
 plotConservation = function(x, seq.names = FALSE, cluster.row = TRUE) {
   if(cluster.row) {
     h <- hclust(dist(x))

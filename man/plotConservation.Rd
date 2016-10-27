@@ -9,8 +9,14 @@ plotConservation(x, seq.names = FALSE, cluster.row = TRUE)
 \arguments{
 \item{x}{a matrix as obtained with conservationMatrix()}
 
-\item{seq.names}{logical whether to plot seq names}
+\item{seq.names}{logical; whether to plot seq names}
 
 \item{cluster.row}{logical whether to cluster rows}
+}
+\description{
+plotConservation
+}
+\note{
+This function will be superseeded by plotConservationMatrix()
 }
 
