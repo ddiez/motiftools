@@ -16,6 +16,8 @@ align(x1, x2, score.matrix, gap.score = -1, type = "local", debug = FALSE)
 \item{gap.score}{gap score.}
 
 \item{type}{type of alignment: global or local (default: local).}
+
+\item{debug}{logical; whether to return debugging data.}
 }
 \value{
 AlignResult object.

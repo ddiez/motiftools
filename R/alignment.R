@@ -7,6 +7,7 @@
 #' @param score.matrix substitution matrix.
 #' @param gap.score gap score.
 #' @param type type of alignment: global or local (default: local).
+#' @param debug logical; whether to return debugging data.
 #' 
 #' @return AlignResult object.
 #' @export
