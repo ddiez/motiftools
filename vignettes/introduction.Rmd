@@ -1,16 +1,17 @@
 ---
 title: "Introduction to motifTools"
 author: "Diego Diez"
-date: "`r BiocStyle::doc_date()`"
-package: "`r BiocStyle::pkg_ver('motifTools')`"
+#date: "`r BiocStyle::doc_date()`"
+#package: "`r BiocStyle::pkg_ver('motifTools')`"
 abstract: >
   Introduction to the motifTools package.
 vignette: >
-  %\VignetteIndexEntry{Introduction to motifTools}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+#  %\VignetteIndexEntry{Introduction to motifTools}
+#  %\VignetteEngine{knitr::rmarkdown}
+#  %\VignetteEncoding{UTF-8}
 output: 
-  BiocStyle::html_document
+    rmarkdown::html_document
+#  BiocStyle::html_document
 ---
 
 ```{r setup}
