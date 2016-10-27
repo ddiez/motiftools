@@ -6,7 +6,6 @@ export(motifAlign)
 export(plotConservation)
 export(plotMotifMatrix)
 export(readMEME)
-<<<<<<< HEAD
 import(Biobase)
 import(Biostrings)
 import(IRanges)
