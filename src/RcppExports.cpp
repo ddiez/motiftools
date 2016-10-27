@@ -20,22 +20,3 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// goo
-void goo();
-RcppExport SEXP motifTools_goo() {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    goo();
-    return R_NilValue;
-END_RCPP
-}
-// foo
-int foo();
-RcppExport SEXP motifTools_foo() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(foo());
-    return rcpp_result_gen;
-END_RCPP
-}

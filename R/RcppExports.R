@@ -6,11 +6,3 @@ sw <- function(x, y, score_matrix, gap_score = -1L, debug = 0L) {
     .Call('motifTools_sw', PACKAGE = 'motifTools', x, y, score_matrix, gap_score, debug)
 }
 
-goo <- function() {
-    invisible(.Call('motifTools_goo', PACKAGE = 'motifTools'))
-}
-
-foo <- function() {
-    .Call('motifTools_foo', PACKAGE = 'motifTools')
-}
-
