@@ -14,7 +14,6 @@ Imports:
     Biobase,
     IRanges,
     Biostrings,
-    XML,
     ape,
     knitr
 Suggests:
