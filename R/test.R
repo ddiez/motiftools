@@ -1,5 +1,3 @@
-#'
-#' @import xml2
 # handy function.
 getAttr <- function(id, attr, info) {
   info[info["id"] == id, attr]
