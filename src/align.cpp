@@ -2,7 +2,6 @@
 using namespace Rcpp;
 using namespace std;
 
-//' @export
 // [[Rcpp::export]]
 List sw(CharacterVector x, CharacterVector y, IntegerMatrix score_matrix, int gap_score = -1, int debug = 0) {
 
