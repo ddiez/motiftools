@@ -135,11 +135,10 @@ readFIMO = function(filename, sequenceData, description=NULL) {
 #' @param description dataset description.
 #'
 #' @return MotifSearchResult object.
-#' @export
 #'
 #' @examples
 #' NULL
-readMEME <- function(filename, sequenceData, description = NULL) {
+readMEME_old <- function(filename, sequenceData, description = NULL) {
   .readAlphabet <- function(top) {
     alphabet <- xmlApply(top[["training_set"]][["alphabet"]], function(s) {
       data.frame(id = xmlGetAttr(s, "id"), symbol = xmlGetAttr(s, "symbol"), stringsAsFactors = TRUE)
