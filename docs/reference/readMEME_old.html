@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>motiftools — motiftools • motiftools</title>
+<title>Read MEME XML file format — readMEME_old • motiftools</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -69,16 +69,37 @@
       </header>
 
       <div class="page-header">
-  <h1>motiftools</h1>
+  <h1>Read MEME XML file format</h1>
 </div>
 
 <div class="row">
   <div class="col-md-9">
     
-    <p>motiftools</p>
+    <p>Read MEME XML file format</p>
     
 
-              </div>
+    <pre><span class='fu'>readMEME_old</span>(<span class='no'>filename</span>, <span class='no'>sequenceData</span>, <span class='kw'>description</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    
+    <h2>Arguments</h2>
+    <dl class="dl-horizontal">
+      <dt>filename</dt>
+      <dd>MEME XML file.</dd>
+      <dt>sequenceData</dt>
+      <dd>sequence data object (optional).</dd>
+      <dt>description</dt>
+      <dd>dataset description.</dd>
+    </dl>
+    
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p>MotifSearchResult object.</p>
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL
+#&gt; </div></pre>
+  </div>
   <div class="col-md-3">
   </div>
 </div>
