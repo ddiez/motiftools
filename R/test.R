@@ -1,3 +1,5 @@
+#'
+#' @import xml2
 # handy function.
 getAttr <- function(id, attr, info) {
   info[info["id"] == id, attr]
@@ -88,7 +90,6 @@ getMotifHits <- function(x, motif_info) {
 #'
 #' @examples
 readMEMEnew <- function(file) {
-  library(xml2)
   doc <- read_xml(file)
   root <- xml_root(doc)
   

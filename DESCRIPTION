@@ -9,6 +9,7 @@ Description: Functions useful to analyze and interpret results from sequence \
 Depends:
     methods,
     XML,
+    xml2
     Biobase,
     IRanges,
     Biostrings,
