@@ -12,8 +12,9 @@
 #' @export
 #' 
 #' @examples
-#' align("AHSSFOO", "GOODFDKD", type = "global")$alignment
-#' align("AHSSFOO", "GOODFDKD", type = "local")$alignment
+#' library(Biostrings)
+#' data(BLOSUM62)
+#' align("ALVDE", "AVRES", score.matrix = BLOSUM62)
 align <- function(x1, x2, score.matrix, gap.score = -1, type = "local", debug = FALSE) {
   if (length(x1) == 1 && length(x2) == 1) {
     x1 <- strsplit(x1, "")[[1]]

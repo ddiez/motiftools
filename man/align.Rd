@@ -24,7 +24,8 @@ AlignResult object.
 Align two sequences using local (Smith-Waterman) or global (Needleman–Wunsch) sequence alignment.
 }
 \examples{
-align("AHSSFOO", "GOODFDKD", type = "global")$alignment
-align("AHSSFOO", "GOODFDKD", type = "local")$alignment
+library(Biostrings)
+data(BLOSUM62)
+align("ALVDE", "AVRES", score.matrix = BLOSUM62)
 }
 
