@@ -81,9 +81,10 @@ getMotifHits <- function(x, motif_info) {
 #' @param file XML output file from MEME.
 #'
 #' @return
-#' @export
+#' @export MotifSearchResult object.
 #'
 #' @examples
+#' NULL
 readMEME <- function(file) {
   doc <- read_xml(file)
   root <- xml_root(doc)
