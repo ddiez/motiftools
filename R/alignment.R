@@ -1,6 +1,6 @@
 #' Align two sequences
 #' 
-#' Align two sequences using local (Smith-Waterman) or global (Needleman–Wunsch) sequence alignment.
+#' Align two sequences using local (Smith-Waterman) or global (Needleman-Wunsch) sequence alignment.
 #' 
 #' @param x1 sequence (a character vector).
 #' @param x2 sequence (a character vector).

@@ -23,7 +23,7 @@ align(x1, x2, score.matrix, gap.score = -1, type = "local", debug = FALSE)
 AlignResult object.
 }
 \description{
-Align two sequences using local (Smith-Waterman) or global (Needleman–Wunsch) sequence alignment.
+Align two sequences using local (Smith-Waterman) or global (Needleman-Wunsch) sequence alignment.
 }
 \examples{
 library(Biostrings)
