@@ -6,16 +6,18 @@ Author: Diego Diez
 Maintainer: Diego Diez <diego10ruiz@gmail.com>
 Description: Functions useful to analyze and interpret results from sequence \
     motif tools. Currently focus is on the MEME suite.
-Depends:
+Imports:
     methods,
-    XML,
+    Rcpp,
     Biobase,
     IRanges,
     Biostrings,
+    XML,
     ape,
     knitr
-Imports: Rcpp
-Suggests: testhat, BiocStyle
+Suggests:
+    testthat,
+    BiocStyle
 LinkingTo: Rcpp
 License: GPL-3
 LazyLoad: yes
