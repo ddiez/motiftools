@@ -4,10 +4,9 @@ author: "Diego Diez"
 date: "`r BiocStyle::doc_date()`"
 package: "`r BiocStyle::pkg_ver('motifTools')`"
 abstract: >
-  Instructions on enabling _Bioconductor_ style 
-  in your _R_ markdown vignettes.
+  Introduction to the motifTools package.
 vignette: >
-  %\VignetteIndexEntry{Bioconductor style for HTML documents}
+  %\VignetteIndexEntry{Introduction to motifTools}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 output: 
@@ -16,6 +15,7 @@ output:
 
 ```{r setup}
 library(BiocStyle)
+library(motifTools)
 ```
 
 # Introduction
@@ -46,7 +46,6 @@ align("EGGALAPA", "DGGIVFFRF", score.matrix = BLOSUM62, type = "local")$alignmen
 ## Motif
 
 ```{r}
-library(motifTools)
 f <- system.file("files/meme_ras/meme.xml", package = "motifTools")
 x <- readMEME(f)
 motifTools:::plotMotifMatrix(x)
