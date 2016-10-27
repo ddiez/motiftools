@@ -56,7 +56,7 @@ getSeqStats <- function(x) {
 
 # get motif hits.
 getMotifHits <- function(x, motif_info) {
-  p <- xml_find_all(root, ".//scanned_sites")
+  p <- xml_find_all(x, ".//scanned_sites")
   
   hits <- lapply(p, function(node) {
     seq_info <- xml_attr(node, "sequence_id")
@@ -71,10 +71,7 @@ getMotifHits <- function(x, motif_info) {
     )
   })
   hits <- do.call(rbind, hits)
-  getMotifWidth <- function(id, motif_info) {
-    motif_info[motif_info$id == id, "width"]
-  }
-  hits$width <- getAttr(motif_hit$motif_id, attr = "width", info = motif_info)
+  hits$width <- getAttr(hits$motif_id, attr = "width", info = motif_info)
   #hits$width <- motif_info[hits$motif_id, "width"]
   hits
 }
