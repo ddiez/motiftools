@@ -3,3 +3,5 @@
 export(align)
 export(motifAlign)
 export(readMEME)
+export(readMEMEnew)
+import(xml2)
