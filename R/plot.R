@@ -2,8 +2,7 @@
 #' 
 #' Plots a tree and associated heatmap and barplot of the distribution of motifs in the sequences.
 #'
-#' @param object a MotifResult object.
-#' @param ... further objects to add
+#' @param object a MotifResult object or list of MotifResult objects.
 #' @param tree a tree
 #' @param annot further annotations
 #' @param annot.col colors for the annotations
@@ -13,7 +12,7 @@
 #'
 #' @examples
 #' NULL
-plotMotifMatrix <- function(object, ..., tree, annot, annot.col) {
+plotMotifMatrix <- function(object, tree, annot, annot.col) {
   extra_panels <- 0
   if (!missing(annot)) {
     if (is.matrix(annot))
@@ -22,7 +21,10 @@ plotMotifMatrix <- function(object, ..., tree, annot, annot.col) {
       stop("annotations must be provided as a matrix.")
   }
   
-  X <- list(object, ...)
+  if (class(object) != "list")
+    X <- list(object)
+  else
+    X <- object
   M <- lapply(X, getMotifMatrix)
 
   if (missing(tree)) {
@@ -70,13 +72,16 @@ plotMotifMatrix <- function(object, ..., tree, annot, annot.col) {
     m <- M[[k]]
     par(mar = c(0, 1, 1, 1))
     barplot(
-      100 * apply(m, 2, sum) / nseq(object),
+      100 * apply(m, 2, sum) / nseq(X[[k]]),
       las = 1,
       xaxs = "i",
       ylim = c(0, 100),
       names = FALSE
     )
-    title(X[[k]]@info$tool, line = 0)
+    if (is.null(names(X)))
+      title(X[[k]]@info$tool, line = 0)
+    else
+      title(names(X)[k], line = 0)
     par(mar = c(1, 1, 1, 1))
     image(t(m), axes = FALSE, col = c("white", "grey"))
     box()

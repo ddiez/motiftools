@@ -4,12 +4,10 @@
 \alias{plotMotifMatrix}
 \title{plotMotifMatrix}
 \usage{
-plotMotifMatrix(object, ..., tree, annot, annot.col)
+plotMotifMatrix(object, tree, annot, annot.col)
 }
 \arguments{
-\item{object}{a MotifResult object.}
-
-\item{...}{further objects to add}
+\item{object}{a MotifResult object or list of MotifResult objects.}
 
 \item{tree}{a tree}
 
