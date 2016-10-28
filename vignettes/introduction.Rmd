@@ -16,6 +16,8 @@ vignette: >
 
 ```{r setup, include=FALSE}
 library(BiocStyle)
+library(ggplot2)
+theme_set(theme_minimal())
 ```
 
 # Introduction

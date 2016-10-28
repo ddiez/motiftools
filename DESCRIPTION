@@ -17,7 +17,10 @@ Imports:
     ape,
     grid,
     gtable,
-    ggdendro
+    ggplot2,
+    ggdendro,
+    reshape2,
+    dplyr
 Suggests:
     testthat,
     knitr,
