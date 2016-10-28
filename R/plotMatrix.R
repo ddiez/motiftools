@@ -34,7 +34,7 @@ plotMatrix <- function(object, tree, col, high, high.col, plot = TRUE) {
     tree <- as.dendrogram(as.hclust(tree))
   }
   #g <- suppressMessages(ggdendrogram(tree, rotate = FALSE, theme_dendro = FALSE) + coord_flip() + scale_y_discrete(expand = c(0,0)) + scale_y_reverse() + theme(panel.border = element_blank()))
-  g <- ggtree(tree) + scale_y_discrete(expand = 0.025)#, expand = c(1,1))# + theme(panel.border = element_blank()))
+  g <- ggtree(tree) + scale_y_discrete(expand = c(0, 0))#, expand = c(1,1))# + theme(panel.border = element_blank()))
   grob_tree <- ggplotGrob(g)
   
   # reorder data.
