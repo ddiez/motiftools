@@ -20,6 +20,9 @@ plotMatrix <- function(object, tree, col, high, high.col, plot = TRUE) {
   require(ape)
   require(grid)
   
+  if (class(object) != "list")
+    object <- list(object)
+  
   n <- length(object) # number of heatmaps.
   nc <- ncol(object[[1]]) # number of columns of matrices.
   nr <- nrow(object[[1]]) # number of rows of matrices.
