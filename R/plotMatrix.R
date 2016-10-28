@@ -16,6 +16,7 @@
 #' NULL
 plotMatrix <- function(object, tree, col, high, high.col, plot = TRUE) {
   require(ggtree)
+  require(ggdendro)
   require(gtable)
   require(ape)
   require(grid)
@@ -31,18 +32,18 @@ plotMatrix <- function(object, tree, col, high, high.col, plot = TRUE) {
   # tree.
   if (missing(tree)) {
     m <- do.call(cbind, object)
-    #tree <- as.dendrogram(hclust(dist(m)))
-    tree <- as.phylo(hclust(dist(m)))
+    tree <- as.dendrogram(hclust(dist(m)))
+    #tree <- as.phylo(hclust(dist(m)))
   } else {
     tree <- as.dendrogram(as.hclust(tree))
   }
-  #g <- suppressMessages(ggdendrogram(tree, rotate = FALSE, theme_dendro = FALSE) + coord_flip() + scale_y_discrete(expand = c(0,0)) + scale_y_reverse() + theme(panel.border = element_blank()))
-  g <- ggtree(tree) + scale_y_discrete(expand = c(0, 0))#, expand = c(1,1))# + theme(panel.border = element_blank()))
+  g <- suppressMessages(ggdendrogram(tree, rotate = FALSE, theme_dendro = FALSE) + coord_flip() + scale_x_continuous(limits = c(.5, nr + .5), expand = c(0, 0)) + scale_y_reverse() + theme(panel.border = element_blank()))
+  #g <- ggtree(tree) + scale_y_discrete(expand = c(0, 0))#, expand = c(1,1))# + theme(panel.border = element_blank()))
   grob_tree <- ggplotGrob(g)
   
   # reorder data.
-  #object <- lapply(object, function(o) o[order.dendrogram(tree), ])
-  object <- lapply(object, function(o) o[subset(g$data, isTip == TRUE)$y, ])
+  object <- lapply(object, function(o) o[order.dendrogram(tree), ])
+  #object <- lapply(object, function(o) o[subset(g$data, isTip == TRUE)$y, ])
   
   # highlight.
   # if (!missing(high)) {
