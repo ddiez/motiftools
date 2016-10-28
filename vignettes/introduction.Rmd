@@ -51,6 +51,12 @@ align("EGGALAPA", "DGGIVFFRF", score.matrix = BLOSUM62, type = "local")$alignmen
 ```{r}
 f <- system.file("files/meme_ras/meme.xml", package = "motiftools")
 x <- readMEME(f)
-motiftools:::plotMotifMatrix(x)
+m <- getMotifMatrix(x)
+plotMatrix(m, fill = c("white", "grey"))
+
+
+m <- matrix(sample(c(0, 1), 100*10, replace = TRUE), ncol = 10,　nrow = 100)
+h <- factor(sample(1:2, 100, replace = TRUE, prob = c(0.9, 0.1)))
+plotMatrix(list(foo = m, goo = m, hoo = m), fill = c("white", "grey"), high = h, high.col = c("white", "black"))
 ```
 

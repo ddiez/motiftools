@@ -39,19 +39,19 @@ plotMatrix <- function(object, tree, fill, color = "transparent", high, high.col
   object <- lapply(object, function(o) o[order.dendrogram(tree), ])
   
   # highlight.
-  # if (!missing(high)) {
-  #   high <- high[order.dendrogram(tree)]
-  #   tmp <- melt(matrix(high), nrow = nr)
-  #   if (missing(high.col)) {
-  #     high.col <- rainbow(nlevels(tmp$value))
-  #   }
-  #   if (!is.null(names(high)))
-  #     high.name <- names(high)
-  #   else
-  #     high.name <- ""
-  #   g <- ggplot(tmp, aes(x = factor(Var2), y = factor(Var1), fill = value)) + geom_tile() + scale_fill_manual(high.name, values = high.col) + theme(legend.key.size = unit(.5, "lines"))  + scale_x_discrete(expand = c(0,0)) + scale_y_discrete(expand = c(0,0)) #+ guides(fill = guide_legend(direction = "horizontal"))
-  #   grob_high <- ggplotGrob(g)
-  # }
+  if (!missing(high)) {
+    high <- high[order.dendrogram(tree)]
+    tmp <- melt(matrix(high), nrow = nr)
+    if (missing(high.col)) {
+      high.col <- rainbow(nlevels(tmp$value))
+    }
+    if (!is.null(names(high)))
+      high.name <- names(high)
+    else
+      high.name <- ""
+    g <- ggplot(tmp, aes(x = factor(Var2), y = factor(Var1), fill = value)) + geom_tile() + scale_fill_manual(high.name, values = high.col) + theme(legend.key.size = unit(.5, "lines"))  + scale_x_discrete(expand = c(0,0)) + scale_y_discrete(expand = c(0,0)) + guides(fill = guide_legend(direction = "horizontal"))
+    grob_high <- ggplotGrob(g)
+  }
   
   # heatmaps.
   if (missing(fill)) {
