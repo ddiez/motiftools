@@ -8,6 +8,7 @@
 #' @param color 
 #' @param high 
 #' @param high.col 
+#' @param bar.percentage
 #' @param plot 
 #'
 #' @return Returns a grob object invisibly.
@@ -15,7 +16,7 @@
 #'
 #' @examples
 #' NULL
-plotMatrix <- function(object, tree, fill, color = "transparent", high, high.col, plot = TRUE) {
+plotMatrix <- function(object, tree, fill, color = "transparent", high, high.col, bar.percentage = TRUE, plot = TRUE) {
   require(ggtree)
   require(ggdendro)
   require(gtable)
@@ -80,14 +81,16 @@ plotMatrix <- function(object, tree, fill, color = "transparent", high, high.col
   # barplots.
   grob_barplot <- lapply(seq_len(n), function(k) {
     d <- melt(object[[k]], varnames = c("sequence", "motif"), value.name = "count")
-    #d <- d %>% group_by(motif) %>% summarize(sum = sum(count)/n()) # percentage.
-    d <- d %>% group_by(motif) %>% summarize(sum = sum(count)) # count
-    g <- ggplot(d, aes_string(x = "motif", y = "sum")) +
-      geom_bar(stat = "identity", fill = "grey") +
-      #geom_hline(yintercept = c(0, 25, 50, 75, 100), size = .3, color = "grey20") + # useful for percentages.
-      scale_x_discrete(expand = c(0, 0)) +
+    d <- d %>% group_by(motif) %>% summarize(value = sum(count), total = n())
+    if (bar.percentage)
+      d <- d %>% mutate(value = 100 * value / total)
+    g <- ggplot(d, aes_string(x = "motif", y = "value")) +
+      geom_bar(stat = "identity", fill = "grey", width = 1) +
+      scale_x_discrete(breaks = 1:100, expand = c(0, 0)) +
       scale_y_continuous(expand = c(0, 0)) #+
     #theme(panel.border = element_blank())
+    if (bar.percentage)
+      g <- g + geom_hline(yintercept = c(0, 25, 50, 75, 100), size = .3, color = "grey20")
     ggplotGrob(g)
   })
   
