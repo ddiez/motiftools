@@ -3,7 +3,10 @@
 #' motiftools
 #' 
 #' @name motiftools
-#' @import methods Biobase IRanges Biostrings XML xml2 ape gtable ggplot2 reshape2 dplyr
+#' @import methods Biobase Biostrings XML xml2 gtable ggplot2
+#' @importFrom reshape2 melt
+#' @importFrom dplyr filter select mutate group_by summarize %>%
+#' @importFrom IRanges IRanges RangedData space
 #' @importFrom Rcpp evalCpp
 #' @importFrom grid grid.newpage grid.draw
 #' @importFrom ggdendro ggdendrogram
