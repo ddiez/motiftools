@@ -2,14 +2,14 @@
 #'
 #' plotMatrix
 #'
-#' @param object 
-#' @param tree 
-#' @param fill 
-#' @param color 
-#' @param high 
-#' @param high.col 
-#' @param bar.percentage 
-#' @param plot 
+#' @param object a matrix object or list of matrix objects.
+#' @param tree a tree object.
+#' @param fill color used for tiles.
+#' @param color color for tile borders.
+#' @param high vector (factor or character) indicating row groups.
+#' @param high.col colors usef for each group in high.
+#' @param bar.percentage logical; whether to show percentages in bar plot (default: TRUE).
+#' @param plot logical; whether to draw the plot (default: TRUE).
 #'
 #' @return Returns a grob object invisibly.
 #' @export

@@ -8,21 +8,21 @@ plotMatrix(object, tree, fill, color = "transparent", high, high.col,
   bar.percentage = TRUE, plot = TRUE)
 }
 \arguments{
-\item{object}{}
+\item{object}{a matrix object or list of matrix objects.}
 
-\item{tree}{}
+\item{tree}{a tree object.}
 
-\item{fill}{}
+\item{fill}{color used for tiles.}
 
-\item{color}{}
+\item{color}{color for tile borders.}
 
-\item{high}{}
+\item{high}{vector (factor or character) indicating row groups.}
 
-\item{high.col}{}
+\item{high.col}{colors usef for each group in high.}
 
-\item{bar.percentage}{}
+\item{bar.percentage}{logical; whether to show percentages in bar plot (default: TRUE).}
 
-\item{plot}{}
+\item{plot}{logical; whether to draw the plot (default: TRUE).}
 }
 \value{
 Returns a grob object invisibly.
