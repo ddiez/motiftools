@@ -14,7 +14,13 @@ Imports:
     Biobase,
     IRanges,
     Biostrings,
-    ape
+    ape,
+    grid,
+    gtable,
+    ggplot2,
+    ggdendro,
+    reshape2,
+    dplyr
 Suggests:
     testthat,
     knitr,
