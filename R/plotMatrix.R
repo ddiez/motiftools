@@ -88,7 +88,7 @@ plotMatrix <- function(object, tree, col, high, high.col, plot = TRUE) {
   
   ## plot.
   # create main plot structure.
-  gt <- gtable(unit(rep(1, n), "null"), unit(c(1, 5), "npc"))
+  gt <- gtable(unit(rep(1, n), "null"), unit(c(1, 5), "null"))
   
   # add heatmaps and barplots.
   for (k in seq_len(n)) {
