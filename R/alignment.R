@@ -13,9 +13,8 @@
 #' @export
 #' 
 #' @examples
-#' library(Biostrings)
 #' library(motiftools)
-#' data(BLOSUM62)
+#' data(BLOSUM62, package = "Biostrings)
 #' align("ALVDE", "AVRES", score.matrix = BLOSUM62)
 align <- function(x1, x2, score.matrix, gap.score = -1, type = "local", debug = FALSE) {
   if (length(x1) == 1 && length(x2) == 1) {
