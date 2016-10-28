@@ -78,8 +78,7 @@ plotMatrix <- function(object, tree, fill, color = "transparent", high, high.col
     g <- ggplot(d, aes_string(x = "motif", y = "value")) +
       geom_bar(stat = "identity", fill = "grey", width = 1) +
       scale_x_discrete(breaks = 1:100, expand = c(0, 0)) +
-      scale_y_continuous(expand = c(0, 0)) #+
-    #theme(panel.border = element_blank())
+      scale_y_continuous(expand = c(0, 0))
     if (bar.percentage)
       g <- g + geom_hline(yintercept = c(0, 25, 50, 75, 100), size = .3, color = "grey20")
     ggplotGrob(g)
