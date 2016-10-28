@@ -1,30 +1,32 @@
 ---
 title: "Introduction to motiftools"
 author: "Diego Diez"
-#date: "`r BiocStyle::doc_date()`"
-#package: "`r BiocStyle::pkg_ver('motiftools')`"
+date: "`r BiocStyle::doc_date()`"
+package: "`r BiocStyle::pkg_ver('motiftools')`"
+output:
+    rmarkdown::html_document
 abstract: >
   Introduction to the motiftools package.
 vignette: >
-#  %\VignetteIndexEntry{Introduction to motiftools}
-#  %\VignetteEngine{knitr::rmarkdown}
-#  %\VignetteEncoding{UTF-8}
-output: 
-    rmarkdown::html_document
-#  BiocStyle::html_document
+ %\VignetteIndexEntry{Introduction to motiftools}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup}
+
+```{r setup, include=FALSE}
 library(BiocStyle)
-library(motiftools)
 ```
 
 # Introduction
 
 motiftools is a package for the analysis and interpretation of sequence motifs. Its initial implementation is focused on protein motif analysis obtained from the MEME suite, but its functionality may extend to other applications and tools, including analysis of nucleotide sequences and motif analysis tools found in Bioconductor or CRAN.
 
-Motif ranges are stored as `RangedData` objects (`r Biocpkg("BiocStyle")`) package). This allows to include metadata, like p-value, score and other output from the search process.
+Motif ranges are stored as `RangedData` objects (`r Biocpkg("IRanges")`) package). This allows to include metadata, like p-value, score and other output from the search process.
 
+```{r, message=FALSE}
+library(motiftools)
+```
 
 ## Alignment
 
@@ -39,7 +41,7 @@ align("AHSSFOO", "GOODFDKD", type = "global")$alignment
 For protein sequences you can specify a particular substitution matrix, like for example BLOSUM62.
 
 ```{r}
-data("BLOSUM62")
+data("BLOSUM62", package = "Biostrings")
 align("EGGALAPA", "DGGIVLPSAV", score.matrix = BLOSUM62, type = "global")$alignment
 align("EGGALAPA", "DGGIVFFRF", score.matrix = BLOSUM62, type = "local")$alignment
 ```
