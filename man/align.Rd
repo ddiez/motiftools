@@ -26,9 +26,8 @@ AlignResult object.
 Align two sequences using local (Smith-Waterman) or global (Needleman-Wunsch) sequence alignment.
 }
 \examples{
-library(Biostrings)
 library(motiftools)
-data(BLOSUM62)
+data(BLOSUM62, package = "Biostrings")
 align("ALVDE", "AVRES", score.matrix = BLOSUM62)
 }
 
