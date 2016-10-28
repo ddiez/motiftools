@@ -51,6 +51,9 @@ align("EGGALAPA", "DGGIVFFRF", score.matrix = BLOSUM62, type = "local")$alignmen
 ```{r}
 f <- system.file("files/meme_ras/meme.xml", package = "motiftools")
 x <- readMEME(f)
+plotMotifMatrix(x)
+# you can pass named list to include several panels and custom title.
+plotMotifMatrix(list("MEME for president" = x))
 plotMotifMatrix(list(foo = x, goo = x))
 ```
 
