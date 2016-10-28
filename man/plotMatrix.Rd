@@ -4,18 +4,23 @@
 \alias{plotMatrix}
 \title{plotMatrix}
 \usage{
-plotMatrix(object, tree, col, high, high.col, plot = TRUE)
+plotMatrix(object, tree, fill, color = "transparent", high, high.col,
+  bar.percentage = TRUE, plot = TRUE)
 }
 \arguments{
 \item{object}{}
 
 \item{tree}{}
 
-\item{col}{}
+\item{fill}{}
+
+\item{color}{}
 
 \item{high}{}
 
 \item{high.col}{}
+
+\item{bar.percentage}{}
 
 \item{plot}{}
 }

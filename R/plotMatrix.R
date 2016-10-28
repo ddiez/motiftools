@@ -4,11 +4,11 @@
 #'
 #' @param object 
 #' @param tree 
-#' @param fill
+#' @param fill 
 #' @param color 
 #' @param high 
 #' @param high.col 
-#' @param bar.percentage
+#' @param bar.percentage 
 #' @param plot 
 #'
 #' @return Returns a grob object invisibly.
@@ -17,10 +17,6 @@
 #' @examples
 #' NULL
 plotMatrix <- function(object, tree, fill, color = "transparent", high, high.col, bar.percentage = TRUE, plot = TRUE) {
-  require(ggdendro)
-  require(gtable)
-  require(grid)
-  
   if (class(object) != "list")
     object <- list(object)
   
