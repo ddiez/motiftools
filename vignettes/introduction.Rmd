@@ -51,6 +51,6 @@ align("EGGALAPA", "DGGIVFFRF", score.matrix = BLOSUM62, type = "local")$alignmen
 ```{r}
 f <- system.file("files/meme_ras/meme.xml", package = "motiftools")
 x <- readMEME(f)
-motiftools:::plotMotifMatrix(x)
+plotMotifMatrix(list(foo = x, goo = x))
 ```
 
