@@ -4,7 +4,8 @@
 #'
 #' @param object 
 #' @param tree 
-#' @param col 
+#' @param fill
+#' @param color 
 #' @param high 
 #' @param high.col 
 #' @param plot 
@@ -14,7 +15,7 @@
 #'
 #' @examples
 #' NULL
-plotMatrix <- function(object, tree, col, high, high.col, plot = TRUE) {
+plotMatrix <- function(object, tree, fill, color = "transparent", high, high.col, plot = TRUE) {
   require(ggtree)
   require(ggdendro)
   require(gtable)
@@ -61,15 +62,15 @@ plotMatrix <- function(object, tree, col, high, high.col, plot = TRUE) {
   # }
   
   # heatmaps.
-  if (missing(col)) {
-    col <- cm.colors(128)
+  if (missing(fill)) {
+    fill <- cm.colors(128)
   }
   
   grob_heatmap <- lapply(seq_len(n), function(k) {
     d <- melt(object[[k]], varnames = c("sequence", "motif"), value.name = "count")
     g <- ggplot(d, aes_string(x = "motif", y = "sequence", fill = "count")) +
-      geom_tile(color = "transparent") +
-      scale_fill_gradientn(colours = col) +
+      geom_tile(color = color) +
+      scale_fill_gradientn(colours = fill) +
       theme(legend.key.size = unit(.5, "lines")) +
       scale_x_discrete(expand = c(0,0)) +
       scale_y_discrete(expand = c(0,0)) 
