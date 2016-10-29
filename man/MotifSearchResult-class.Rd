@@ -10,6 +10,10 @@
 \alias{nmotif,MotifSearchResult-method}
 \alias{nseq}
 \alias{nseq,MotifSearchResult-method}
+\alias{pwm}
+\alias{pwm,MotifSearchResult-method}
+\alias{scores}
+\alias{scores,MotifSearchResult-method}
 \alias{sequenceNames}
 \alias{sequenceNames,MotifSearchResult-method}
 \alias{show,MotifSearchResult-method}
@@ -26,15 +30,19 @@ nseq(object)
 motifNames(object)
 
 sequenceNames(object)
+
+scores(object)
+
+pwm(object)
 }
 \arguments{
 \item{object}{MotifSearchResult object.}
 
 \item{x}{MotifSearchResult object.}
 
-\item{i}{row number.}
+\item{i}{row number (motif).}
 
-\item{j}{column number.}
+\item{j}{column number (sequence).}
 
 \item{...}{further arguments passed down to method.}
 
@@ -46,14 +54,16 @@ MotifSearchResult
 \section{Slots}{
 
 \describe{
-\item{\code{info}}{list.}
+\item{\code{info}}{list with result information.}
 
-\item{\code{sequences}}{AnnotatedDataFrame.}
+\item{\code{sequences}}{AnnotatedDataFrame with sequence information.}
 
-\item{\code{motifs}}{AnnotatedDataFrame.}
+\item{\code{motifs}}{AnnotatedDataFrame with motif information.}
 
-\item{\code{models}}{list.}
+\item{\code{probabilities}}{list of motif probabilities.}
 
-\item{\code{ranges}}{RangedData.}
+\item{\code{scores}}{list of motif scores.}
+
+\item{\code{ranges}}{RangedData with motif hits.}
 }}
 

@@ -4,15 +4,16 @@
 #' 
 #' @name MotifSearchResult-class
 #' @rdname MotifSearchResult-class
-#' @slot info list. 
-#' @slot sequences AnnotatedDataFrame. 
-#' @slot motifs AnnotatedDataFrame. 
-#' @slot models list. 
-#' @slot ranges RangedData.
+#' @slot info list with result information.
+#' @slot sequences AnnotatedDataFrame with sequence information.
+#' @slot motifs AnnotatedDataFrame with motif information.
+#' @slot probabilities list of motif probabilities. 
+#' @slot scores list of motif scores.
+#' @slot ranges RangedData with motif hits.
 #' @param object MotifSearchResult object.
 #' @param x MotifSearchResult object.
-#' @param i row number.
-#' @param j column number.
+#' @param i row number (motif).
+#' @param j column number (sequence).
 #' @param ... further arguments passed down to method.
 #' @param drop logical; whether to coerce to vector when number of columns equal one.
 #' 
@@ -58,23 +59,39 @@ setMethod("[", "MotifSearchResult",
 
 #' @rdname MotifSearchResult-class
 #' @aliases nmotif,MotifSearchResult-method
+#' @export
 nmotif <- function(object) object@info$nmotif
 setGeneric("nmotif")
 
 #' @rdname MotifSearchResult-class
 #' @aliases nseq,MotifSearchResult-method
+#' @export
 nseq <- function(object) object@info$nseq
 setGeneric("nseq")
 
 #' @rdname MotifSearchResult-class
 #' @aliases motifNames,MotifSearchResult-method
+#' @export
 motifNames <- function(object) featureNames(object@motifs)
 setGeneric("motifNames")
 
 #' @rdname MotifSearchResult-class
 #' @aliases sequenceNames,MotifSearchResult-method
+#' @export
 sequenceNames <- function(object) featureNames(object@sequences)
 setGeneric("sequenceNames")
+
+#' @rdname MotifSearchResult-class
+#' @aliases scores,MotifSearchResult-method
+#' @export
+scores <- function(object) object@scores
+setGeneric("scores")
+
+#' @rdname MotifSearchResult-class
+#' @aliases pwm,MotifSearchResult-method
+#' @export
+pwm <- function(object) object@probabilities
+setGeneric("pwm")
 
 
 # getMotifMatchMatrix <- function(object, motif, pssm="BLOSUM62") {
