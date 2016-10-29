@@ -75,7 +75,7 @@ getMotifHits <- function(x, motif_info) {
       motif_id = tmp[, "motif_id"],
       position = as.integer(tmp[, "position"]) + 1,
       strand = tmp[, "strand"],
-      p.value = as.numeric(tmp[, "pvalue"]),
+      pvalue = as.numeric(tmp[, "pvalue"]),
       stringsAsFactors = FALSE
     )
   })
@@ -152,7 +152,7 @@ readMEME <- function(file) {
   rangeData <- RangedData(
     IRanges(start = motif_hit$position, width = motif_hit$width),
     motif_name = getAttr(motif_hit$motif_id, attr = "name", info = motif_info),
-    p.value = motif_hit$p.value,
+    p_value = motif_hit$pvalue,
     space = getAttr(motif_hit$sequence_id, attr = "name", info = seq_info)
   )
   
