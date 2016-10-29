@@ -117,9 +117,10 @@ getMotifProbabilities <- function(x) {
   prob
 }
 
-#' readMEME
+#' Read results from MEME motif search stored in XML format.
 #' 
-#' readMEME
+#' Read results from MEME motif search stored in XML format and returns a
+#' MotifSearchResult object.
 #'
 #' @param file XML output file from MEME.
 #'
