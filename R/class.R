@@ -21,7 +21,8 @@ setClass("MotifSearchResult",
            info = "list",
            sequences = "AnnotatedDataFrame",
            motifs = "AnnotatedDataFrame",
-           models = "list",
+           probabilities = "list",
+           scores = "list",
            ranges = "RangedData"
          )
 )
@@ -41,15 +42,17 @@ setMethod("show", "MotifSearchResult",
 setMethod("[", "MotifSearchResult",
           function(x, i, j, ..., drop = FALSE) {
             if(!missing(j)) {
-              x@motifs=x@motifs[j,,drop=drop]
-              x@models=x@models[j] 
+              x@motifs <- x@motifs[j, , drop = drop]
+              x@probabilities <- x@probabilities[j]
+              x@scores <- x@scores[j] 
             }
             if(!missing(i)) {
-              x@sequences=x@sequences[i,,drop=drop]
+              x@sequences <- x@sequences[i, , drop = drop]
             }
-            x@info$nseq = unname(nrow(x@sequences))
-            x@info$nmotif = unname(nrow(x@motifs))
-            x@ranges = x@ranges[space(x@ranges) %in% sequenceNames(x) & x@ranges$motif_name %in% motifNames(x),]
+            x@info$nseq <- unname(nrow(x@sequences))
+            x@info$nmotif <- unname(nrow(x@motifs))
+            x@ranges <- x@ranges[space(x@ranges) %in% sequenceNames(x) &
+                                 x@ranges$motif_name %in% motifNames(x), ]
             x
           })
 

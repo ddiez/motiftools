@@ -85,6 +85,38 @@ getMotifHits <- function(x, motif_info) {
   hits
 }
 
+# get motif scores.
+getMotifScores <- function(x) {
+  motifs <- xml_find_first(x, ".//motifs")
+  scores <- lapply(seq_len(xml_length(motifs)), function(k) {
+    width <- as.integer(xml_attr(xml_child(motifs, k), "width"))
+    nodes <- xml_find_all(xml_child(motifs, k), "scores/alphabet_matrix/alphabet_array/value")
+    aa <- xml_attrs(nodes) %>% unlist(use.names = FALSE)
+    aa <- apply(matrix(aa, ncol = width), 1, unique)
+    scores <- xml_integer(nodes)
+    scores <- matrix(scores, ncol = width, dimnames = list(aa, seq_len(width)))
+    scores
+  })
+  names(scores) <- xml_attr(xml_find_all(x, ".//motif"), "id")
+  scores
+}
+
+# get motif probabilities.
+getMotifProbabilities <- function(x) {
+  motifs <- xml_find_first(x, ".//motifs")
+  prob <- lapply(seq_len(xml_length(motifs)), function(k) {
+    width <- as.integer(xml_attr(xml_child(motifs, k), "width"))
+    nodes <- xml_find_all(xml_child(motifs, k), "probabilities/alphabet_matrix/alphabet_array/value")
+    aa <- xml_attrs(nodes) %>% unlist(use.names = FALSE)
+    aa <- apply(matrix(aa, ncol = width), 1, unique)
+    prob <- xml_double(nodes)
+    prob <- matrix(prob, ncol = width, dimnames = list(aa, seq_len(width)))
+    prob
+  })
+  names(prob) <- xml_attr(xml_find_all(x, ".//motif"), "id")
+  prob
+}
+
 #' readMEME
 #' 
 #' readMEME
@@ -104,6 +136,8 @@ readMEME <- function(file) {
   seq_info <- getSequences(root)
   motif_info <- getMotifs(root)
   motif_hit <- getMotifHits(root, motif_info)
+  motif_score <- getMotifScores(root)
+  motif_prob <- getMotifProbabilities(root)
   
   # alphabetData.
   alphabetData <- AnnotatedDataFrame(alf_info)
@@ -133,7 +167,8 @@ readMEME <- function(file) {
     ),
     sequences = sequenceData,
     motifs = motifData,
-    models = list(),
+    probabilities = motif_prob,
+    scores = motif_score,
     ranges = rangeData
   )
 }
