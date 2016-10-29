@@ -2,7 +2,7 @@
 % Please edit documentation in R/meme.R
 \name{readMEME}
 \alias{readMEME}
-\title{readMEME}
+\title{Read results from MEME motif search stored in XML format.}
 \usage{
 readMEME(file)
 }
@@ -13,7 +13,8 @@ readMEME(file)
 MotifSearchResult object.
 }
 \description{
-readMEME
+Read results from MEME motif search stored in XML format and returns a
+MotifSearchResult object.
 }
 \examples{
 NULL
