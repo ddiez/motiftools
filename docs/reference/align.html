@@ -103,9 +103,8 @@
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>Biostrings</span>)
-<span class='fu'>library</span>(<span class='no'>motiftools</span>)
-<span class='fu'>data</span>(<span class='no'>BLOSUM62</span>)
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>motiftools</span>)
+<span class='fu'>data</span>(<span class='no'>BLOSUM62</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"Biostrings"</span>)
 <span class='fu'>align</span>(<span class='st'>"ALVDE"</span>, <span class='st'>"AVRES"</span>, <span class='kw'>score.matrix</span> <span class='kw'>=</span> <span class='no'>BLOSUM62</span>)</div><div class='output co'>#&gt; $alignment
 #&gt;   1 2 3 4 5
 #&gt; x A L V D E

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>conservationMatrix — conservationMatrix • motiftools</title>
+<title>MotifSearchResult — MotifSearchResult-class • motiftools</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -69,23 +69,63 @@
       </header>
 
       <div class="page-header">
-  <h1>conservationMatrix</h1>
+  <h1>MotifSearchResult</h1>
 </div>
 
 <div class="row">
   <div class="col-md-9">
     
-    <p>Compute the conservation score matrix from a MSA</p>
+    <p>MotifSearchResult</p>
     
 
-    <pre><span class='fu'>conservationMatrix</span>(<span class='no'>object</span>)</pre>
+    <pre># S4 method for MotifSearchResult
+show(object)
+
+# S4 method for MotifSearchResult
+[(x, i, j, ..., drop = FALSE)
+
+nmotif(object)
+
+nseq(object)
+
+motifNames(object)
+
+sequenceNames(object)
+
+scores(object)
+
+pwm(object)</pre>
     
     <h2>Arguments</h2>
     <dl class="dl-horizontal">
       <dt>object</dt>
-      <dd>sequence alignment object.</dd>
+      <dd>MotifSearchResult object.</dd>
+      <dt>x</dt>
+      <dd>MotifSearchResult object.</dd>
+      <dt>i</dt>
+      <dd>row number (motif).</dd>
+      <dt>j</dt>
+      <dd>column number (sequence).</dd>
+      <dt>...</dt>
+      <dd>further arguments passed down to method.</dd>
+      <dt>drop</dt>
+      <dd>logical; whether to coerce to vector when number of columns equal one.</dd>
     </dl>
-          </div>
+    
+    <div class="Slots">
+      <h2>Slots</h2>
+
+      <p></p>
+      <p><dl class='dl-horizontal'>
+<dt><code>info</code></dt><dd>list with result information.</dd></p>
+      <p><dt><code>sequences</code></dt><dd>AnnotatedDataFrame with sequence information.</dd></p>
+      <p><dt><code>motifs</code></dt><dd>AnnotatedDataFrame with motif information.</dd></p>
+      <p><dt><code>probabilities</code></dt><dd>list of motif probabilities.</dd></p>
+      <p><dt><code>scores</code></dt><dd>list of motif scores.</dd></p>
+      <p><dt><code>ranges</code></dt><dd>RangedData with motif hits.</dd>
+</dl></p>
+    </div>
+      </div>
   <div class="col-md-3">
   </div>
 </div>

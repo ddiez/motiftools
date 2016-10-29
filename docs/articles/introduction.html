@@ -34,6 +34,7 @@
       <h1>Introduction to motiftools</h1>
                         <h4 class="author">Diego Diez</h4>
             
+            <h4 class="date">29 October 2016</h4>
           </div>
 
     
@@ -42,14 +43,17 @@
       <p>Introduction to the motiftools package.</p>
     </div>
     
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(BiocStyle)
-<span class="kw">library</span>(motiftools)</code></pre></div>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>motiftools is a package for the analysis and interpretation of sequence motifs. Its initial implementation is focused on protein motif analysis obtained from the MEME suite, but its functionality may extend to other applications and tools, including analysis of nucleotide sequences and motif analysis tools found in Bioconductor or CRAN.</p>
-<p>Motif ranges are stored as <code>RangedData</code> objects (<em><a href="http://bioconductor.org/packages/BiocStyle">BiocStyle</a></em>) package). This allows to include metadata, like p-value, score and other output from the search process.</p>
-<div id="alignment" class="section level2">
-<h2>Alignment</h2>
+<p>Motif ranges are stored as <code>RangedData</code> objects (<em><a href="http://bioconductor.org/packages/IRanges">IRanges</a></em>) package). This allows to include metadata, like p-value, score and other output from the search process.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(motiftools)
+<span class="kw">library</span>(motifStack)</code></pre></div>
+</div>
+<div id="plotting-functions" class="section level1">
+<h1>Plotting functions</h1>
+<div id="alignments" class="section level2">
+<h2>Alignments</h2>
 <p>You can align any two sequences of letters. If the argument <code>score.matrix</code> is missing then a empirical scoring matrix will be generated from the sequences themeselves.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/align.html">align</a></span>(<span class="st">"FOO"</span>, <span class="st">"GOO"</span>, <span class="dt">type =</span> <span class="st">"global"</span>)</code></pre></div>
 <pre><code>## $alignment
@@ -64,7 +68,7 @@
 ## s1 A H S S F - O O
 ## s2 G O O D F D K D</code></pre>
 <p>For protein sequences you can specify a particular substitution matrix, like for example BLOSUM62.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">"BLOSUM62"</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">"BLOSUM62"</span>, <span class="dt">package =</span> <span class="st">"Biostrings"</span>)
 <span class="kw"><a href="../reference/align.html">align</a></span>(<span class="st">"EGGALAPA"</span>, <span class="st">"DGGIVLPSAV"</span>, <span class="dt">score.matrix =</span> BLOSUM62, <span class="dt">type =</span> <span class="st">"global"</span>)$alignment</code></pre></div>
 <pre><code>##    1 2 3 4 5 6 7 8 9 10 11
 ## s1 E G G - A L A P -  A  -
@@ -74,12 +78,30 @@
 ## x E G G A L A
 ## y D G G - I V</code></pre>
 </div>
-<div id="motif" class="section level2">
-<h2>Motif</h2>
+<div id="motifs" class="section level2">
+<h2>Motifs</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"files/meme_ras/meme.xml"</span>, <span class="dt">package =</span> <span class="st">"motiftools"</span>)
 x &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readMEME.html">readMEME</a></span>(f)
-motiftools:::<span class="kw"><a href="../reference/plotMotifMatrix.html">plotMotifMatrix</a></span>(x)</code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
+m &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getMotifMatrix.html">getMotifMatrix</a></span>(x)
+<span class="kw"><a href="../reference/plotMatrix.html">plotMatrix</a></span>(m, <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>))</code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot some random data.</span>
+m &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">sample</span>(<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dv">100</span>*<span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>), <span class="dt">ncol =</span> <span class="dv">10</span>,&#12288;<span class="dt">nrow =</span> <span class="dv">100</span>)
+h &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">2</span>, <span class="dv">100</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>, <span class="dt">prob =</span> <span class="kw">c</span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>)))
+<span class="kw"><a href="../reference/plotMatrix.html">plotMatrix</a></span>(<span class="kw">list</span>(<span class="dt">foo =</span> m, <span class="dt">goo =</span> m, <span class="dt">hoo =</span> m), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>), <span class="dt">high =</span> h, <span class="dt">high.col =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"black"</span>))</code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-4-2.png" width="672"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MotifSearchResult-class.html">pwm</a></span>(x[,<span class="dv">4</span>])[[<span class="dv">1</span>]]
+<span class="kw">plotMotifLogo</span>(p, <span class="dt">col =</span> <span class="kw">rainbow</span>(<span class="dv">20</span>))</code></pre></div>
+<pre><code>## Warning in plotMotifLogo(p, col = rainbow(20)): background length is
+## shorter than number of rows. Will use default background</code></pre>
+<p><img src="introduction_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+</div>
+<div id="sequences" class="section level2">
+<h2>Sequences</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">5</span>, <span class="dv">100</span>*<span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>), <span class="dt">ncol =</span> <span class="dv">100</span>, <span class="dt">nrow =</span> <span class="dv">10</span>, <span class="dt">dimnames =</span> <span class="kw">list</span>(letters[<span class="dv">1</span>:<span class="dv">10</span>], <span class="dv">1</span>:<span class="dv">100</span>))
+h &lt;-<span class="st"> </span><span class="kw">hclust</span>(<span class="kw">dist</span>(m))
+<span class="kw"><a href="../reference/plotConservationMatrix.html">plotConservationMatrix</a></span>(m, h)</code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 </div>
 </div>
   </div>
@@ -88,8 +110,10 @@ motiftools:::<span class="kw"><a href="../reference/plotMotifMatrix.html">plotMo
     <div id="sidebar">
             <div id="tocnav">
         <h2>Contents</h2>
-        <ul class="nav nav-pills nav-stacked"><li><a href="#introduction">Introduction</a><ul class="nav nav-pills nav-stacked"><li><a href="#alignment">Alignment</a></li>
-        <li><a href="#motif">Motif</a></li>
+        <ul class="nav nav-pills nav-stacked"><li><a href="#introduction">Introduction</a></li>
+        <li><a href="#plotting-functions">Plotting functions</a><ul class="nav nav-pills nav-stacked"><li><a href="#alignments">Alignments</a></li>
+        <li><a href="#motifs">Motifs</a></li>
+        <li><a href="#sequences">Sequences</a></li>
         </ul></li>
         </ul></div>
           </div>

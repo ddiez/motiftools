@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>conservationMatrix — conservationMatrix • motiftools</title>
+<title>plotMatrix — plotMatrix • motiftools</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -69,23 +69,48 @@
       </header>
 
       <div class="page-header">
-  <h1>conservationMatrix</h1>
+  <h1>plotMatrix</h1>
 </div>
 
 <div class="row">
   <div class="col-md-9">
     
-    <p>Compute the conservation score matrix from a MSA</p>
+    <p>plotMatrix</p>
     
 
-    <pre><span class='fu'>conservationMatrix</span>(<span class='no'>object</span>)</pre>
+    <pre><span class='fu'>plotMatrix</span>(<span class='no'>object</span>, <span class='no'>tree</span>, <span class='no'>fill</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"transparent"</span>, <span class='no'>high</span>, <span class='no'>high.col</span>,
+  <span class='kw'>bar.percentage</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2>Arguments</h2>
     <dl class="dl-horizontal">
       <dt>object</dt>
-      <dd>sequence alignment object.</dd>
+      <dd>a matrix object or list of matrix objects.</dd>
+      <dt>tree</dt>
+      <dd>a tree object.</dd>
+      <dt>fill</dt>
+      <dd>color used for tiles.</dd>
+      <dt>color</dt>
+      <dd>color for tile borders.</dd>
+      <dt>high</dt>
+      <dd>vector (factor or character) indicating row groups.</dd>
+      <dt>high.col</dt>
+      <dd>colors usef for each group in high.</dd>
+      <dt>bar.percentage</dt>
+      <dd>logical; whether to show percentages in bar plot (default: TRUE).</dd>
+      <dt>plot</dt>
+      <dd>logical; whether to draw the plot (default: TRUE).</dd>
     </dl>
-          </div>
+    
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p>Returns a grob object invisibly.</p>
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL
+#&gt; </div></pre>
+  </div>
   <div class="col-md-3">
   </div>
 </div>
