@@ -19,7 +19,18 @@ getMotifs <- function(x) {
   p <- xml_find_first(x, ".//motifs")
   d <- lapply(1:xml_length(p), function(i) {
     tmp <- xml_attrs(xml_child(p, i))
-    data.frame(id = tmp["id"], name = tmp["name"], width = as.numeric(tmp["width"]), stringsAsFactors = FALSE, row.names = tmp["name"])
+    data.frame(
+      id = tmp["id"],
+      name = tmp["name"],
+      width = as.integer(tmp["width"]),
+      sites = as.integer(tmp["sites"]),
+      #ic = as.numeric(tmp["ic"]),
+      #re = as.numeric(tmp["re"]),
+      #llr = as.numeric(tmp["llr"]),
+      #e_value = as.numeric(tmp["e_value"]),
+      stringsAsFactors = FALSE,
+      row.names = tmp["name"]
+    )
   })
   do.call(rbind, d)  
 }
