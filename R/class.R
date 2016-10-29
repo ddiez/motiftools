@@ -1,4 +1,21 @@
-
+#' MotifSearchResult
+#' 
+#' MotifSearchResult
+#' 
+#' @name MotifSearchResult-class
+#' @rdname MotifSearchResult-class
+#' @slot info list. 
+#' @slot sequences AnnotatedDataFrame. 
+#' @slot motifs AnnotatedDataFrame. 
+#' @slot models list. 
+#' @slot ranges RangedData.
+#' @param object foo
+#' @param x foo
+#' @param i foo
+#' @param j foo
+#' @param ... foo
+#' @param drop foo
+#' 
 setClass("MotifSearchResult",
          representation(
            info = "list",
@@ -9,6 +26,8 @@ setClass("MotifSearchResult",
          )
 )
 
+#' @rdname MotifSearchResult-class
+#' @aliases show,MotifSearchResult-method
 setMethod("show", "MotifSearchResult",
           function(object) {
             message(class(object), " object.")
@@ -17,6 +36,8 @@ setMethod("show", "MotifSearchResult",
             message("Number of motifs: ", object@info$nmotif)
           })
 
+#' @rdname MotifSearchResult-class
+#' @aliases [,MotifSearchResult-method
 setMethod("[", "MotifSearchResult",
           function(x, i, j, ..., drop = FALSE) {
             if(!missing(j)) {
@@ -32,15 +53,23 @@ setMethod("[", "MotifSearchResult",
             x
           })
 
+#' @rdname MotifSearchResult-class
+#' @aliases nmotif,MotifSearchResult-method
 nmotif <- function(object) object@info$nmotif
 setGeneric("nmotif")
 
+#' @rdname MotifSearchResult-class
+#' @aliases nseq,MotifSearchResult-method
 nseq <- function(object) object@info$nseq
 setGeneric("nseq")
 
+#' @rdname MotifSearchResult-class
+#' @aliases motifNames,MotifSearchResult-method
 motifNames <- function(object) featureNames(object@motifs)
 setGeneric("motifNames")
 
+#' @rdname MotifSearchResult-class
+#' @aliases sequenceNames,MotifSearchResult-method
 sequenceNames <- function(object) featureNames(object@sequences)
 setGeneric("sequenceNames")
 
