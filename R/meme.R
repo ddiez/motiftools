@@ -24,10 +24,10 @@ getMotifs <- function(x) {
       name = tmp["name"],
       width = as.integer(tmp["width"]),
       sites = as.integer(tmp["sites"]),
-      #ic = as.numeric(tmp["ic"]),
-      #re = as.numeric(tmp["re"]),
-      #llr = as.numeric(tmp["llr"]),
-      #e_value = as.numeric(tmp["e_value"]),
+      ic = as.numeric(tmp["ic"]),
+      re = as.numeric(tmp["re"]),
+      llr = as.numeric(tmp["llr"]),
+      e_value = as.numeric(tmp["e_value"]),
       stringsAsFactors = FALSE,
       row.names = tmp["name"]
     )
