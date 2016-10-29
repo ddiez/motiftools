@@ -31,7 +31,9 @@ library(motiftools)
 library(motifStack)
 ```
 
-## Alignment
+# Plotting functions
+
+## Alignments
 
 You can align any two sequences of letters. If the argument `score.matrix` is missing then a empirical scoring matrix will be generated from the sequences themeselves.
 
@@ -49,7 +51,7 @@ align("EGGALAPA", "DGGIVLPSAV", score.matrix = BLOSUM62, type = "global")$alignm
 align("EGGALAPA", "DGGIVFFRF", score.matrix = BLOSUM62, type = "local")$alignment
 ```
 
-## Motif
+## Motifs
 
 ```{r}
 f <- system.file("files/meme_ras/meme.xml", package = "motiftools")
@@ -68,6 +70,7 @@ p <- pwm(x[,4])[[1]]
 plotMotifLogo(p, col = rainbow(20))
 ```
 
+## Sequences
 
 ```{r}
 m <- matrix(sample(1:5, 100*10, replace = TRUE), ncol = 100, nrow = 10, dimnames = list(letters[1:10], 1:100))
