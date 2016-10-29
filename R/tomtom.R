@@ -1,3 +1,63 @@
+readTOMTOM = function(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05, filter = "TRANSFAC", do.clean = TRUE) {
+  foo = read.table(file, comment.char = "", sep = "\t", header = TRUE, check.names = FALSE, as.is = TRUE)
+  colnames(foo)[1] = sub("#", "", colnames(foo)[1])
+  
+  pwm = unique(c(foo[,1], foo[,2]))
+  
+  #k = 0
+  pwmm = matrix(0, nrow = length(pwm), ncol = length(pwm), dimnames = list(pwm, pwm))
+  n <- apply(foo, 1, function(x) {
+    if (do.cut) {
+      #			print(x[cut.col])
+      if (as.numeric(x[cut.col]) <= cutoff) {
+        #k <<- k + 1
+        pwmm[x[1], x[2]] <<- 1
+      }
+    } else {
+      #k <<- k + 1
+      pwmm[x[1], x[2]] <<- 1
+    }
+  })
+  
+  print(paste("Accepted comparisons:",length(which(pwmm == 1))))
+  if(do.clean) {
+    pwmm = cleanMatrix(pwmm)
+    print(paste("After cleaning:",length(which(pwmm == 1))))
+  }
+  
+  
+  # add default annotations.
+  mat.key = matrix(0, nrow = nrow(pwmm), 1, dimnames = list(rownames(pwmm), "Dataset"))
+  #mat.key[grep("sci09", rownames(mat.key))] = 1
+  #mat.key[grep("cell08", rownames(mat.key))] = 2
+  #mat.key[grep("embo10", rownames(mat.key))] = 3
+  #mat.key[grep("^MA", rownames(mat.key))] = 4
+  
+  # colors.
+  col.key = c("Default" = "gray")
+  #col.key = c("grey", "darkblue", "darkgreen", "yellow2", "darkred")
+  #names(col.key) = c("TRANSFAC", "SCI09", "CELL08", "EMBO10", "JASPAR")
+  
+  # filter?
+  if (!missing(filter)) {
+    #print(col.key)
+    sel.f = which(! names(col.key) %in% filter) - 1
+    #print(sel.f)
+    sel.m = rownames(mat.key[mat.key[,1] %in% sel.f,,drop = FALSE])
+    #print(sel.m)
+    mat.key = mat.key[sel.m,,drop = FALSE]
+    col.key = col.key[sel.f + 1]
+    pwmm = pwmm[rownames(pwmm) %in% sel.m, colnames(pwmm) %in% sel.m]
+    n = length(which(pwmm == 1))
+    print(paste("Filtering:", n, "comparisons remained after filtering."))
+  }
+  
+  # cluster
+  d = clusterMatrix(pwmm)
+  
+  
+  new("TomTom", matrix = pwmm, cutoff.type = cut.col, cutoff = cutoff, matrix_key = mat.key, color_key = col.key, dendrogram = d)
+}
 # 
 # # TODO: rework, very inefficient (slow)
 # cleanMatrix = function(m) {
