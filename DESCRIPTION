@@ -25,7 +25,8 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    BiocStyle
+    BiocStyle,
+    motifStack
 LinkingTo: Rcpp
 License: GPL-3
 LazyLoad: yes
