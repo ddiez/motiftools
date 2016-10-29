@@ -9,12 +9,12 @@
 #' @slot motifs AnnotatedDataFrame. 
 #' @slot models list. 
 #' @slot ranges RangedData.
-#' @param object foo
-#' @param x foo
-#' @param i foo
-#' @param j foo
-#' @param ... foo
-#' @param drop foo
+#' @param object MotifSearchResult object.
+#' @param x MotifSearchResult object.
+#' @param i row number.
+#' @param j column number.
+#' @param ... further arguments passed down to method.
+#' @param drop logical; whether to coerce to vector when number of columns equal one.
 #' 
 setClass("MotifSearchResult",
          representation(

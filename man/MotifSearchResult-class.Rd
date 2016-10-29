@@ -28,17 +28,17 @@ motifNames(object)
 sequenceNames(object)
 }
 \arguments{
-\item{object}{foo}
+\item{object}{MotifSearchResult object.}
 
-\item{x}{foo}
+\item{x}{MotifSearchResult object.}
 
-\item{i}{foo}
+\item{i}{row number.}
 
-\item{j}{foo}
+\item{j}{column number.}
 
-\item{...}{foo}
+\item{...}{further arguments passed down to method.}
 
-\item{drop}{foo}
+\item{drop}{logical; whether to coerce to vector when number of columns equal one.}
 }
 \description{
 MotifSearchResult
