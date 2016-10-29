@@ -9,7 +9,7 @@ plotConservationMatrix(x, tree)
 \arguments{
 \item{x}{a matrix as obtained with conservationMatrix()}
 
-\item{tree}{a tree of class phylo (package ape)}
+\item{tree}{a tree of class dendrogram or that can be coerced into.}
 }
 \description{
 plots a heatmap with the conservation score for each residue
