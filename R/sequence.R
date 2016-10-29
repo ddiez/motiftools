@@ -58,6 +58,8 @@ plotConservation = function(x, seq.names = FALSE, cluster.row = TRUE) {
 #'
 #' @param x a matrix as obtained with conservationMatrix()
 #' @param tree a tree of class dendrogram or that can be coerced into.
+#' 
+#' @export
 plotConservationMatrix <- function(x, tree) {
   if (!missing(tree)) {
     tree <- as.dendrogram(tree)
