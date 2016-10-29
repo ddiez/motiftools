@@ -10,6 +10,6 @@ conservationMatrix(object)
 \item{object}{sequence alignment object.}
 }
 \description{
-computes the conservation score matrix from a MSA
+Compute the conservation score matrix from a MSA
 }
 
