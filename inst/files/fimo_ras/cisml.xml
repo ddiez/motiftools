@@ -1,0 +1,305 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<!-- Document definition -->
+<!-- http://zlab.bu.edu/~phaverty/SupplementalData/CisML/cisml.dtd -->
+<!DOCTYPE cis-element-search[
+<!ELEMENT cis-element-search (program-name, parameters, (pattern | multi-pattern-scan)*)>
+<!ELEMENT program-name (#PCDATA)>
+<!ELEMENT parameters (
+  pattern-file, 
+  sequence-file, 
+  background-seq-file?,
+  pattern-pvalue-cutoff?,
+  sequence-pvalue-cutoff?,
+  site-pvalue-cutoff?,
+  sequence-filtering,
+  ANY*
+ )>
+<!ELEMENT command-line (#PCDATA)>
+<!ELEMENT pattern-file (#PCDATA)>
+<!ELEMENT sequence-file (#PCDATA)>
+<!ELEMENT background-seq-file (#PCDATA)>
+<!ELEMENT pattern-pvalue-cutoff (#PCDATA)>
+<!ELEMENT sequence-pvalue-cutoff (#PCDATA)>
+<!ELEMENT site-pvalue-cutoff (#PCDATA)>
+<!ELEMENT sequence-filtering EMPTY>
+<!ELEMENT multi-pattern-scan (pattern+, ANY*)>
+<!ELEMENT pattern (scanned-sequence+, ANY*)>
+<!ELEMENT scanned-sequence (matched-element*, ANY*)>
+<!ELEMENT matched-element (sequence)>
+<!ELEMENT sequence (#PCDATA)>
+<!ATTLIST cis-element-search
+xmlns:xsi CDATA #IMPLIED
+xmlns:mem CDATA #IMPLIED
+xsi:schemaLocation CDATA #IMPLIED
+>
+<!ATTLIST sequence-filtering
+on-off CDATA #REQUIRED
+type CDATA #IMPLIED
+>
+<!ATTLIST multi-pattern-scan
+score CDATA #IMPLIED
+pvalue CDATA #IMPLIED
+>
+<!ATTLIST pattern
+accession CDATA #REQUIRED
+name CDATA #REQUIRED
+pvalue CDATA #IMPLIED
+score CDATA #IMPLIED
+db CDATA #IMPLIED
+lsid CDATA #IMPLIED
+>
+<!ATTLIST scanned-sequence
+accession CDATA #REQUIRED
+name CDATA #REQUIRED
+score CDATA #IMPLIED
+pvalue CDATA #IMPLIED
+length CDATA #IMPLIED
+db CDATA #IMPLIED
+lsid CDATA #IMPLIED
+>
+<!ATTLIST matched-element
+start CDATA #REQUIRED
+stop CDATA #REQUIRED
+score CDATA #IMPLIED
+pvalue CDATA #IMPLIED
+clusterid CDATA #IMPLIED
+>
+
+]>
+<cis-element-search
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://zlab.bu.edu/schema/cisml cisml.xsd"
+  xmlns="http://zlab.bu.edu/schema/cisml"
+  xmlns:mem="http://noble.gs.washington.edu/meme"
+>
+<program-name>fimo</program-name>
+<parameters>
+<pattern-file>meme_ras/meme.xml</pattern-file>
+<sequence-file>ras.fasta</sequence-file>
+<site-pvalue-cutoff>0.0001</site-pvalue-cutoff>
+<sequence-filtering on-off="off"/>
+</parameters>
+<pattern accession="1" name="1">
+<scanned-sequence accession="RASH_MOUSE" name="RASH_MOUSE">
+<matched-element start="32" stop="81" score="204.816" pvalue="1.41e-64">
+<sequence>YDPTIEDSYRKQVVIDGETCLLDILDTAGQEEYSAMRDQYMRTGEGFLCV</sequence>
+<mem:qvalue>2.65e-62</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASK_MOUSE" name="RASK_MOUSE">
+<matched-element start="32" stop="81" score="204.816" pvalue="1.41e-64">
+<sequence>YDPTIEDSYRKQVVIDGETCLLDILDTAGQEEYSAMRDQYMRTGEGFLCV</sequence>
+<mem:qvalue>2.65e-62</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASN_MOUSE" name="RASN_MOUSE">
+<matched-element start="32" stop="81" score="204.816" pvalue="1.41e-64">
+<sequence>YDPTIEDSYRKQVVIDGETCLLDILDTAGQEEYSAMRDQYMRTGEGFLCV</sequence>
+<mem:qvalue>2.65e-62</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASM_HUMAN" name="RASM_HUMAN">
+<matched-element start="42" stop="91" score="182.862" pvalue="3.31e-57">
+<sequence>YDPTIEDSYLKHTEIDNQWAILDVLDTAGQEEFSAMREQYMRTGDGFLIV</sequence>
+<mem:qvalue>4.66e-55</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<mem:has-qvalues>yes</mem:has-qvalues>
+</pattern>
+<pattern accession="2" name="2">
+<scanned-sequence accession="RASH_MOUSE" name="RASH_MOUSE">
+<matched-element start="82" stop="131" score="184.253" pvalue="8.19e-59">
+<sequence>FAINNTKSFEDIHQYREQIKRVKDSDDVPMVLVGNKCDLAARTVESRQAQ</sequence>
+<mem:qvalue>2.31e-56</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASK_MOUSE" name="RASK_MOUSE">
+<matched-element start="82" stop="131" score="189.345" pvalue="1.36e-62">
+<sequence>FAINNTKSFEDIHHYREQIKRVKDSEDVPMVLVGNKCDLPSRTVDTKQAQ</sequence>
+<mem:qvalue>7.7e-60</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASN_MOUSE" name="RASN_MOUSE">
+<matched-element start="82" stop="131" score="182.609" pvalue="6.58e-58">
+<sequence>FAINNSKSFADINLYREQIKRVKDSDDVPMVLVGNKCDLPTRTVDTKQAH</sequence>
+<mem:qvalue>1.24e-55</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASM_HUMAN" name="RASM_HUMAN">
+<matched-element start="92" stop="141" score="144.92" pvalue="2.36e-46">
+<sequence>YSVTDKASFEHVDRFHQLILRVKDRESFPMILVANKVDLMHLRKITREQG</sequence>
+<mem:qvalue>3.33e-44</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<mem:has-qvalues>yes</mem:has-qvalues>
+</pattern>
+<pattern accession="3" name="3">
+<scanned-sequence accession="RASH_MOUSE" name="RASH_MOUSE">
+<matched-element start="1" stop="29" score="115.356" pvalue="9.67e-37">
+<sequence>MTEYKLVVVGAGGVGKSALTIQLIQNHFV</sequence>
+<mem:qvalue>2.09e-34</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASK_MOUSE" name="RASK_MOUSE">
+<matched-element start="1" stop="29" score="115.356" pvalue="9.67e-37">
+<sequence>MTEYKLVVVGAGGVGKSALTIQLIQNHFV</sequence>
+<mem:qvalue>2.09e-34</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASN_MOUSE" name="RASN_MOUSE">
+<matched-element start="1" stop="29" score="115.356" pvalue="9.67e-37">
+<sequence>MTEYKLVVVGAGGVGKSALTIQLIQNHFV</sequence>
+<mem:qvalue>2.09e-34</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASM_HUMAN" name="RASM_HUMAN">
+<matched-element start="11" stop="39" score="101.522" pvalue="1.93e-32">
+<sequence>LPTYKLVVVGDGGVGKSALTIQFFQKIFV</sequence>
+<mem:qvalue>3.12e-30</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<mem:has-qvalues>yes</mem:has-qvalues>
+</pattern>
+<pattern accession="4" name="4">
+<scanned-sequence accession="RASH_MOUSE" name="RASH_MOUSE">
+<matched-element start="137" stop="157" score="81.5684" pvalue="2.42e-27">
+<sequence>YGIPYIETSAKTRQGVEDAFY</sequence>
+<mem:qvalue>1.61e-24</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASK_MOUSE" name="RASK_MOUSE">
+<matched-element start="137" stop="157" score="80.6842" pvalue="9.46e-27">
+<sequence>YGIPFIETSAKTRQRVEDAFY</sequence>
+<mem:qvalue>2.09e-24</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASN_MOUSE" name="RASN_MOUSE">
+<matched-element start="137" stop="157" score="81.2632" pvalue="5.41e-27">
+<sequence>YGIPFIETSAKTRQGVEDAFY</sequence>
+<mem:qvalue>1.8e-24</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASM_HUMAN" name="RASM_HUMAN">
+<matched-element start="148" stop="168" score="65" pvalue="1.29e-21">
+<sequence>HNIPYIETSAKDPPLNVDKAF</sequence>
+<mem:qvalue>2.14e-19</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<mem:has-qvalues>yes</mem:has-qvalues>
+</pattern>
+<pattern accession="5" name="5">
+<scanned-sequence accession="RASH_MOUSE" name="RASH_MOUSE">
+<matched-element start="158" stop="172" score="52.3298" pvalue="2.42e-17">
+<sequence>TLVREIRQHKLRKLN</sequence>
+<mem:qvalue>5.16e-15</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASK_MOUSE" name="RASK_MOUSE">
+<matched-element start="158" stop="172" score="52.8191" pvalue="1.24e-17">
+<sequence>TLVREIRQYRLKKIS</sequence>
+<mem:qvalue>3.97e-15</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASN_MOUSE" name="RASN_MOUSE">
+<matched-element start="158" stop="172" score="54.7766" pvalue="3.04e-19">
+<sequence>TLVREIRQYRLKKLN</sequence>
+<mem:qvalue>1.94e-16</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASM_HUMAN" name="RASM_HUMAN">
+<matched-element start="170" stop="184" score="46.0426" pvalue="4.43e-16">
+<sequence>DLVRVIRQQIPEKSQ</sequence>
+<mem:qvalue>7.09e-14</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<mem:has-qvalues>yes</mem:has-qvalues>
+</pattern>
+<pattern accession="6" name="6">
+<scanned-sequence accession="RASH_MOUSE" name="RASH_MOUSE">
+<matched-element start="180" stop="189" score="41" pvalue="8.56e-14">
+<sequence>GCMSCKCVLS</sequence>
+<mem:qvalue>3.79e-11</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASK_MOUSE" name="RASK_MOUSE">
+</scanned-sequence>
+<scanned-sequence accession="RASN_MOUSE" name="RASN_MOUSE">
+<matched-element start="180" stop="189" score="40.9355" pvalue="1.04e-13">
+<sequence>GCMGSPCVLM</sequence>
+<mem:qvalue>3.79e-11</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASM_HUMAN" name="RASM_HUMAN">
+</scanned-sequence>
+<mem:has-qvalues>yes</mem:has-qvalues>
+</pattern>
+<pattern accession="7" name="7">
+<scanned-sequence accession="RASH_MOUSE" name="RASH_MOUSE">
+</scanned-sequence>
+<scanned-sequence accession="RASK_MOUSE" name="RASK_MOUSE">
+<matched-element start="173" stop="180" score="28.6837" pvalue="4.92e-10">
+<sequence>KEEKTPGC</sequence>
+<mem:qvalue>1.66e-07</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASN_MOUSE" name="RASN_MOUSE">
+</scanned-sequence>
+<scanned-sequence accession="RASM_HUMAN" name="RASM_HUMAN">
+<matched-element start="186" stop="193" score="29.5306" pvalue="2.11e-10">
+<sequence>KKKKTKWR</sequence>
+<mem:qvalue>1.42e-07</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<mem:has-qvalues>yes</mem:has-qvalues>
+</pattern>
+<pattern accession="8" name="8">
+<scanned-sequence accession="RASH_MOUSE" name="RASH_MOUSE">
+</scanned-sequence>
+<scanned-sequence accession="RASK_MOUSE" name="RASK_MOUSE">
+<matched-element start="182" stop="189" score="30.2366" pvalue="9.96e-11">
+<sequence>KIKKCVIM</sequence>
+<mem:qvalue>6.79e-08</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASN_MOUSE" name="RASN_MOUSE">
+</scanned-sequence>
+<scanned-sequence accession="RASM_HUMAN" name="RASM_HUMAN">
+<matched-element start="201" stop="208" score="29.4516" pvalue="3.58e-10">
+<sequence>HKLQCVIL</sequence>
+<mem:qvalue>1.22e-07</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<mem:has-qvalues>yes</mem:has-qvalues>
+</pattern>
+<pattern accession="9" name="9">
+<scanned-sequence accession="RASH_MOUSE" name="RASH_MOUSE">
+<matched-element start="1" stop="8" score="26.3854" pvalue="1.86e-09">
+<sequence>MTEYKLVV</sequence>
+<mem:qvalue>4.12e-07</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASK_MOUSE" name="RASK_MOUSE">
+<matched-element start="1" stop="8" score="26.3854" pvalue="1.86e-09">
+<sequence>MTEYKLVV</sequence>
+<mem:qvalue>4.12e-07</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASN_MOUSE" name="RASN_MOUSE">
+<matched-element start="1" stop="8" score="26.3854" pvalue="1.86e-09">
+<sequence>MTEYKLVV</sequence>
+<mem:qvalue>4.12e-07</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<scanned-sequence accession="RASM_HUMAN" name="RASM_HUMAN">
+<matched-element start="1" stop="8" score="25.3229" pvalue="6.95e-09">
+<sequence>MATSAVPS</sequence>
+<mem:qvalue>1.16e-06</mem:qvalue>
+</matched-element>
+<matched-element start="11" stop="18" score="9.29167" pvalue="1.76e-05">
+<sequence>LPTYKLVV</sequence>
+<mem:qvalue>0.00234</mem:qvalue>
+</matched-element>
+</scanned-sequence>
+<mem:has-qvalues>yes</mem:has-qvalues>
+</pattern>
+</cis-element-search>
