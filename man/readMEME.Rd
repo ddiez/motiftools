@@ -4,7 +4,7 @@
 \alias{readMEME}
 \title{Read results from MEME motif search stored in XML format.}
 \usage{
-readMEME(file)
+readMEME(file, description = NULL)
 }
 \arguments{
 \item{file}{XML output file from MEME.}

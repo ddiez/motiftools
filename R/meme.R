@@ -129,7 +129,7 @@ getMotifProbabilities <- function(x) {
 #'
 #' @examples
 #' NULL
-readMEME <- function(file) {
+readMEME <- function(file, description = NULL) {
   doc <- read_xml(file)
   root <- xml_root(doc)
   
