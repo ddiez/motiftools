@@ -4,7 +4,7 @@
 #' MotifSearchResult object.
 #'
 #' @param file file XML output file from FIMO.
-#' @param description 
+#' @param description character string describing the dataset.
 #'
 #' @return MotifSearchResult object.
 #' @export

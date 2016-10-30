@@ -123,6 +123,7 @@ getMotifProbabilities <- function(x) {
 #' MotifSearchResult object.
 #'
 #' @param file XML output file from MEME.
+#' @param description character string describing the dataset.
 #'
 #' @return MotifSearchResult object.
 #' @export

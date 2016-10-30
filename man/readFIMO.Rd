@@ -9,7 +9,7 @@ readFIMO(file, description = NULL)
 \arguments{
 \item{file}{file XML output file from FIMO.}
 
-\item{description}{}
+\item{description}{character string describing the dataset.}
 }
 \value{
 MotifSearchResult object.

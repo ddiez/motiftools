@@ -8,6 +8,8 @@ readMEME(file, description = NULL)
 }
 \arguments{
 \item{file}{XML output file from MEME.}
+
+\item{description}{character string describing the dataset.}
 }
 \value{
 MotifSearchResult object.
