@@ -36,7 +36,7 @@ plotMatrix <- function(object, tree, fill, color = "transparent", high, high.col
   grob_tree <- ggplotGrob(g)
   
   # reorder data.
-  object <- lapply(object, function(o) o[order.dendrogram(tree), ])
+  object <- lapply(object, function(o) o[labels(tree), ])
   
   # highlight.
   if (!missing(high)) {
