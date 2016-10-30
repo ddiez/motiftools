@@ -54,19 +54,25 @@ align("EGGALAPA", "DGGIVFFRF", score.matrix = BLOSUM62, type = "local")$alignmen
 ## Motifs
 
 ```{r}
+# load MEME results.
 f <- system.file("files/meme_ras/meme.xml", package = "motiftools")
-x <- readMEME(f)
-m <- getMotifMatrix(x)
-plotMatrix(m, fill = c("white", "grey"))
+x_meme <- readMEME(f)
+m_meme <- getMotifMatrix(x_meme)
+plotMatrix(m_meme, fill = c("white", "grey"))
 
-# plot some random data.
-m <- matrix(sample(c(0, 1), 100*10, replace = TRUE), ncol = 10,　nrow = 100)
-h <- factor(sample(1:2, 100, replace = TRUE, prob = c(0.9, 0.1)))
-plotMatrix(list(foo = m, goo = m, hoo = m), fill = c("white", "grey"), high = h, high.col = c("white", "black"))
-```
+# load FIMO results.
+f <- system.file("files/fimo_ras/fimo.xml", package = "motiftools")
+x_fimo <- readFIMO(f)
+m_fimo <- getMotifMatrix(x_fimo)
+plotMatrix(list(m_meme, m_fimo), fill = c("white", "grey"))
 
-```{r}
-p <- pwm(x[,4])[[1]]
+# highlight some sequences.
+h <- grep("RASH|RASK", sequenceNames(x_meme), value = TRUE)
+h
+plotMatrix(list(m_meme, m_fimo), fill = c("white", "grey"), high = h, high.col = c("grey80", "black"))
+
+# plot a motif model logo (from MEME output).
+p <- pwm(x_meme)[["motif_4"]]
 plotMotifLogo(p, col = rainbow(20))
 ```
 
