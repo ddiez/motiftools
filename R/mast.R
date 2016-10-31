@@ -77,7 +77,7 @@ getMastMotifInfo <- function(x) {
 getMastSequenceInfo <- function(x) {
   tmp <- do.call(rbind, xml_attrs(xml_find_all(x, ".//sequences/sequence")))
   mode(tmp) <- "character"
-  tmp2 <- do.call(rbind, xml_attrs(xml_find_all(root, ".//sequences/sequence/score")))
+  tmp2 <- do.call(rbind, xml_attrs(xml_find_all(x, ".//sequences/sequence/score")))
   mode(tmp2) <- "character"
   data.frame(
     db = tmp[, "db"],
