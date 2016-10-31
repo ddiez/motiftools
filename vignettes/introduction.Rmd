@@ -73,9 +73,9 @@ m_mast <- getMotifMatrix(x_mast)
 plotMatrix(list(m_meme, m_fimo, m_mast), fill = c("white", "grey"))
 
 # highlight some sequences.
-h <- grep("RASH|RASK", sequenceNames(x_meme), value = TRUE)
-h
-plotMatrix(list(m_meme, m_fimo, m_mast), fill = c("white", "grey"), high = h, high.col = c("grey80", "black"))
+h <- grepl("RASH|RASK", sequenceNames(x_meme))
+names(h) <- sequenceNames(x_meme)
+plotMatrix(list(m_meme, m_fimo, m_mast), fill = c("white", "grey"), high = h, high.col = c("black", "orange"))
 
 # plot a motif model logo (from MEME output).
 p <- pwm(x_meme)[["motif_4"]]

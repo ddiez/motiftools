@@ -40,7 +40,7 @@ plotMatrix <- function(object, tree, fill, color = "transparent", high, high.col
   
   # highlight.
   if (!missing(high)) {
-    high <- high[order.dendrogram(tree)]
+    high <- high[labels(tree)]
     tmp <- melt(matrix(high), nrow = nr)
     if (missing(high.col)) {
       high.col <- rainbow(nlevels(tmp$value))
