@@ -86,13 +86,15 @@ getMotifHits <- function(x, motif_info) {
 }
 
 # get motif scores.
-getMotifScores <- function(x) {
+getMotifScores <- function(x, alphabet = NULL) {
   motifs <- xml_find_first(x, ".//motifs")
   scores <- lapply(seq_len(xml_length(motifs)), function(k) {
     width <- as.integer(xml_attr(xml_child(motifs, k), "width"))
     nodes <- xml_find_all(xml_child(motifs, k), "scores/alphabet_matrix/alphabet_array/value")
     aa <- xml_attrs(nodes) %>% unlist(use.names = FALSE)
     aa <- apply(matrix(aa, ncol = width), 1, unique)
+    if (!is.null(alphabet))
+      aa <- alphabet[aa, "symbol"]
     scores <- xml_integer(nodes)
     scores <- matrix(scores, ncol = width, dimnames = list(aa, seq_len(width)))
     scores
@@ -102,13 +104,15 @@ getMotifScores <- function(x) {
 }
 
 # get motif probabilities.
-getMotifProbabilities <- function(x) {
+getMotifProbabilities <- function(x, alphabet = NULL) {
   motifs <- xml_find_first(x, ".//motifs")
   prob <- lapply(seq_len(xml_length(motifs)), function(k) {
     width <- as.integer(xml_attr(xml_child(motifs, k), "width"))
     nodes <- xml_find_all(xml_child(motifs, k), "probabilities/alphabet_matrix/alphabet_array/value")
     aa <- xml_attrs(nodes) %>% unlist(use.names = FALSE)
     aa <- apply(matrix(aa, ncol = width), 1, unique)
+    if (!is.null(alphabet))
+      aa <- alphabet[aa, "symbol"]
     prob <- xml_double(nodes)
     prob <- matrix(prob, ncol = width, dimnames = list(aa, seq_len(width)))
     prob
@@ -138,8 +142,8 @@ readMEME <- function(file, description = NULL) {
   seq_info <- getSequences(root)
   motif_info <- getMotifs(root)
   motif_hit <- getMotifHits(root, motif_info)
-  motif_score <- getMotifScores(root)
-  motif_prob <- getMotifProbabilities(root)
+  motif_score <- getMotifScores(root, alf_info)
+  motif_prob <- getMotifProbabilities(root, alf_info)
   
   # alphabetData.
   alphabetData <- AnnotatedDataFrame(alf_info)
