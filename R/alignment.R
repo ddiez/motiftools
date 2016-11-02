@@ -22,7 +22,7 @@ align <- function(x1, x2, score.matrix, gap.score = -1, type = "local", debug = 
     x2 <- strsplit(x2, "")[[1]]
   }
   
-  type <- match.arg(type, c("global", "local"))
+  type <- match.arg(type, c("global", "local", "local_old"))
   
   switch(type,
          "local" = {
