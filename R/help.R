@@ -1,8 +1,10 @@
 #' motiftools
 #' 
-#' motiftools
+#' Tools to analyze sequence motifs
 #' 
 #' @name motiftools
+#' @docType package
+#' 
 #' @import methods Biobase Biostrings XML xml2 gtable ggplot2
 #' @importFrom reshape2 melt
 #' @importFrom dplyr filter select mutate group_by summarize bind_rows %>%
