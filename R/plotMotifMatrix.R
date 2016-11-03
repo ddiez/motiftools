@@ -1,6 +1,7 @@
-#' plotMatrix
+#' plotMotifMatrix
 #'
-#' plotMatrix
+#' Get a matrix with motif counts per sequence and plot a heatmap with associated
+#' tree and barplots with motif-wise percentages.
 #'
 #' @param object a matrix object or list of matrix objects.
 #' @param tree a tree object.
@@ -16,7 +17,7 @@
 #'
 #' @examples
 #' NULL
-plotMatrix <- function(object, tree, fill, color = "transparent", high, high.col, bar.percentage = TRUE, plot = TRUE) {
+plotMotifMatrix <- function(object, tree, fill, color = "transparent", high, high.col, bar.percentage = TRUE, plot = TRUE) {
   if (class(object) != "list")
     object <- list(object)
   

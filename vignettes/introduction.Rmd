@@ -58,24 +58,24 @@ align("EGGALAPA", "DGGIVFFRF", score.matrix = BLOSUM62, type = "local")$alignmen
 f <- system.file("files/meme_ras/meme.xml", package = "motiftools")
 x_meme <- readMEME(f)
 m_meme <- getMotifMatrix(x_meme)
-plotMatrix(m_meme, fill = c("white", "grey"))
+plotMotifMatrix(m_meme, fill = c("white", "grey"))
 
 # load FIMO results.
 f <- system.file("files/fimo_ras/fimo.xml", package = "motiftools")
 x_fimo <- readFIMO(f)
 m_fimo <- getMotifMatrix(x_fimo)
-plotMatrix(list(m_meme, m_fimo), fill = c("white", "grey"))
+plotMotifMatrix(list(m_meme, m_fimo), fill = c("white", "grey"))
 
 # load MAST results.
 f <- system.file("files/mast_ras/mast.xml", package = "motiftools")
 x_mast <- readMAST(f)
 m_mast <- getMotifMatrix(x_mast)
-plotMatrix(list(m_meme, m_fimo, m_mast), fill = c("white", "grey"))
+plotMotifMatrix(list(m_meme, m_fimo, m_mast), fill = c("white", "grey"))
 
 # highlight some sequences.
 h <- grepl("RASH|RASK", sequenceNames(x_meme))
 names(h) <- sequenceNames(x_meme)
-plotMatrix(list(m_meme, m_fimo, m_mast), fill = c("white", "grey"), high = h, high.col = c("black", "orange"))
+plotMotifMatrix(list(m_meme, m_fimo, m_mast), fill = c("white", "grey"), high = h, high.col = c("black", "orange"))
 
 # plot a motif model logo (from MEME output).
 p <- pwm(x_meme)[["motif_4"]]
