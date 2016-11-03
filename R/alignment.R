@@ -16,23 +16,26 @@
 #' library(motiftools)
 #' data(BLOSUM62, package = "Biostrings")
 #' align("ALVDE", "AVRES", score.matrix = BLOSUM62)
-align <- function(x1, x2, score.matrix, gap.score = -1, type = "local", debug = FALSE) {
+align <- function(x1, x2, score.matrix = NULL, gap.score = -1, type = "local", debug = FALSE) {
   if (length(x1) == 1 && length(x2) == 1) {
     x1 <- strsplit(x1, "")[[1]]
     x2 <- strsplit(x2, "")[[1]]
   }
   
-  type <- match.arg(type, c("global", "local", "local_old"))
+  type <- match.arg(type, c("global", "local", "global_old", "local_old"))
   
   switch(type,
          "local" = {
            sw(x1, x2, score_matrix = score.matrix, gap_score = gap.score, debug = debug)
          },
          "global" = {
-           .nw(x1, x2, score.matrix = score.matrix, gap.score = gap.score, debug=debug)
+           nw(x1, x2, score_matrix = score.matrix, gap_score = gap.score, debug = debug)
          },
          "local_old" = {
            .sw(x1, x2, score.matrix = score.matrix, gap.score = gap.score, debug = debug)
+         },
+         "global_old" = {
+           .nw(x1, x2, score.matrix = score.matrix, gap.score = gap.score, debug = debug)
          })
 }
 

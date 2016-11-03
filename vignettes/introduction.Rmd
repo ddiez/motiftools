@@ -35,12 +35,12 @@ library(motifStack)
 
 ## Alignments
 
-You can align any two sequences of letters. If the argument `score.matrix` is missing then a empirical scoring matrix will be generated from the sequences themeselves.
+You can align any two sequences of letters. If the argument `score.matrix` is `NULL` then a scoring matrix will be generated using `getScoreMatrix`.
 
 ```{r}
 align("FOO", "GOO", type = "global")
 
-align("AHSSFOO", "GOODFDKD", type = "global")$alignment
+align("AHSSFOO", "GOODFDKD", type = "local")$alignment
 ```
 
 For protein sequences you can specify a particular substitution matrix, like for example BLOSUM62.

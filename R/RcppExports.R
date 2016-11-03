@@ -5,3 +5,7 @@ sw <- function(x, y, score_matrix = NULL, gap_score = -1L, debug = 0L) {
     .Call('motiftools_sw', PACKAGE = 'motiftools', x, y, score_matrix, gap_score, debug)
 }
 
+nw <- function(x, y, score_matrix = NULL, gap_score = -1L, debug = 0L) {
+    .Call('motiftools_nw', PACKAGE = 'motiftools', x, y, score_matrix, gap_score, debug)
+}
+
