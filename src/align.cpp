@@ -33,7 +33,6 @@ IntegerMatrix getScoreMatrix(CharacterVector x, CharacterVector y, int match_sco
   }
   rownames(sm) = z;
   colnames(sm) = z;
-  cout << sm << endl;
   return(sm);
 }
 
