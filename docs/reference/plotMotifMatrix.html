@@ -75,23 +75,39 @@
 <div class="row">
   <div class="col-md-9">
     
-    <p>Plots a tree and associated heatmap and barplot of the distribution of motifs in the sequences.</p>
+    <p>Get a matrix with motif counts per sequence and plot a heatmap with associated
+tree and barplots with motif-wise percentages.</p>
     
 
-    <pre><span class='fu'>plotMotifMatrix</span>(<span class='no'>object</span>, <span class='no'>tree</span>, <span class='no'>annot</span>, <span class='no'>annot.col</span>)</pre>
+    <pre><span class='fu'>plotMotifMatrix</span>(<span class='no'>object</span>, <span class='no'>tree</span>, <span class='no'>fill</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"transparent"</span>, <span class='no'>high</span>, <span class='no'>high.col</span>,
+  <span class='kw'>bar.percentage</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2>Arguments</h2>
     <dl class="dl-horizontal">
       <dt>object</dt>
-      <dd>a MotifResult object or list of MotifResult objects.</dd>
+      <dd>a matrix object or list of matrix objects.</dd>
       <dt>tree</dt>
-      <dd>a tree</dd>
-      <dt>annot</dt>
-      <dd>further annotations</dd>
-      <dt>annot.col</dt>
-      <dd>colors for the annotations</dd>
+      <dd>a tree object.</dd>
+      <dt>fill</dt>
+      <dd>color used for tiles.</dd>
+      <dt>color</dt>
+      <dd>color for tile borders.</dd>
+      <dt>high</dt>
+      <dd>vector (factor or character) indicating row groups.</dd>
+      <dt>high.col</dt>
+      <dd>colors usef for each group in high.</dd>
+      <dt>bar.percentage</dt>
+      <dd>logical; whether to show percentages in bar plot (default: TRUE).</dd>
+      <dt>plot</dt>
+      <dd>logical; whether to draw the plot (default: TRUE).</dd>
     </dl>
-        
+    
+    <div class="Value">
+      <h2>Value</h2>
+
+      <p>Returns a grob object invisibly.</p>
+    </div>
+    
     <h2 id="examples">Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>NULL</span></div><div class='output co'>#&gt; NULL
 #&gt; </div></pre>

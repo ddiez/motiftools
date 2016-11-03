@@ -34,7 +34,7 @@
       <h1>Introduction to motiftools</h1>
                         <h4 class="author">Diego Diez</h4>
             
-            <h4 class="date">31 October 2016</h4>
+            <h4 class="date">4 November 2016</h4>
           </div>
 
     
@@ -54,25 +54,25 @@
 <h1>Plotting functions</h1>
 <div id="alignments" class="section level2">
 <h2>Alignments</h2>
-<p>You can align any two sequences of letters. If the argument <code>score.matrix</code> is missing then a empirical scoring matrix will be generated from the sequences themeselves.</p>
+<p>You can align any two sequences of letters. If the argument <code>score.matrix</code> is <code>NULL</code> then a scoring matrix will be generated using <code>getScoreMatrix</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/align.html">align</a></span>(<span class="st">"FOO"</span>, <span class="st">"GOO"</span>, <span class="dt">type =</span> <span class="st">"global"</span>)</code></pre></div>
 <pre><code>## $alignment
-##    1 2 3
-## s1 F O O
-## s2 G O O
+##   1
+## x O
+## y O
 ## 
 ## $score
-## [1] 0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/align.html">align</a></span>(<span class="st">"AHSSFOO"</span>, <span class="st">"GOODFDKD"</span>, <span class="dt">type =</span> <span class="st">"global"</span>)$alignment</code></pre></div>
-<pre><code>##    1 2 3 4 5 6 7 8
-## s1 A H S S F - O O
-## s2 G O O D F D K D</code></pre>
+## [1] 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/align.html">align</a></span>(<span class="st">"AHSSFOO"</span>, <span class="st">"GOODFDKD"</span>, <span class="dt">type =</span> <span class="st">"local"</span>)$alignment</code></pre></div>
+<pre><code>##   1
+## x O
+## y O</code></pre>
 <p>For protein sequences you can specify a particular substitution matrix, like for example BLOSUM62.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">"BLOSUM62"</span>, <span class="dt">package =</span> <span class="st">"Biostrings"</span>)
 <span class="kw"><a href="../reference/align.html">align</a></span>(<span class="st">"EGGALAPA"</span>, <span class="st">"DGGIVLPSAV"</span>, <span class="dt">score.matrix =</span> BLOSUM62, <span class="dt">type =</span> <span class="st">"global"</span>)$alignment</code></pre></div>
-<pre><code>##    1 2 3 4 5 6 7 8 9 10 11
-## s1 E G G - A L A P -  A  -
-## s2 D G G I V L - P S  A  V</code></pre>
+<pre><code>##   1 2 3 4 5 6 7 8 9 10
+## x E G G - A L A P -  A
+## y D G G I V L - P S  A</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/align.html">align</a></span>(<span class="st">"EGGALAPA"</span>, <span class="st">"DGGIVFFRF"</span>, <span class="dt">score.matrix =</span> BLOSUM62, <span class="dt">type =</span> <span class="st">"local"</span>)$alignment</code></pre></div>
 <pre><code>##   1 2 3 4 5 6
 ## x E G G A L A
@@ -84,24 +84,24 @@
 f &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"files/meme_ras/meme.xml"</span>, <span class="dt">package =</span> <span class="st">"motiftools"</span>)
 x_meme &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readMEME.html">readMEME</a></span>(f)
 m_meme &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getMotifMatrix.html">getMotifMatrix</a></span>(x_meme)
-<span class="kw"><a href="../reference/plotMatrix.html">plotMatrix</a></span>(m_meme, <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>))</code></pre></div>
+<span class="kw"><a href="../reference/plotMotifMatrix.html">plotMotifMatrix</a></span>(m_meme, <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>))</code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load FIMO results.</span>
 f &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"files/fimo_ras/fimo.xml"</span>, <span class="dt">package =</span> <span class="st">"motiftools"</span>)
 x_fimo &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readFIMO.html">readFIMO</a></span>(f)
 m_fimo &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getMotifMatrix.html">getMotifMatrix</a></span>(x_fimo)
-<span class="kw"><a href="../reference/plotMatrix.html">plotMatrix</a></span>(<span class="kw">list</span>(m_meme, m_fimo), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>))</code></pre></div>
+<span class="kw"><a href="../reference/plotMotifMatrix.html">plotMotifMatrix</a></span>(<span class="kw">list</span>(m_meme, m_fimo), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>))</code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-4-2.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load MAST results.</span>
 f &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"files/mast_ras/mast.xml"</span>, <span class="dt">package =</span> <span class="st">"motiftools"</span>)
 x_mast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readMAST.html">readMAST</a></span>(f)
 m_mast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getMotifMatrix.html">getMotifMatrix</a></span>(x_mast)
-<span class="kw"><a href="../reference/plotMatrix.html">plotMatrix</a></span>(<span class="kw">list</span>(m_meme, m_fimo, m_mast), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>))</code></pre></div>
+<span class="kw"><a href="../reference/plotMotifMatrix.html">plotMotifMatrix</a></span>(<span class="kw">list</span>(m_meme, m_fimo, m_mast), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>))</code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-4-3.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># highlight some sequences.</span>
 h &lt;-<span class="st"> </span><span class="kw">grepl</span>(<span class="st">"RASH|RASK"</span>, <span class="kw"><a href="../reference/MotifSearchResult-class.html">sequenceNames</a></span>(x_meme))
 <span class="kw">names</span>(h) &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MotifSearchResult-class.html">sequenceNames</a></span>(x_meme)
-<span class="kw"><a href="../reference/plotMatrix.html">plotMatrix</a></span>(<span class="kw">list</span>(m_meme, m_fimo, m_mast), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>), <span class="dt">high =</span> h, <span class="dt">high.col =</span> <span class="kw">c</span>(<span class="st">"black"</span>, <span class="st">"orange"</span>))</code></pre></div>
+<span class="kw"><a href="../reference/plotMotifMatrix.html">plotMotifMatrix</a></span>(<span class="kw">list</span>(m_meme, m_fimo, m_mast), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>), <span class="dt">high =</span> h, <span class="dt">high.col =</span> <span class="kw">c</span>(<span class="st">"black"</span>, <span class="st">"orange"</span>))</code></pre></div>
 <p><img src="introduction_files/figure-html/unnamed-chunk-4-4.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot a motif model logo (from MEME output).</span>
 p &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MotifSearchResult-class.html">pwm</a></span>(x_meme)[[<span class="st">"motif_4"</span>]]
