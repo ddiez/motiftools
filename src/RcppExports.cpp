@@ -6,14 +6,14 @@
 using namespace Rcpp;
 
 // sw
-List sw(CharacterVector x, CharacterVector y, IntegerMatrix score_matrix, int gap_score, int debug);
+List sw(CharacterVector x, CharacterVector y, Rcpp::Nullable<IntegerMatrix> score_matrix, int gap_score, int debug);
 RcppExport SEXP motiftools_sw(SEXP xSEXP, SEXP ySEXP, SEXP score_matrixSEXP, SEXP gap_scoreSEXP, SEXP debugSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type y(ySEXP);
-    Rcpp::traits::input_parameter< IntegerMatrix >::type score_matrix(score_matrixSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<IntegerMatrix> >::type score_matrix(score_matrixSEXP);
     Rcpp::traits::input_parameter< int >::type gap_score(gap_scoreSEXP);
     Rcpp::traits::input_parameter< int >::type debug(debugSEXP);
     rcpp_result_gen = Rcpp::wrap(sw(x, y, score_matrix, gap_score, debug));

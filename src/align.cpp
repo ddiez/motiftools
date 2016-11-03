@@ -2,13 +2,49 @@
 using namespace Rcpp;
 using namespace std;
 
+// Get a CharacterVector with the unique characters in x and y.
+CharacterVector getUniqueLetters(CharacterVector x, CharacterVector y) {
+  CharacterVector z(x.length() + y.length());
+  // fill x.
+  for (int k = 0; k < x.length(); k++) {
+    z(k) = x(k);
+  }
+  // fill y.
+  for (int k = 0; k < y.length(); k++) {
+    z(x.length() + k) = y(k);
+  }
+  return(unique(z));
+}
+
+// Get score matrix from the from input sequences using the provided scores.
+IntegerMatrix getScoreMatrix(CharacterVector x, CharacterVector y, int match_score = 1, int mismatch_score = -1) {
+  // get unique character vector.
+  CharacterVector z = getUniqueLetters(x, y);
+  cout << z << endl;
+
+  // create matrix.
+  IntegerMatrix sm(z.length(), z.length());
+  for (int i = 0; i < sm.nrow(); i++) {
+    for (int j = 0; j < sm.ncol(); j++) {
+      if (i == j)
+        sm(i, j) = match_score;
+      else
+        sm(i, j) = mismatch_score;
+    }
+  }
+  rownames(sm) = z;
+  colnames(sm) = z;
+  cout << sm << endl;
+  return(sm);
+}
+
+// Perform Smith-Waterman local alignment.
 // [[Rcpp::export]]
 List sw(CharacterVector x, CharacterVector y, Rcpp::Nullable<IntegerMatrix> score_matrix = R_NilValue, int gap_score = -1, int debug = 0) {
 
   IntegerMatrix sm;
   if (score_matrix.isNull()) {
-    // get matrix.
-    return(NULL);
+    sm = getScoreMatrix(x, y);
   } else {
     sm = score_matrix.get();
   }
@@ -185,5 +221,5 @@ sw(c("A", "L", "D"), c("A", "R", "L", "E"))
 library(Biostrings)
 data("BLOSUM62")
 sw(c("A", "L", "D"), c("A", "R", "L", "E"), score_matrix = BLOSUM62, debug = FALSE)
-#.sw(c("A", "L", "D"), c("A", "R", "L", "E"), score.matrix = BLOSUM62, debug = FALSE)
+.sw(c("A", "L", "D"), c("A", "R", "L", "E"), score.matrix = BLOSUM62, debug = FALSE)
 */
