@@ -2,11 +2,52 @@
 using namespace Rcpp;
 using namespace std;
 
-// [[Rcpp::export]]
-List sw(CharacterVector x, CharacterVector y, IntegerMatrix score_matrix, int gap_score = -1, int debug = 0) {
+// Get a CharacterVector with the unique characters in x and y.
+CharacterVector getUniqueLetters(CharacterVector x, CharacterVector y) {
+  CharacterVector z(x.length() + y.length());
+  // fill x.
+  for (int k = 0; k < x.length(); k++) {
+    z(k) = x(k);
+  }
+  // fill y.
+  for (int k = 0; k < y.length(); k++) {
+    z(x.length() + k) = y(k);
+  }
+  return(unique(z));
+}
 
+// Get score matrix from the from input sequences using the provided scores.
+IntegerMatrix getScoreMatrix(CharacterVector x, CharacterVector y, int match_score = 1, int mismatch_score = -1) {
+  // get unique character vector.
+  CharacterVector z = getUniqueLetters(x, y);
+
+  // create matrix.
+  IntegerMatrix sm(z.length(), z.length());
+  for (int i = 0; i < sm.nrow(); i++) {
+    for (int j = 0; j < sm.ncol(); j++) {
+      if (i == j)
+        sm(i, j) = match_score;
+      else
+        sm(i, j) = mismatch_score;
+    }
+  }
+  rownames(sm) = z;
+  colnames(sm) = z;
+  return(sm);
+}
+
+// Perform Smith-Waterman local alignment.
+// [[Rcpp::export]]
+List sw(CharacterVector x, CharacterVector y, Rcpp::Nullable<IntegerMatrix> score_matrix = R_NilValue, int gap_score = -1, int debug = 0) {
+
+  IntegerMatrix sm;
+  if (score_matrix.isNull()) {
+    sm = getScoreMatrix(x, y);
+  } else {
+    sm = score_matrix.get();
+  }
   // initialize variables.
-  CharacterVector schar = as<CharacterVector>(rownames(score_matrix));
+  CharacterVector schar = as<CharacterVector>(rownames(sm));
   IntegerMatrix m(y.length() + 1, x.length() + 1);
   int nrow = m.nrow();
   int ncol = m.ncol();
@@ -58,7 +99,7 @@ List sw(CharacterVector x, CharacterVector y, IntegerMatrix score_matrix, int ga
           yi = k;
         }
       }
-      int d = m(i - 1, j - 1) + score_matrix(xi, yi); // has to fix assigning real score above.
+      int d = m(i - 1, j - 1) + sm(xi, yi); // has to fix assigning real score above.
       
       // horizonal
       int h = m(i, j - 1) + gap_score;
@@ -174,8 +215,9 @@ List sw(CharacterVector x, CharacterVector y, IntegerMatrix score_matrix, int ga
 
 
 /*** R
+sw(c("A", "L", "D"), c("A", "R", "L", "E"))
 library(Biostrings)
 data("BLOSUM62")
-motiftools:::sw(c("A", "L", "D"), c("A", "R", "L", "E"), score_matrix = BLOSUM62, debug = FALSE)
-motiftools:::.sw(c("A", "L", "D"), c("A", "R", "L", "E"), score.matrix = BLOSUM62, debug = FALSE)
+sw(c("A", "L", "D"), c("A", "R", "L", "E"), score_matrix = BLOSUM62, debug = FALSE)
+.sw(c("A", "L", "D"), c("A", "R", "L", "E"), score.matrix = BLOSUM62, debug = FALSE)
 */
