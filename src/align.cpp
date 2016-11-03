@@ -3,10 +3,17 @@ using namespace Rcpp;
 using namespace std;
 
 // [[Rcpp::export]]
-List sw(CharacterVector x, CharacterVector y, IntegerMatrix score_matrix, int gap_score = -1, int debug = 0) {
+List sw(CharacterVector x, CharacterVector y, Rcpp::Nullable<IntegerMatrix> score_matrix = R_NilValue, int gap_score = -1, int debug = 0) {
 
+  IntegerMatrix sm;
+  if (score_matrix.isNull()) {
+    // get matrix.
+    return(NULL);
+  } else {
+    sm = score_matrix.get();
+  }
   // initialize variables.
-  CharacterVector schar = as<CharacterVector>(rownames(score_matrix));
+  CharacterVector schar = as<CharacterVector>(rownames(sm));
   IntegerMatrix m(y.length() + 1, x.length() + 1);
   int nrow = m.nrow();
   int ncol = m.ncol();
@@ -58,7 +65,7 @@ List sw(CharacterVector x, CharacterVector y, IntegerMatrix score_matrix, int ga
           yi = k;
         }
       }
-      int d = m(i - 1, j - 1) + score_matrix(xi, yi); // has to fix assigning real score above.
+      int d = m(i - 1, j - 1) + sm(xi, yi); // has to fix assigning real score above.
       
       // horizonal
       int h = m(i, j - 1) + gap_score;
@@ -174,8 +181,9 @@ List sw(CharacterVector x, CharacterVector y, IntegerMatrix score_matrix, int ga
 
 
 /*** R
+sw(c("A", "L", "D"), c("A", "R", "L", "E"))
 library(Biostrings)
 data("BLOSUM62")
-motiftools:::sw(c("A", "L", "D"), c("A", "R", "L", "E"), score_matrix = BLOSUM62, debug = FALSE)
-motiftools:::.sw(c("A", "L", "D"), c("A", "R", "L", "E"), score.matrix = BLOSUM62, debug = FALSE)
+sw(c("A", "L", "D"), c("A", "R", "L", "E"), score_matrix = BLOSUM62, debug = FALSE)
+#.sw(c("A", "L", "D"), c("A", "R", "L", "E"), score.matrix = BLOSUM62, debug = FALSE)
 */
