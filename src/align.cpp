@@ -20,7 +20,6 @@ CharacterVector getUniqueLetters(CharacterVector x, CharacterVector y) {
 IntegerMatrix getScoreMatrix(CharacterVector x, CharacterVector y, int match_score = 1, int mismatch_score = -1) {
   // get unique character vector.
   CharacterVector z = getUniqueLetters(x, y);
-  cout << z << endl;
 
   // create matrix.
   IntegerMatrix sm(z.length(), z.length());
