@@ -49,7 +49,13 @@ plotMatrix <- function(object, tree, fill, color = "transparent", high, high.col
       high.name <- names(high)
     else
       high.name <- ""
-    g <- ggplot(tmp, aes(x = factor(Var2), y = factor(Var1), fill = value)) + geom_tile() + scale_fill_manual(high.name, values = high.col) + theme(legend.key.size = unit(.5, "lines"))  + scale_x_discrete(expand = c(0,0)) + scale_y_discrete(expand = c(0,0)) + guides(fill = guide_legend(direction = "horizontal"))
+    g <- ggplot(tmp, aes_string(x = "factor(Var2)", y = "factor(Var1)", fill = "value")) +
+      geom_tile() + 
+      scale_fill_manual(high.name, values = high.col) + 
+      theme(legend.key.size = unit(.5, "lines"))  + 
+      scale_x_discrete(expand = c(0,0)) + 
+      scale_y_discrete(expand = c(0,0)) + 
+      guides(fill = guide_legend(direction = "horizontal"))
     grob_high <- ggplotGrob(g)
   }
   
@@ -72,9 +78,9 @@ plotMatrix <- function(object, tree, fill, color = "transparent", high, high.col
   # barplots.
   grob_barplot <- lapply(seq_len(n), function(k) {
     d <- melt(object[[k]], varnames = c("sequence", "motif"), value.name = "count")
-    d <- d %>% group_by(motif) %>% summarize(value = sum(count), total = n())
+    d <- d %>% group_by_("motif") %>% summarize_(value = "sum(count)", total = "n()")
     if (bar.percentage)
-      d <- d %>% mutate(value = 100 * value / total)
+      d <- d %>% mutate_(value = "100 * value / total")
     g <- ggplot(d, aes_string(x = "motif", y = "value")) +
       geom_bar(stat = "identity", fill = "grey", width = 1) +
       scale_x_discrete(breaks = 1:100, expand = c(0, 0)) +
