@@ -2,7 +2,8 @@
 #' 
 #' Tools to analyze sequence motifs
 #' 
-#' @name motiftools
+#' @name motiftools-package
+#' @aliases motiftools
 #' @docType package
 #' 
 #' @import methods Biobase Biostrings XML xml2 gtable ggplot2
