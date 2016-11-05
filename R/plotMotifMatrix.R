@@ -29,7 +29,7 @@ plotMotifMatrix <- function(object, tree, fill, color = "transparent", high, hig
   # tree.
   if (missing(tree)) {
     m <- do.call(cbind, object)
-    tree <- as.dendrogram(hclust(dist(m)))
+    tree <- as.dendrogram(hclust(dcor(m)))
   } else {
     tree <- as.dendrogram(as.hclust(tree))
   }
