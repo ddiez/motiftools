@@ -2,6 +2,7 @@
 
 export(align)
 export(conservationMatrix)
+export(dcor)
 export(getMotifMatrix)
 export(motifAlign)
 export(motifNames)

@@ -1,3 +1,19 @@
+#' dcor
+#' 
+#' Compute Pearson correlation distance on the rows.
+#'
+#' @param x matrix with numeric values.
+#' @param use argument passed down to cor().
+#'
+#' @return a dist object.
+#' @export
+#'
+#' @examples
+#' NULL
+dcor <- function(x, use = "pairwise") {
+  as.dist(1 - cor(t(x), use = use))
+}
+
 df2matrix = function(d, index.cols = c(1,2), value.col = 3, compact.fun = max) {
   if(anyDuplicated(d[, index.cols])) {
     sel = unique(d[, index.cols])
@@ -8,11 +24,6 @@ df2matrix = function(d, index.cols = c(1,2), value.col = 3, compact.fun = max) {
   colnames(nd) = c("source", "target", "value")
   as.matrix(xtabs(value ~ source + target, nd, sparse = TRUE))
 }
-
-dcor <- function(x, use = "pairwise") {
-  as.dist(1 - cor(t(x), use = use))
-}
-
 
 exportTreedyn = function(x, filename) {
   d = data.frame(Id = rownames(x))
