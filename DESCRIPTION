@@ -19,7 +19,8 @@ Imports:
     ggplot2,
     ggdendro,
     reshape2,
-    dplyr
+    dplyr,
+    stats
 Suggests:
     testthat,
     knitr,

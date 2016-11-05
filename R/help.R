@@ -13,6 +13,7 @@
 #' @importFrom Rcpp evalCpp
 #' @importFrom grid grid.newpage grid.draw
 #' @importFrom ggdendro ggdendrogram
+#' @importFrom stats as.dist hclust cor
 #' 
 #' @useDynLib motiftools
 NULL
