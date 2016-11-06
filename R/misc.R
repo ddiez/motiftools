@@ -4,6 +4,7 @@
 #'
 #' @param x matrix with numeric values.
 #' @param use argument passed down to cor().
+#' @param method method use for computing correlation (default: pearson).
 #'
 #' @return a dist object.
 #' @export
@@ -11,7 +12,7 @@
 #' @examples
 #' NULL
 dcor <- function(x, use = "pairwise") {
-  as.dist(1 - cor(t(x), use = use))
+  as.dist(1 - cor(t(x), use = use, method = "pearson"))
 }
 
 df2matrix = function(d, index.cols = c(1,2), value.col = 3, compact.fun = max) {

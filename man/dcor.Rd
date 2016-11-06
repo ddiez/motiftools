@@ -10,6 +10,8 @@ dcor(x, use = "pairwise")
 \item{x}{matrix with numeric values.}
 
 \item{use}{argument passed down to cor().}
+
+\item{method}{method use for computing correlation (default: pearson).}
 }
 \value{
 a dist object.
