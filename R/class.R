@@ -209,16 +209,16 @@ setGeneric("pwm")
 #           })
 # 
 # setOldClass("dendrogram")
-# setClass("TomTom", representation(
-#   matrix = "matrix",
-#   cutoff.type = "character",
-#   cutoff = "numeric",
-#   matrix_key = "matrix",
-#   color_key = "character",
-#   dendrogram = "dendrogram"
-# ))
-# setGeneric("getPWMnames", function(object) standardGeneric("getPWMnames"))
-# setMethod("getPWMnames", "TomTom",
-#           function(object) {
-#             colnames(object@matrix)
-#           })
+setClass("MotifCompareResult", representation(
+  matrix = "matrix",
+  cutoff.type = "character",
+  cutoff = "numeric",
+  matrix_key = "matrix",
+  color_key = "character",
+  dendrogram = "dendrogram"
+))
+setGeneric("getPWMnames", function(object) standardGeneric("getPWMnames"))
+setMethod("getPWMnames", "MotifCompareResult",
+          function(object) {
+            colnames(object@matrix)
+          })

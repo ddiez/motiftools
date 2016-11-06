@@ -1,14 +1,28 @@
-readTOMTOM = function(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05, filter = "TRANSFAC", do.clean = TRUE) {
-  foo = read.table(file, comment.char = "", sep = "\t", header = TRUE, check.names = FALSE, as.is = TRUE)
+#' readTOMTOM
+#'
+#' @param file 
+#' @param do.cut 
+#' @param cut.col 
+#' @param cutoff 
+#' @param filter 
+#' @param do.clean 
+#'
+#' @return MotifCompareResult object.
+#' @export
+#'
+#' @examples
+#' NULL
+readTOMTOM <- function(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05, filter = "TRANSFAC", do.clean = TRUE) {
+  foo <- read.table(file, comment.char = "", sep = "\t", header = TRUE, check.names = FALSE, as.is = TRUE)
   colnames(foo)[1] = sub("#", "", colnames(foo)[1])
   
-  pwm = unique(c(foo[,1], foo[,2]))
+  pwm <- unique(c(foo[, 1], foo[, 2]))
   
   #k = 0
-  pwmm = matrix(0, nrow = length(pwm), ncol = length(pwm), dimnames = list(pwm, pwm))
+  pwmm <- matrix(0, nrow = length(pwm), ncol = length(pwm), dimnames = list(pwm, pwm))
   n <- apply(foo, 1, function(x) {
     if (do.cut) {
-      #			print(x[cut.col])
+      #	print(x[cut.col])
       if (as.numeric(x[cut.col]) <= cutoff) {
         #k <<- k + 1
         pwmm[x[1], x[2]] <<- 1
@@ -19,129 +33,125 @@ readTOMTOM = function(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05, 
     }
   })
   
-  print(paste("Accepted comparisons:",length(which(pwmm == 1))))
+  print(paste("Accepted comparisons:", length(which(pwmm == 1))))
   if(do.clean) {
-    pwmm = cleanMatrix(pwmm)
-    print(paste("After cleaning:",length(which(pwmm == 1))))
+    pwmm <- cleanMatrix(pwmm)
+    print(paste("After cleaning:", length(which(pwmm == 1))))
   }
   
   
   # add default annotations.
-  mat.key = matrix(0, nrow = nrow(pwmm), 1, dimnames = list(rownames(pwmm), "Dataset"))
+  mat.key <- matrix(0, nrow = nrow(pwmm), 1, dimnames = list(rownames(pwmm), "Dataset"))
   #mat.key[grep("sci09", rownames(mat.key))] = 1
   #mat.key[grep("cell08", rownames(mat.key))] = 2
   #mat.key[grep("embo10", rownames(mat.key))] = 3
   #mat.key[grep("^MA", rownames(mat.key))] = 4
   
   # colors.
-  col.key = c("Default" = "gray")
+  col.key <- c("Default" = "gray")
   #col.key = c("grey", "darkblue", "darkgreen", "yellow2", "darkred")
   #names(col.key) = c("TRANSFAC", "SCI09", "CELL08", "EMBO10", "JASPAR")
   
   # filter?
   if (!missing(filter)) {
     #print(col.key)
-    sel.f = which(! names(col.key) %in% filter) - 1
+    sel.f <- which(! names(col.key) %in% filter) - 1
     #print(sel.f)
-    sel.m = rownames(mat.key[mat.key[,1] %in% sel.f,,drop = FALSE])
+    sel.m <- rownames(mat.key[mat.key[,1] %in% sel.f,,drop = FALSE])
     #print(sel.m)
-    mat.key = mat.key[sel.m,,drop = FALSE]
-    col.key = col.key[sel.f + 1]
-    pwmm = pwmm[rownames(pwmm) %in% sel.m, colnames(pwmm) %in% sel.m]
-    n = length(which(pwmm == 1))
+    mat.key <- mat.key[sel.m, , drop = FALSE]
+    col.key <- col.key[sel.f + 1]
+    pwmm <- pwmm[rownames(pwmm) %in% sel.m, colnames(pwmm) %in% sel.m]
+    n <- length(which(pwmm == 1))
     print(paste("Filtering:", n, "comparisons remained after filtering."))
   }
   
   # cluster
-  d = clusterMatrix(pwmm)
+  d <- clusterMatrix(pwmm)
   
-  
-  new("TomTom", matrix = pwmm, cutoff.type = cut.col, cutoff = cutoff, matrix_key = mat.key, color_key = col.key, dendrogram = d)
+  new(
+    "MotifCompareResult",
+    matrix = pwmm,
+    cutoff.type = cut.col,
+    cutoff = cutoff,
+    matrix_key = mat.key,
+    color_key = col.key,
+    dendrogram = d
+  )
 }
-# 
+
 # # TODO: rework, very inefficient (slow)
-# cleanMatrix = function(m) {
-# 	#k = 0
-# 	for(i in colnames(m)) {
-# 		for(j in rownames(m)) {
-# 			if(m[i,j] != 0 | m[j,i] != 0) {
-# 				if(m[i,j] != m[j,i]) {
-# 					#message("inconsistency between ", i, " and ", j, " similarities!")
-# 					#k = k + 1
-# 					m[i,j] = 0
-# 					m[j,i] = 0
-# 				}
-# 			}
-# 		}
-# 	}
-# 	m
-# }
-# 
-# 
-# 
-# 
-# clusterMatrix = function(m, dist.method = "pearson", hclust.method = "complete") {
-# 	dcor <- function(x, method = "pearson", use = "everything") {
-#     	d = 1 - cor(x, method = method, use = use)
-#     	#d[d < 0] = 0 # remove effect of negative correlation
-#     	as.dist(d)
-# 	}
-# 	if (dist.method %in% c("pearson", "spearman"))
-# 		d = dcor(m, method = dist.method)
-# 	else
-# 		d = dist(m, method = dist.method)
-# 		
-# 	h = hclust(d, method = hclust.method)
-# 	as.dendrogram(h)
-# }
-# 
-# cutplot.dendrogram = function(x, h, cluscol, leaflab= "none", horiz=FALSE, lwd=1,
-#                               ...)
-# #
-# # Name: cutplot.dendrogram
-# # Desc: takes a dendrogram as described in library(mva), cuts it at level h,
-# #       and plots the dendrogram with the resulting subtrees in different 
-# #       colors
-# # Auth: obviously based on plot.dendrogram in library(mva)
-# #       modifications by Alexander.Ploner@meb.ki.se  211203
-# #
-# # Chng: 050204 AP 
-# #       changed environment(plot.hclust) to environment(as.dendrogram) to
-# #       make it work with R 1.8.1
-# #       250304 AP added RainbowPastel() to make it consistent with picketplot
-# #       030306 AP slightly more elegant access of plotNode
-# #
-# {
-#     if (missing(h)) {
-#         return(plot(x, leaflab=leaflab, ...))
-#     }
-# 
-#     # Not nice, but necessary
-#     pn  = stats:::plotNode
-# 
-#     opar = par()[c("col","lwd")]
-#     on.exit(par(opar))
-#     par(lwd=lwd)
-# 
-#     x = cut(x, h)
-#     plot(x[[1]], leaflab="none", ...)
-# 
-#     x = x[[2]]
-#     K = length(x)
-#     if (missing(cluscol)) {
-#        cluscol = rainbow(K)
-#     }
-#     x1 = 1
-#     for (k in 1:K) {
-#         x2 = x1 + attr(x[[k]],"members")-1
-#         par(col=cluscol[k])
-#         pn(x1,x2, x[[k]], type="rectangular", center=FALSE,
-#                  leaflab=leaflab, nodePar=NULL, edgePar=list(), horiz=horiz)
-#         x1 = x2 + 1
-#    }
-# 
-# 
-# }
+cleanMatrix <- function(m) {
+  #k = 0
+  for (i in colnames(m)) {
+    for (j in rownames(m)) {
+      if (m[i, j] != 0 | m[j, i] != 0) {
+        if (m[i, j] != m[j, i]) {
+          #message("inconsistency between ", i, " and ", j, " similarities!")
+          #k = k + 1
+          m[i, j] = 0
+          m[j, i] = 0
+        }
+      }
+    }
+  }
+  m
+}
+
+clusterMatrix = function(m, dist.method = "pearson", hclust.method = "complete") {
+	if (dist.method %in% c("pearson", "spearman"))
+		d <- dcor(m, method = dist.method)
+	else
+		d <- dist(m, method = dist.method)
+
+	h <- hclust(d, method = hclust.method)
+	as.dendrogram(h)
+}
+
+cutplot.dendrogram = function(x, h, cluscol, leaflab= "none", horiz=FALSE, lwd=1, ...)
+#
+# Name: cutplot.dendrogram
+# Desc: takes a dendrogram as described in library(mva), cuts it at level h,
+#       and plots the dendrogram with the resulting subtrees in different
+#       colors
+# Auth: obviously based on plot.dendrogram in library(mva)
+#       modifications by Alexander.Ploner@meb.ki.se  211203
+#
+# Chng: 050204 AP
+#       changed environment(plot.hclust) to environment(as.dendrogram) to
+#       make it work with R 1.8.1
+#       250304 AP added RainbowPastel() to make it consistent with picketplot
+#       030306 AP slightly more elegant access of plotNode
+#
+{
+    if (missing(h)) {
+        return(plot(x, leaflab=leaflab, ...))
+    }
+
+    # Not nice, but necessary
+    pn  = stats:::plotNode
+
+    opar = par()[c("col","lwd")]
+    on.exit(par(opar))
+    par(lwd=lwd)
+
+    x = cut(x, h)
+    plot(x[[1]], leaflab="none", ...)
+
+    x = x[[2]]
+    K = length(x)
+    if (missing(cluscol)) {
+       cluscol = rainbow(K)
+    }
+    x1 = 1
+    for (k in 1:K) {
+        x2 = x1 + attr(x[[k]],"members")-1
+        par(col=cluscol[k])
+        pn(x1,x2, x[[k]], type="rectangular", center=FALSE,
+                 leaflab=leaflab, nodePar=NULL, edgePar=list(), horiz=horiz)
+        x1 = x2 + 1
+   }
+}
 # 
 # ##
 # ## plotTomTom()
