@@ -45,7 +45,7 @@ plotConservation = function(x, seq.names = FALSE, cluster.row = TRUE) {
   }
   d = melt(x,varnames = c("sequences","position"), value.name = "conservation")
   d$conservation = factor(d$conservation, levels = 1:5, labels =  c("gap (-)","< 40%",">= 40%",">= 60%",">= 80%"))
-  g <- ggplot(d, aes(x=position,y=sequences,fill=conservation)) + geom_raster() + scale_fill_manual(values=c("white","grey80","grey50", "steelblue","orange"), limits = c("gap (-)","< 40%",">= 40%",">= 60%",">= 80%"), guide="legend") + scale_x_discrete(expand = c(0, 0)) + scale_y_discrete(expand=c(0,0)) + theme(axis.text.x=element_blank(), axis.ticks.x = element_blank())
+  g <- ggplot(d, aes_string(x="position",y="sequences",fill="conservation")) + geom_raster() + scale_fill_manual(values=c("white","grey80","grey50", "steelblue","orange"), limits = c("gap (-)","< 40%",">= 40%",">= 60%",">= 80%"), guide="legend") + scale_x_discrete(expand = c(0, 0)) + scale_y_discrete(expand=c(0,0)) + theme(axis.text.x=element_blank(), axis.ticks.x = element_blank())
   if(! seq.names)
     g <- g + theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
   print(g)
@@ -82,7 +82,7 @@ plotConservationMatrix <- function(x, tree) {
   d <- melt(x, varnames = c("sequences","position"), value.name = "conservation")
   d$conservation <- factor(d$conservation, levels = 1:5, labels =  c("gap (-)","< 40%",">= 40%",">= 60%",">= 80%"))
   
-  pheat <- ggplot(d, aes(x = position, y = sequences, fill = conservation)) + 
+  pheat <- ggplot(d, aes_string(x = "position", y = "sequences", fill = "conservation")) + 
     geom_tile() + 
     scale_y_discrete(expand = c(0, 0)) +
     scale_fill_manual(values = c("white", "grey80", "grey50", "steelblue", "orange"),
