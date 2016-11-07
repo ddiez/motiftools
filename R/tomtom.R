@@ -1,4 +1,4 @@
-getTomTomMotifProbabilities <- function(x, from = c("queries", "targets")) {
+getTomtomMotifProbabilities <- function(x, from = c("queries", "targets")) {
   path <- paste0(from, "/motif")
   lapply(xml_find_all(x, path), function(motif) {
     m <- xml_attrs(xml_find_all(motif, "pos"))
@@ -23,7 +23,7 @@ getTomtomMotifInfo <- function(x, from = c("queries", "targets")) {
   )
 }
 
-getTomTomMotifMatches <- function(x) {
+getTomtomMotifMatches <- function(x) {
   tmp <- lapply(xml_find_all(x, "matches/query"), function(motif) {
     query_id <- xml_attr(motif, "idx")
     tmp <- xml_attrs(xml_find_all(motif, "target"))
@@ -58,8 +58,8 @@ readTOMTOM <- function(file, description = NULL) {
   doc <- read_xml(file)
   root <- xml_root(doc)
   
-  query_prob <- getTomTomMotifProbabilities(root, "queries")
-  target_prob <- getTomTomMotifProbabilities(root, "targets")
+  query_prob <- getTomtomMotifProbabilities(root, "queries")
+  target_prob <- getTomtomMotifProbabilities(root, "targets")
   
   query_info <- getTomtomMotifInfo(root, "queries")
   target_info <- getTomtomMotifInfo(root, "targets")
@@ -69,7 +69,7 @@ readTOMTOM <- function(file, description = NULL) {
     target = target_prob
   )
   
-  match_info <- getTomTomMotifMatches(root)
+  match_info <- getTomtomMotifMatches(root)
   
   new("MotifCompareResult",
       info = list(
