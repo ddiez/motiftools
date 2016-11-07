@@ -84,6 +84,33 @@ readTOMTOM <- function(file, description = NULL) {
   )
 }
 
+#' plotMotifMatches
+#' 
+#' Plot a matrix with rows and columns representing motifs in the query and target databases, and the fill
+#' color representing one of the three statistics (p_value, e_value, q_value) measuring the significance of
+#' the similarity between the motifs.
+#'
+#' @param x a MotifCompareResult object.
+#' @param fill the statistic to plot. One of p_value, e_value, q_value (default: p_value).
+#'
+#' @return NULL
+#' @export
+#'
+#' @examples
+#' NULL
+plotMotifMatches <- function(x, fill = c("p_value", "e_value", "q_value")) {
+  x <- x@matches
+  ggplot(x, aes_string(x = "query_id", y = "target_id", fill = fill)) + 
+    geom_tile() + 
+    scale_fill_viridis(guide = guide_legend(), direction = -1) + 
+    scale_x_discrete(expand = c(0, 0)) +
+    scale_y_discrete(expand = c(0, 0)) +
+    theme(
+      aspect.ratio = 1,
+      axis.ticks = element_blank()
+    )
+}
+
 
 ########### OLD
 #' readTOMTOM
