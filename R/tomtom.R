@@ -1,19 +1,3 @@
-getTomtomAlphabet <- function(x) {
-  tmp <- lapply(xml_attrs(xml_find_all(x, "model/alphabet/letter")), function(l) {
-    data.frame(
-      id = l["id"],
-      symbol = l["symbol"],
-      aliases = ifelse(is.na(l["aliases"]), l["symbol"], l["aliases"]),
-      color = l["colour"],
-      equals = ifelse(is.na(l["equals"]), l["symbol"], l["equals"]),
-      name = l["name"],
-      row.names = NULL,
-      stringsAsFactors = FALSE
-    )
-  })
-  do.call(rbind, tmp)
-}
-
 getTomtomMotifProbabilities <- function(x, from = c("queries", "targets")) {
   path <- paste0(from, "/motif")
   lapply(xml_find_all(x, path), function(motif) {
@@ -74,7 +58,6 @@ readTOMTOM <- function(file, description = NULL) {
   doc <- read_xml(file)
   root <- xml_root(doc)
   
-  alpha_info <- getTomtomAlphabet(root)
   query_prob <- getTomtomMotifProbabilities(root, "queries")
   target_prob <- getTomtomMotifProbabilities(root, "targets")
   
@@ -88,8 +71,6 @@ readTOMTOM <- function(file, description = NULL) {
   
   match_info <- getTomtomMotifMatches(root)
   
-  alphabetData <- AnnotatedDataFrame(alpha_info)
-  
   new("MotifCompareResult",
       info = list(
         tool = "tomtom",
@@ -97,11 +78,9 @@ readTOMTOM <- function(file, description = NULL) {
         nquery = nrow(query_info),
         ntarget = nrow(target_info)
       ),
-      alphabet = alpha_info,
-      query = query_info,
-      target = target_info,
       probabilities = prob_info,
       matches = match_info
+      #alphabet = alphabetData
   )
 }
 

@@ -101,18 +101,16 @@ setGeneric("pwm")
 #' @name MotifCompareResult-class
 #' @rdname MotifCompareResult-class
 #' @slot info list with result information.
-#' @slot alphabet data.frame with alphabet information.
-#' @slot query data.frame with query motifs information.
-#' @slot target data.frame with target motifs information.
+#' @slot query AnnotatedDataFrame with sequence information.
+#' @slot target AnnotatedDataFrame with motif information.
 #' @slot probabilities list of motif probabilities. 
 #' @slot matches list of motif scores.
 #' 
 setClass("MotifCompareResult",
          slots = c(
            info = "list",
-           alphabet = "data.frame",
-           query = "data.frame",
-           target = "data.frame",
+           query = "AnnotatedDataFrame",
+           target = "AnnotatedDataFrame",
            probabilities = "list",
            matches = "data.frame"
          )

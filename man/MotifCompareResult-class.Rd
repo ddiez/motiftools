@@ -12,11 +12,9 @@ MotifCompareResult
 \describe{
 \item{\code{info}}{list with result information.}
 
-\item{\code{alphabet}}{data.frame with alphabet information.}
+\item{\code{query}}{AnnotatedDataFrame with sequence information.}
 
-\item{\code{query}}{data.frame with query motifs information.}
-
-\item{\code{target}}{data.frame with target motifs information.}
+\item{\code{target}}{AnnotatedDataFrame with motif information.}
 
 \item{\code{probabilities}}{list of motif probabilities.}
 
