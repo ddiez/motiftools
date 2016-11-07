@@ -16,6 +16,9 @@ nquery(object)
 
 ntarget(object)
 }
+\arguments{
+\item{object}{MotifCompareResult object.}
+}
 \description{
 MotifCompareResult
 }

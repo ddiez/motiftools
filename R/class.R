@@ -106,6 +106,7 @@ setGeneric("pwm")
 #' @slot target data.frame with target motifs information.
 #' @slot probabilities list of motif probabilities. 
 #' @slot matches list of motif scores.
+#' @param object MotifCompareResult object.
 #' 
 setClass("MotifCompareResult",
          slots = c(
