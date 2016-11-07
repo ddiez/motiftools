@@ -117,3 +117,14 @@ setClass("MotifCompareResult",
            matches = "data.frame"
          )
 )
+
+#' @rdname MotifCompareResult-class
+#' @aliases show,MotifCompareResult-method
+setMethod("show", "MotifCompareResult",
+          function(object) {
+            message(class(object), " object.")
+            message("Motif tool: ", object@info$tool)
+            message("Number of query motifs: ", object@info$nquery)
+            message("Number of target motifs: ", object@info$ntarget)
+          })
+

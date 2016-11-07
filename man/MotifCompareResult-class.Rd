@@ -3,7 +3,11 @@
 \docType{class}
 \name{MotifCompareResult-class}
 \alias{MotifCompareResult-class}
+\alias{show,MotifCompareResult-method}
 \title{MotifCompareResult}
+\usage{
+\S4method{show}{MotifCompareResult}(object)
+}
 \description{
 MotifCompareResult
 }
