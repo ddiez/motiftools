@@ -4,7 +4,7 @@
 \alias{dcor}
 \title{dcor}
 \usage{
-dcor(x, use = "pairwise")
+dcor(x, use = "pairwise", method = "pearson")
 }
 \arguments{
 \item{x}{matrix with numeric values.}
