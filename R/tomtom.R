@@ -1,3 +1,91 @@
+getTomTomMotifProbabilities <- function(x, from = c("queries", "targets")) {
+  path <- paste0(from, "/motif")
+  lapply(xml_find_all(x, path), function(motif) {
+    m <- xml_attrs(xml_find_all(motif, "pos"))
+    m <- do.call(rbind, m)
+    mode(m) <- "numeric"
+    rownames(m) <- 1:nrow(m)
+    t(as.matrix(m))
+  })
+}
+
+getTomtomMotifInfo <- function(x, from = c("queries", "targets")) {
+  path <- paste0(from, "/motif")
+  tmp <- do.call(rbind, xml_attrs(xml_find_all(x, path)))  
+  data.frame(
+    db = tmp[, "db"],
+    motif_id = tmp[, "id"],
+    alt = tmp[, "alt"],
+    width = as.numeric(tmp[, "length"]),
+    nsites = as.numeric(tmp[, "nsites"]),
+    e_value = as.numeric(tmp[, "evalue"]),
+    stringsAsFactors = FALSE
+  )
+}
+
+getTomTomMotifMatches <- function(x) {
+  tmp <- lapply(xml_find_all(x, "matches/query"), function(motif) {
+    query_id <- xml_attr(motif, "idx")
+    tmp <- xml_attrs(xml_find_all(motif, "target"))
+    tmp <- do.call(rbind, tmp)
+    data.frame(query_id = query_id,
+               target_id = tmp[, "idx"],
+               offset = as.integer(tmp[, "idx"]),
+               p_value = as.numeric(tmp[, "pv"]),
+               e_value = as.numeric(tmp[, "ev"]),
+               q_value = as.numeric(tmp[, "qv"]),
+               stringsAsFactors = FALSE
+    )
+  })
+  tmp <- do.call(rbind, tmp)
+  rownames(tmp) <- NULL
+  tmp
+}
+
+#' readTOMTOM
+#' 
+#' Read results from tomtom.
+#'
+#' @param file Tomtom file in XML format.
+#' @param description description for the experiment.
+#'
+#' @return MotifCompareResult
+#' @export
+#'
+#' @examples
+#' NULL
+readTOMTOM <- function(file, description = NULL) {
+  doc <- read_xml(file)
+  root <- xml_root(doc)
+  
+  query_prob <- getTomTomMotifProbabilities(root, "queries")
+  target_prob <- getTomTomMotifProbabilities(root, "targets")
+  
+  query_info <- getTomtomMotifInfo(root, "queries")
+  target_info <- getTomtomMotifInfo(root, "targets")
+  
+  prob_info <- list(
+    query = query_prob,
+    target = target_prob
+  )
+  
+  match_info <- getTomTomMotifMatches(root)
+  
+  new("MotifCompareResult",
+      info = list(
+        tool = "tomtom",
+        description = description,
+        nquery = nrow(query_info),
+        ntarget = nrow(target_info)
+      ),
+      probabilities = prob_info,
+      matches = match_info
+      #alphabet = alphabetData
+  )
+}
+
+
+########### OLD
 #' readTOMTOM
 #'
 #' @param file 

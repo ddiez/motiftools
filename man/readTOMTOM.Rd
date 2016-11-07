@@ -4,27 +4,18 @@
 \alias{readTOMTOM}
 \title{readTOMTOM}
 \usage{
-readTOMTOM(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05,
-  filter = "TRANSFAC", do.clean = TRUE)
+readTOMTOM(file, description = NULL)
 }
 \arguments{
-\item{file}{}
+\item{file}{Tomtom file in XML format.}
 
-\item{do.cut}{}
-
-\item{cut.col}{}
-
-\item{cutoff}{}
-
-\item{filter}{}
-
-\item{do.clean}{}
+\item{description}{description for the experiment.}
 }
 \value{
-MotifCompareResult object.
+MotifCompareResult
 }
 \description{
-readTOMTOM
+Read results from tomtom.
 }
 \examples{
 NULL
