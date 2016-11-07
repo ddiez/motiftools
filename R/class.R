@@ -128,3 +128,14 @@ setMethod("show", "MotifCompareResult",
             message("Number of target motifs: ", object@info$ntarget)
           })
 
+#' @rdname MotifCompareResult-class
+#' @aliases nquery,MotifCompareResult-method
+#' @export
+nquery <- function(object) object@info$nquery
+setGeneric("nquery")
+
+#' @rdname MotifCompareResult-class
+#' @aliases ntarget,MotifCompareResult-method
+#' @export
+ntarget <- function(object) object@info$ntarget
+setGeneric("ntarget")
