@@ -74,6 +74,16 @@ p <- pwm(x_meme)[["motif_4"]]
 plotMotifLogo(p, col = rainbow(20))
 ```
 
+You can compare the motifs obtained with MEME using the TOMTOM tool. Then you can read the results and look at the comparison matrix.
+
+```{r}
+f <- system.file("files/tomtom_ras/tomtom.xml", package = "motiftools")
+x_tomtom <- readTOMTOM(f)
+plotMotifMatches(x_tomtom)
+plotMotifMatches(x_tomtom, fill = "e_value")
+```
+
+
 ## Sequences
 
 ```{r}
