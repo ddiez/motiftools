@@ -7,12 +7,11 @@
 #' @param filter 
 #' @param do.clean 
 #'
-#' @return MotifCompareResult object.
-#' @export
+#' @return Tomtom object.
 #'
 #' @examples
 #' NULL
-readTOMTOM <- function(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05, filter = "TRANSFAC", do.clean = TRUE) {
+readTOMTOM_old <- function(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05, filter = "TRANSFAC", do.clean = TRUE) {
   foo <- read.table(file, comment.char = "", sep = "\t", header = TRUE, check.names = FALSE, as.is = TRUE)
   colnames(foo)[1] = sub("#", "", colnames(foo)[1])
   
@@ -67,16 +66,16 @@ readTOMTOM <- function(file, do.cut = FALSE, cut.col = "q-value", cutoff = 0.05,
   }
   
   # cluster
-  d <- clusterMatrix(pwmm)
+  #d <- clusterMatrix(pwmm)
   
   new(
-    "MotifCompareResult",
+    "Tomtom",
     matrix = pwmm,
     cutoff.type = cut.col,
     cutoff = cutoff,
     matrix_key = mat.key,
-    color_key = col.key,
-    dendrogram = d
+    color_key = col.key#,
+    #dendrogram = d
   )
 }
 

@@ -93,6 +93,29 @@ setGeneric("scores")
 pwm <- function(object) object@probabilities
 setGeneric("pwm")
 
+##### MotifCompareResult
+#' MotifCompareResult
+#' 
+#' MotifCompareResult
+#' 
+#' @name MotifCompareResult-class
+#' @rdname MotifCompareResult-class
+#' @slot info list with result information.
+#' @slot query AnnotatedDataFrame with sequence information.
+#' @slot target AnnotatedDataFrame with motif information.
+#' @slot probabilities list of motif probabilities. 
+#' @slot matches list of motif scores.
+#' 
+setClass("MotifCompareResult",
+         slots = c(
+           info = "list",
+           query = "AnnotatedDataFrame",
+           target = "AnnotatedDataFrame",
+           probabilities = "list",
+           matches = "data.frame"
+         )
+)
+
 
 # getMotifMatchMatrix <- function(object, motif, pssm="BLOSUM62") {
 #   r=object@ranges
@@ -209,16 +232,17 @@ setGeneric("pwm")
 #           })
 # 
 # setOldClass("dendrogram")
-setClass("MotifCompareResult", representation(
-  matrix = "matrix",
-  cutoff.type = "character",
-  cutoff = "numeric",
-  matrix_key = "matrix",
-  color_key = "character",
-  dendrogram = "dendrogram"
-))
+setClass("Tomtom",
+         slots = c(
+          matrix = "matrix",
+          cutoff.type = "character",
+          cutoff = "numeric",
+          matrix_key = "matrix",
+          color_key = "character"
+          )
+         )
 setGeneric("getPWMnames", function(object) standardGeneric("getPWMnames"))
-setMethod("getPWMnames", "MotifCompareResult",
+setMethod("getPWMnames", "Tomtom",
           function(object) {
             colnames(object@matrix)
           })
