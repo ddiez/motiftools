@@ -11,8 +11,8 @@
 #'
 #' @examples
 #' NULL
-dcor <- function(x, use = "pairwise") {
-  as.dist(1 - cor(t(x), use = use, method = "pearson"))
+dcor <- function(x, use = "pairwise", method = "pearson") {
+  as.dist(1 - cor(t(x), use = use, method = method))
 }
 
 df2matrix = function(d, index.cols = c(1,2), value.col = 3, compact.fun = max) {
