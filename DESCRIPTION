@@ -20,7 +20,8 @@ Imports:
     ggdendro,
     reshape2,
     dplyr,
-    stats
+    stats,
+    viridis
 Suggests:
     testthat,
     knitr,

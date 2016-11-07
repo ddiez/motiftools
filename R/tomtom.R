@@ -123,7 +123,7 @@ plotMotifMatches <- function(x, fill = c("p_value", "e_value", "q_value")) {
   x <- x@matches
   ggplot(x, aes_string(x = "query_id", y = "target_id", fill = fill)) + 
     geom_tile() + 
-    scale_fill_viridis(guide = guide_legend(), direction = -1) + 
+    viridis::scale_fill_viridis(guide = guide_legend(), direction = -1) + 
     scale_x_discrete(expand = c(0, 0)) +
     scale_y_discrete(expand = c(0, 0)) +
     theme(
