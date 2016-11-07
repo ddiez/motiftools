@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>plotConservation — plotConservation • motiftools</title>
+<title>MotifCompareResult — MotifCompareResult-class • motiftools</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -69,28 +69,37 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>plotConservation</h1>
+    <h1>MotifCompareResult</h1>
     </div>
 
     
-    <p>plotConservation</p>
+    <p>MotifCompareResult</p>
     
 
-    <pre><span class='fu'>plotConservation</span>(<span class='no'>x</span>, <span class='kw'>seq.names</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cluster.row</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre><span class='co'># S4 method for MotifCompareResult</span>
+<span class='fu'>show</span>(<span class='no'>object</span>)
+
+<span class='fu'>nquery</span>(<span class='no'>object</span>)
+
+<span class='fu'>ntarget</span>(<span class='no'>object</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>x</dt>
-      <dd>a matrix as obtained with conservationMatrix()</dd>
-      <dt>seq.names</dt>
-      <dd>logical; whether to plot seq names</dd>
-      <dt>cluster.row</dt>
-      <dd>logical whether to cluster rows</dd>
+      <dt>object</dt>
+      <dd>MotifCompareResult object.</dd>
     </dl>
     
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
 
-    <p>This function will be superseeded by plotConservationMatrix()</p>
+    <p></p>
+    <p><dl class='dl-horizontal'>
+<dt><code>info</code></dt><dd>list with result information.</dd></p>
+    <p><dt><code>alphabet</code></dt><dd>data.frame with alphabet information.</dd></p>
+    <p><dt><code>query</code></dt><dd>data.frame with query motifs information.</dd></p>
+    <p><dt><code>target</code></dt><dd>data.frame with target motifs information.</dd></p>
+    <p><dt><code>probabilities</code></dt><dd>list of motif probabilities.</dd></p>
+    <p><dt><code>matches</code></dt><dd>list of motif scores.</dd>
+</dl></p>
     
 
   </div>
@@ -99,7 +108,7 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#note">Note</a></li>
+      <li><a href="#slots">Slots</a></li>
           </ul>
 
   </div>

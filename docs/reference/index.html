@@ -10,7 +10,6 @@
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
-
 <!-- Bootstrap -->
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -22,6 +21,7 @@
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
+<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 <!-- mathjax -->
@@ -34,10 +34,9 @@
   </head>
 
   <body>
-    <div class="container">
+    <div class="container template-reference-index">
       <header>
-      
-<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -50,66 +49,135 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">Home</a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
       </ul>
+      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
+
       
       </header>
 
-      <div class="page-header">
-  <h1>Function reference <small>version&nbsp;0.13.0</small></h1>
-</div>
-
-<div class="row">
+      <div class="row">
   <div class="col-md-9">
-    <div class="section ">
-      <h2>All functions</h2>
+    <div class="page-header">
+      <h1>Function reference</h1>
+      <h4>version&nbsp;0.13.0</h4>
+    </div>
+
+    <div class="contents">
+      <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
       <p class="section-desc"></p>
 
-      <dl class="dl-horizontal">
-        <dt><a href="align.html">align</a></dt>
-        <dd>Align two sequences</dd>
-        <dt><a href="conservationMatrix.html">conservationMatrix</a></dt>
-        <dd>conservationMatrix</dd>
-        <dt><a href="getMotifMatrix.html">getMotifMatrix</a></dt>
-        <dd>getMotifMatrix</dd>
-        <dt><a href="motifAlign.html">motifAlign</a></dt>
-        <dd>Align two motifs represented as PWMs</dd>
-        <dt><a href="MotifSearchResult-class.html">MotifSearchResult-class</a></dt><dt><a href="MotifSearchResult-class.html">[,MotifSearchResult-method</a></dt><dt><a href="MotifSearchResult-class.html">motifNames</a></dt><dt><a href="MotifSearchResult-class.html">motifNames,MotifSearchResult-method</a></dt><dt><a href="MotifSearchResult-class.html">nmotif</a></dt><dt><a href="MotifSearchResult-class.html">nmotif,MotifSearchResult-method</a></dt><dt><a href="MotifSearchResult-class.html">nseq</a></dt><dt><a href="MotifSearchResult-class.html">nseq,MotifSearchResult-method</a></dt><dt><a href="MotifSearchResult-class.html">pwm</a></dt><dt><a href="MotifSearchResult-class.html">pwm,MotifSearchResult-method</a></dt><dt><a href="MotifSearchResult-class.html">scores</a></dt><dt><a href="MotifSearchResult-class.html">scores,MotifSearchResult-method</a></dt><dt><a href="MotifSearchResult-class.html">sequenceNames</a></dt><dt><a href="MotifSearchResult-class.html">sequenceNames,MotifSearchResult-method</a></dt><dt><a href="MotifSearchResult-class.html">show,MotifSearchResult-method</a></dt>
-        <dd>MotifSearchResult</dd>
-        <dt><a href="motiftools.html">motiftools</a></dt><dt><a href="motiftools.html">motiftools-package</a></dt>
-        <dd>motiftools</dd>
-        <dt><a href="plotConservation.html">plotConservation</a></dt>
-        <dd>plotConservation</dd>
-        <dt><a href="plotConservationMatrix.html">plotConservationMatrix</a></dt>
-        <dd>plotConservationMatrix</dd>
-        <dt><a href="plotMotifMatrix.html">plotMotifMatrix</a></dt>
-        <dd>plotMotifMatrix</dd>
-        <dt><a href="readFIMO.html">readFIMO</a></dt>
-        <dd>Read results from FIMO motif search stored in XML format.</dd>
-        <dt><a href="readMAST.html">readMAST</a></dt>
-        <dd>Read results from MAST motif search stored in XML format.</dd>
-        <dt><a href="readMEME.html">readMEME</a></dt>
-        <dd>Read results from MEME motif search stored in XML format.</dd>
-      </dl>
+      
+      <p><a href="align.html">Align two sequences</a></p>
+      <ul>
+        <li><code><a href="align.html">align</a></code></li>
+      </ul>
+      
+      <p><a href="conservationMatrix.html">conservationMatrix</a></p>
+      <ul>
+        <li><code><a href="conservationMatrix.html">conservationMatrix</a></code></li>
+      </ul>
+      
+      <p><a href="dcor.html">dcor</a></p>
+      <ul>
+        <li><code><a href="dcor.html">dcor</a></code></li>
+      </ul>
+      
+      <p><a href="getMotifMatrix.html">getMotifMatrix</a></p>
+      <ul>
+        <li><code><a href="getMotifMatrix.html">getMotifMatrix</a></code></li>
+      </ul>
+      
+      <p><a href="motifAlign.html">Align two motifs represented as PWMs</a></p>
+      <ul>
+        <li><code><a href="motifAlign.html">motifAlign</a></code></li>
+      </ul>
+      
+      <p><a href="MotifCompareResult-class.html">MotifCompareResult</a></p>
+      <ul>
+        <li><code><a href="MotifCompareResult-class.html">MotifCompareResult-class</a></code></li><li><code><a href="MotifCompareResult-class.html">nquery</a></code></li><li><code><a href="MotifCompareResult-class.html">nquery,MotifCompareResult-method</a></code></li><li><code><a href="MotifCompareResult-class.html">ntarget</a></code></li><li><code><a href="MotifCompareResult-class.html">ntarget,MotifCompareResult-method</a></code></li><li><code><a href="MotifCompareResult-class.html">show,MotifCompareResult-method</a></code></li>
+      </ul>
+      
+      <p><a href="MotifSearchResult-class.html">MotifSearchResult</a></p>
+      <ul>
+        <li><code><a href="MotifSearchResult-class.html">MotifSearchResult-class</a></code></li><li><code><a href="MotifSearchResult-class.html">[,MotifSearchResult-method</a></code></li><li><code><a href="MotifSearchResult-class.html">motifNames</a></code></li><li><code><a href="MotifSearchResult-class.html">motifNames,MotifSearchResult-method</a></code></li><li><code><a href="MotifSearchResult-class.html">nmotif</a></code></li><li><code><a href="MotifSearchResult-class.html">nmotif,MotifSearchResult-method</a></code></li><li><code><a href="MotifSearchResult-class.html">nseq</a></code></li><li><code><a href="MotifSearchResult-class.html">nseq,MotifSearchResult-method</a></code></li><li><code><a href="MotifSearchResult-class.html">pwm</a></code></li><li><code><a href="MotifSearchResult-class.html">pwm,MotifSearchResult-method</a></code></li><li><code><a href="MotifSearchResult-class.html">scores</a></code></li><li><code><a href="MotifSearchResult-class.html">scores,MotifSearchResult-method</a></code></li><li><code><a href="MotifSearchResult-class.html">sequenceNames</a></code></li><li><code><a href="MotifSearchResult-class.html">sequenceNames,MotifSearchResult-method</a></code></li><li><code><a href="MotifSearchResult-class.html">show,MotifSearchResult-method</a></code></li>
+      </ul>
+      
+      <p><a href="motiftools-package.html">motiftools</a></p>
+      <ul>
+        <li><code><a href="motiftools-package.html">motiftools</a></code></li><li><code><a href="motiftools-package.html">motiftools-package</a></code></li>
+      </ul>
+      
+      <p><a href="plotConservation.html">plotConservation</a></p>
+      <ul>
+        <li><code><a href="plotConservation.html">plotConservation</a></code></li>
+      </ul>
+      
+      <p><a href="plotConservationMatrix.html">plotConservationMatrix</a></p>
+      <ul>
+        <li><code><a href="plotConservationMatrix.html">plotConservationMatrix</a></code></li>
+      </ul>
+      
+      <p><a href="plotMotifMatches.html">plotMotifMatches</a></p>
+      <ul>
+        <li><code><a href="plotMotifMatches.html">plotMotifMatches</a></code></li>
+      </ul>
+      
+      <p><a href="plotMotifMatrix.html">plotMotifMatrix</a></p>
+      <ul>
+        <li><code><a href="plotMotifMatrix.html">plotMotifMatrix</a></code></li>
+      </ul>
+      
+      <p><a href="readFIMO.html">Read results from FIMO motif search stored in XML format.</a></p>
+      <ul>
+        <li><code><a href="readFIMO.html">readFIMO</a></code></li>
+      </ul>
+      
+      <p><a href="readMAST.html">Read results from MAST motif search stored in XML format.</a></p>
+      <ul>
+        <li><code><a href="readMAST.html">readMAST</a></code></li>
+      </ul>
+      
+      <p><a href="readMEME.html">Read results from MEME motif search stored in XML format.</a></p>
+      <ul>
+        <li><code><a href="readMEME.html">readMEME</a></code></li>
+      </ul>
+      
+      <p><a href="readTOMTOM.html">readTOMTOM</a></p>
+      <ul>
+        <li><code><a href="readTOMTOM.html">readTOMTOM</a></code></li>
+      </ul>
+    
     </div>
+  </div>
+
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#section-all-functions">All functions</a></li>
+    </ul>
   </div>
 </div>
 
       <footer>
-      <p>Built by <a href="http://hadley.github.io/pkgdown/">pkgdown</a>. Styled with <a href="http://getbootstrap.com">Bootstrap 3</a>.</p>
+      <div class="copyright">
+  <p>Developed by Diego Diez.</p>
+</div>
+
+<div class="pkgdown">
+  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+</div>
+
       </footer>
    </div>
 
