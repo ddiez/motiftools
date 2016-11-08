@@ -7,7 +7,7 @@
 conservationMatrix(object)
 }
 \arguments{
-\item{object}{sequence alignment object.}
+\item{object}{AAMultipleAlignment alignment object.}
 }
 \description{
 Compute the conservation score matrix from a MSA
