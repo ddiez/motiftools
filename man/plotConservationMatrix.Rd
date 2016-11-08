@@ -4,12 +4,14 @@
 \alias{plotConservationMatrix}
 \title{plotConservationMatrix}
 \usage{
-plotConservationMatrix(x, tree)
+plotConservationMatrix(x, tree, color = "transparent")
 }
 \arguments{
 \item{x}{a matrix as obtained with conservationMatrix()}
 
 \item{tree}{a tree of class dendrogram or that can be coerced into.}
+
+\item{color}{color for the tile borders (default: transparent).}
 }
 \description{
 plots a heatmap with the conservation score for each residue

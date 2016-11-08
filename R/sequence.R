@@ -58,9 +58,10 @@ plotConservation = function(x, seq.names = FALSE, cluster.row = TRUE) {
 #'
 #' @param x a matrix as obtained with conservationMatrix()
 #' @param tree a tree of class dendrogram or that can be coerced into.
+#' @param color color for the tile borders (default: transparent).
 #' 
 #' @export
-plotConservationMatrix <- function(x, tree) {
+plotConservationMatrix <- function(x, tree, color = "transparent") {
   if (!missing(tree)) {
     tree <- as.phylo(tree)
     x <- x[tree$tip.label, ]
@@ -78,7 +79,7 @@ plotConservationMatrix <- function(x, tree) {
   d$conservation <- factor(d$conservation, levels = 1:5, labels =  c("gap (-)","< 40%",">= 40%",">= 60%",">= 80%"))
   
   pheat <- ggplot(d, aes_string(x = "position", y = "sequences", fill = "conservation")) + 
-    geom_tile() + 
+    geom_tile(color = color) + 
     scale_x_discrete(expand = c(0, 0)) +
     scale_y_discrete(expand = c(0, 0)) +
     scale_fill_manual(values = c("white", "grey80", "grey50", "steelblue", "orange"),
