@@ -57,18 +57,18 @@ plotMotifMatrix(m_meme, fill = c("white", "grey"))
 f <- system.file("files/fimo_ras/fimo.xml", package = "motiftools")
 x_fimo <- readFIMO(f)
 m_fimo <- getMotifMatrix(x_fimo)
-plotMotifMatrix(list(m_meme, m_fimo), fill = c("white", "grey"))
+plotMotifMatrix(list(meme = m_meme, fimo = m_fimo), fill = c("white", "grey"), col = "black")
 
 # load MAST results.
 f <- system.file("files/mast_ras/mast.xml", package = "motiftools")
 x_mast <- readMAST(f)
 m_mast <- getMotifMatrix(x_mast)
-plotMotifMatrix(list(m_meme, m_fimo, m_mast), fill = c("white", "grey"))
+plotMotifMatrix(list("MEME motifs" = m_meme, "FIMO motifs" = m_fimo, "MAST motifs" = m_mast), fill = c("white", "grey"), col = "black")
 
 # highlight some sequences.
 h <- grepl("RASH|RASK", sequenceNames(x_meme))
 names(h) <- sequenceNames(x_meme)
-plotMotifMatrix(list(m_meme, m_fimo, m_mast), fill = c("white", "grey"), high = h, high.col = c("black", "orange"))
+plotMotifMatrix(list("MEME motifs" = m_meme, "FIMO motifs" = m_fimo, "MAST motifs" = m_mast), fill = c("white", "grey"), col = "black", high = h, high.col = c("black", "orange"))
 
 # plot a motif model logo (from MEME output).
 p <- pwm(x_meme)[["motif_4"]]
