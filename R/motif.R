@@ -1,3 +1,49 @@
+#' getMotifMatrix
+#' 
+#' Obtain a congintency matrix with the number of motifs per sequence. Alterna-
+#' tivelly return only presence/absence of motif, and/or only motifs/sequences
+#' with at least one non-zero entry.
+#'
+#' @param object a MotifSearchResult object.
+#' @param simplify whether to return a matrix of 0 (motif not present) and 1 (motif present).
+#' @param filter whether remove columns/rows with all zero entries.
+#'
+#' @return a matrix.
+#' @export
+#' @rdname getMotifMatrix-methods
+#'
+#' @examples
+#' NULL
+setGeneric("getMotifMatrix", function(object, simplify = TRUE, filter = FALSE) standardGeneric("getMotifMatrix"))
+
+#' @rdname getMotifMatrix-methods
+#' @aliases getMotifMatrix,MotifSearchResult-method
+setMethod("getMotifMatrix", "MotifSearchResult", 
+function(object, simplify = TRUE, filter = FALSE) {
+  r <- object@ranges
+  tmp <- data.frame(
+    sequence = as.character(space(r)),
+    motif = r$motif_name,
+    stringsAsFactors = FALSE
+  )
+  tmp$sequence <- factor(tmp$sequence, levels = sequenceNames(object))
+  tmp$motif <- factor(tmp$motif, levels = motifNames(object))
+  tmp <- unclass(table(tmp))
+  mode(tmp) <- "integer"
+  
+  # simiply?
+  if (simplify)
+    tmp[tmp != 0] = 1L
+  
+  # filter?
+  if (filter)
+    tmp <- tmp[rowSums(tmp) > 0, colSums(tmp) > 0]
+  
+  tmp
+})
+
+#### TO CHECK:
+
 getCoverage = function(object) {
   r=reduce(object@ranges)
   pdata=pData(object@sequences)
@@ -43,39 +89,6 @@ convertArch = function(object,to="string") {
          "string"=sapply(object,.num2letter)
   )
 }
-
-#' getMotifMatrix
-#' 
-#' getMotifMatrix
-#'
-#' @param object a MotifSearchResult object.
-#' @param simplify a MotifSearchResult object.
-#' @param filter whether remove columns/rows with all zero entries.
-#'
-#' @return a matrix.
-#' @export
-#'
-#' @examples
-#' NULL
-getMotifMatrix <- function(object, simplify = TRUE, filter = FALSE) {
-  r <- object@ranges
-  tmp <- data.frame(
-    sequence = as.character(space(r)),
-    motif = r$motif_name,
-    stringsAsFactors = FALSE
-  )
-  tmp$sequence <- factor(tmp$sequence, levels = sequenceNames(object))
-  tmp$motif <- factor(tmp$motif, levels = motifNames(object))
-  tmp <- unclass(table(tmp))
-  mode(tmp) <- "integer"
-  if(simplify)
-    tmp[tmp != 0] = 1L
-  if (filter)
-    tmp[rowSums(tmp) > 0, colSums(tmp) > 0]
-  else
-    tmp
-}
-setGeneric("getMotifMatrix")
 
 getMotifDistribution=function(object,by.groups) {
   m=object
