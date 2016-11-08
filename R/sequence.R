@@ -2,20 +2,23 @@
 #' 
 #' Compute the conservation score matrix from a MSA
 #'
-#' @param object sequence alignment object.
+#' @param object AAMultipleAlignment alignment object.
 #' 
 #' @export
 conservationMatrix <- function(object) {
   x <- as.matrix(object)
-  rownames(x) <- names(object)
-  
+
   m <- matrix(1L, ncol = ncol(x), nrow = nrow(x))
-  rownames(m)  <- rownames(x)
-  #colnames(m)=1:ncol(m)
+  rownames(m) <- rownames(x)
+  colnames(m) <- apply(x, 2, function(xk) {
+    tt <- table(xk)
+    names(tt)[which.max(tt)]
+    })
+
   m[x != "-"] = 2L
   
-  mt = apply(x, 2, table, exclude = "-")
-  mt = lapply(mt, function(z) 100 * z / nrow(x))
+  mt <- apply(x, 2, table, exclude = "-")
+  mt <- lapply(mt, function(z) 100 * z / nrow(x))
   for (k in seq_len(length(mt))) {
     tmp <- mt[[k]]
     m[,k][x[,k] %in% names(tmp)[tmp >= 40]] = 3L
