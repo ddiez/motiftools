@@ -118,26 +118,36 @@ function(object, tree, fill, color = "transparent", high, high.col, bar.percenta
     gt <- gtable_add_grob(gt, gg, t = 2, l = k)
   }
   
-  # add highlights.
-  if (!missing(high)) {
-    gt <- gtable_add_cols(gt, unit(1, "lines"), pos = -1)
-    gg <- gtable_filter(grob_high, "panel")
-    gt <- gtable_add_grob(gt, gg, t = 2, l = ncol(gt))
-  }
-  
   # add padding between matrices.
   gt <- gtable_add_col_space(gt, unit(.5, "lines"))
   gt <- gtable_add_row_space(gt, unit(.5, "lines"))
   
   # add barplot axis.
-  gt <- gtable_add_cols(gt, unit(1.5, "lines"), pos = 0)
   gg <- gtable_filter(grob_barplot[[1]], "axis-l")
+  gt <- gtable_add_cols(gt, gg$widths, pos = 0)
   gt <- gtable_add_grob(gt, gg, t = 1, l = 1)
   
   # add tree.
   gt <- gtable_add_cols(gt, unit(.5, "null"), pos = 0)
   gg <- gtable_filter(grob_tree, "panel")
   gt <- gtable_add_grob(gt, gg, t = 3, l = 1, r = 2)
+  
+  # add highlights.
+  if (!missing(high)) {
+    gt <- gtable_add_cols(gt, unit(1, "lines"), pos = -1)
+    gg <- gtable_filter(grob_high, "panel")
+    gt <- gtable_add_grob(gt, gg, t = 3, l = -1)
+  }
+  
+  # add barplot title.
+  if (!is.null(names(object))) {
+    gt <- gtable_add_rows(gt, unit(1, "lines"), pos = 0)
+    gg <- lapply(names(object), function(objn) {
+      grid::textGrob(objn, x = unit(.5, "npc"), y = unit(.5, "npc"))
+    })
+    for (k in seq_len(n))
+      gt <- gtable_add_grob(gt, gg[[k]], t = 1, l = 2 * k + 1)
+  }
   
   # add guides.
   # FIX: can't have this and the high legend together.
