@@ -32,7 +32,7 @@
       <h1>Introduction to motiftools</h1>
                         <h4 class="author">Diego Diez</h4>
             
-            <h4 class="date">7 November 2016</h4>
+            <h4 class="date">8 November 2016</h4>
           </div>
 
     
@@ -47,7 +47,9 @@
 <p>motiftools is a package for the analysis and interpretation of sequence motifs. Its initial implementation is focused on protein motif analysis obtained from the MEME suite, but its functionality may extend to other applications and tools, including analysis of nucleotide sequences and motif analysis tools found in Bioconductor or CRAN.</p>
 <p>Motif ranges are stored as <code>RangedData</code> objects (<em><a href="http://bioconductor.org/packages/IRanges">IRanges</a></em>) package). This allows to include metadata, like p-value, score and other output from the search process.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(motiftools)
-<span class="kw">library</span>(motifStack)</code></pre></div>
+<span class="kw">library</span>(motifStack)
+<span class="kw">library</span>(Biostrings)
+<span class="kw">library</span>(ggtree)</code></pre></div>
 </div>
 <div id="plotting-functions" class="section level1">
 <h1 class="hasAnchor"><html><body><a href="#plotting-functions" class="anchor"> </a></body></html>Plotting functions</h1>
@@ -71,44 +73,46 @@ f &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class=
 x_meme &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readMEME.html">readMEME</a></span>(f)
 m_meme &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getMotifMatrix.html">getMotifMatrix</a></span>(x_meme)
 <span class="kw"><a href="../reference/plotMotifMatrix.html">plotMotifMatrix</a></span>(m_meme, <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>))</code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load FIMO results.</span>
 f &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"files/fimo_ras/fimo.xml"</span>, <span class="dt">package =</span> <span class="st">"motiftools"</span>)
 x_fimo &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readFIMO.html">readFIMO</a></span>(f)
 m_fimo &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getMotifMatrix.html">getMotifMatrix</a></span>(x_fimo)
-<span class="kw"><a href="../reference/plotMotifMatrix.html">plotMotifMatrix</a></span>(<span class="kw">list</span>(m_meme, m_fimo), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>))</code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-3-2.png" width="672"></p>
+<span class="kw"><a href="../reference/plotMotifMatrix.html">plotMotifMatrix</a></span>(<span class="kw">list</span>(<span class="dt">meme =</span> m_meme, <span class="dt">fimo =</span> m_fimo), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>), <span class="dt">col =</span> <span class="st">"black"</span>)</code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-12-2.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load MAST results.</span>
 f &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"files/mast_ras/mast.xml"</span>, <span class="dt">package =</span> <span class="st">"motiftools"</span>)
 x_mast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readMAST.html">readMAST</a></span>(f)
 m_mast &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getMotifMatrix.html">getMotifMatrix</a></span>(x_mast)
-<span class="kw"><a href="../reference/plotMotifMatrix.html">plotMotifMatrix</a></span>(<span class="kw">list</span>(m_meme, m_fimo, m_mast), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>))</code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-3-3.png" width="672"></p>
+<span class="kw"><a href="../reference/plotMotifMatrix.html">plotMotifMatrix</a></span>(<span class="kw">list</span>(<span class="st">"MEME motifs"</span> =<span class="st"> </span>m_meme, <span class="st">"FIMO motifs"</span> =<span class="st"> </span>m_fimo, <span class="st">"MAST motifs"</span> =<span class="st"> </span>m_mast), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>), <span class="dt">col =</span> <span class="st">"black"</span>)</code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-12-3.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># highlight some sequences.</span>
 h &lt;-<span class="st"> </span><span class="kw">grepl</span>(<span class="st">"RASH|RASK"</span>, <span class="kw"><a href="../reference/MotifSearchResult-class.html">sequenceNames</a></span>(x_meme))
 <span class="kw">names</span>(h) &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MotifSearchResult-class.html">sequenceNames</a></span>(x_meme)
-<span class="kw"><a href="../reference/plotMotifMatrix.html">plotMotifMatrix</a></span>(<span class="kw">list</span>(m_meme, m_fimo, m_mast), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>), <span class="dt">high =</span> h, <span class="dt">high.col =</span> <span class="kw">c</span>(<span class="st">"black"</span>, <span class="st">"orange"</span>))</code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-3-4.png" width="672"></p>
+<span class="kw"><a href="../reference/plotMotifMatrix.html">plotMotifMatrix</a></span>(<span class="kw">list</span>(<span class="st">"MEME motifs"</span> =<span class="st"> </span>m_meme, <span class="st">"FIMO motifs"</span> =<span class="st"> </span>m_fimo, <span class="st">"MAST motifs"</span> =<span class="st"> </span>m_mast), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">"white"</span>, <span class="st">"grey"</span>), <span class="dt">col =</span> <span class="st">"black"</span>, <span class="dt">high =</span> h, <span class="dt">high.col =</span> <span class="kw">c</span>(<span class="st">"black"</span>, <span class="st">"orange"</span>))</code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-12-4.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot a motif model logo (from MEME output).</span>
 p &lt;-<span class="st"> </span><span class="kw"><a href="../reference/MotifSearchResult-class.html">pwm</a></span>(x_meme)[[<span class="st">"motif_4"</span>]]
 <span class="kw">plotMotifLogo</span>(p, <span class="dt">col =</span> <span class="kw">rainbow</span>(<span class="dv">20</span>))</code></pre></div>
 <pre><code>## Warning in plotMotifLogo(p, col = rainbow(20)): background length is
 ## shorter than number of rows. Will use default background</code></pre>
-<p><img src="introduction_files/figure-html/unnamed-chunk-3-5.png" width="672"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-12-5.png" width="672"></p>
 <p>You can compare the motifs obtained with MEME using the TOMTOM tool. Then you can read the results and look at the comparison matrix.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"files/tomtom_ras/tomtom.xml"</span>, <span class="dt">package =</span> <span class="st">"motiftools"</span>)
 x_tomtom &lt;-<span class="st"> </span><span class="kw"><a href="../reference/readTOMTOM.html">readTOMTOM</a></span>(f)
 <span class="kw"><a href="../reference/plotMotifMatches.html">plotMotifMatches</a></span>(x_tomtom)</code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plotMotifMatches.html">plotMotifMatches</a></span>(x_tomtom, <span class="dt">fill =</span> <span class="st">"e_value"</span>)</code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-4-2.png" width="672"></p>
+<p><img src="introduction_files/figure-html/unnamed-chunk-13-2.png" width="672"></p>
 </div>
 <div id="sequences" class="section level2">
 <h2 class="hasAnchor"><html><body><a href="#sequences" class="anchor"> </a></body></html>Sequences</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">sample</span>(<span class="dv">1</span>:<span class="dv">5</span>, <span class="dv">100</span>*<span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>), <span class="dt">ncol =</span> <span class="dv">100</span>, <span class="dt">nrow =</span> <span class="dv">10</span>, <span class="dt">dimnames =</span> <span class="kw">list</span>(letters[<span class="dv">1</span>:<span class="dv">10</span>], <span class="dv">1</span>:<span class="dv">100</span>))
-h &lt;-<span class="st"> </span><span class="kw">hclust</span>(<span class="kw">dist</span>(m))
-<span class="kw"><a href="../reference/plotConservationMatrix.html">plotConservationMatrix</a></span>(m, h)</code></pre></div>
-<p><img src="introduction_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+<p>We can visualize MSA conservation together with a phylogenetic tree.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ras_tree &lt;-<span class="st"> </span><span class="kw">read.tree</span>(<span class="kw">system.file</span>(<span class="st">"files/ras.tree"</span>, <span class="dt">package =</span> <span class="st">"motiftools"</span>))
+ras_aln &lt;-<span class="st"> </span><span class="kw">readAAMultipleAlignment</span>(<span class="kw">system.file</span>(<span class="st">"files/ras.faln"</span>, <span class="dt">package =</span> <span class="st">"motiftools"</span>))
+<span class="kw">rownames</span>(ras_aln) &lt;-<span class="st"> </span><span class="kw">sub</span>(<span class="st">" .*"</span>, <span class="st">""</span>, <span class="kw">rownames</span>(ras_aln)) <span class="co"># need to fix sequence names.</span>
+<span class="kw"><a href="../reference/plotConservationMatrix.html">plotConservationMatrix</a></span>(<span class="kw"><a href="../reference/conservationMatrix.html">conservationMatrix</a></span>(ras_aln), ras_tree, <span class="dt">show.tips =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="introduction_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 </div>
 </div>
 </div>

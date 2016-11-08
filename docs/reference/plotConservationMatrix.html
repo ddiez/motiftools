@@ -76,7 +76,8 @@
     <p>plots a heatmap with the conservation score for each residue</p>
     
 
-    <pre><span class='fu'>plotConservationMatrix</span>(<span class='no'>x</span>, <span class='no'>tree</span>)</pre>
+    <pre><span class='fu'>plotConservationMatrix</span>(<span class='no'>x</span>, <span class='no'>tree</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"transparent"</span>, <span class='kw'>show.tips</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>show.consensus</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>8</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -84,6 +85,14 @@
       <dd>a matrix as obtained with conservationMatrix()</dd>
       <dt>tree</dt>
       <dd>a tree of class dendrogram or that can be coerced into.</dd>
+      <dt>color</dt>
+      <dd>color for the tile borders (default: transparent).</dd>
+      <dt>show.tips</dt>
+      <dd>logical; whether to show sequence ids.</dd>
+      <dt>show.consensus</dt>
+      <dd>logical; whether to show consensus sequence.</dd>
+      <dt>size</dt>
+      <dd>text size for consensus sequence.</dd>
     </dl>
     
 
