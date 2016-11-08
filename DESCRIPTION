@@ -17,7 +17,7 @@ Imports:
     grid,
     gtable,
     ggplot2,
-    ggdendro,
+    ggtree,
     reshape2,
     dplyr,
     stats,

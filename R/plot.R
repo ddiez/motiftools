@@ -42,21 +42,23 @@ function(object, tree, fill, color = "transparent", high, high.col, bar.percenta
   
   ## create plots.
   # tree.
+  # if tree not provided cluster motif profiles based on Pearson distance.
   if (missing(tree)) {
     m <- do.call(cbind, object)
-    tree <- as.dendrogram(hclust(dcor(m)))
+    tree <- as.phylo(hclust(dcor(m)))
   } else {
-    tree <- as.dendrogram(as.hclust(tree))
+    if (class(tree) != "phylo")
+      tree <- as.phylo(as.hclust(tree))
   }
-  g <- suppressMessages(ggdendrogram(tree, rotate = FALSE, theme_dendro = FALSE) + coord_flip() + scale_x_continuous(limits = c(.5, nr + .5), expand = c(0, 0)) + scale_y_reverse() + theme_void())
+  g <- ggtree(tree, branch.length = "none") + scale_y_continuous(limits = c(.5, nr + .5), expand = c(0, 0))
   grob_tree <- ggplotGrob(g)
   
   # reorder data.
-  object <- lapply(object, function(o) o[labels(tree), ])
+  object <- lapply(object, function(o) o[tree$tip.label, ])
   
   # highlight.
   if (!missing(high)) {
-    high <- high[labels(tree)]
+    high <- high[tree$tip.label]
     tmp <- melt(matrix(high), nrow = nr)
     if (missing(high.col)) {
       high.col <- rainbow(nlevels(tmp$value))

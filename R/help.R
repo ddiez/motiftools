@@ -7,12 +7,13 @@
 #' @docType package
 #' 
 #' @import methods Biobase Biostrings XML xml2 gtable ggplot2
+#' @importFrom ape as.phylo
+#' @importFrom ggtree ggtree
 #' @importFrom reshape2 melt
 #' @importFrom dplyr filter_ select_ mutate_ group_by_ summarize_ bind_rows %>%
 #' @importFrom IRanges IRanges RangedData space
 #' @importFrom Rcpp evalCpp
 #' @importFrom grid grid.newpage grid.draw
-#' @importFrom ggdendro ggdendrogram
 #' @importFrom stats as.dist hclust cor
 #' 
 #' @useDynLib motiftools
