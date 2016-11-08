@@ -66,9 +66,10 @@ getMotifMatrix <- function(object, simplify = TRUE, filter = FALSE) {
   )
   tmp$sequence <- factor(tmp$sequence, levels = sequenceNames(object))
   tmp$motif <- factor(tmp$motif, levels = motifNames(object))
-  tmp <- table(tmp)
+  tmp <- unclass(table(tmp))
+  mode(tmp) <- "integer"
   if(simplify)
-    tmp[tmp != 0] = 1
+    tmp[tmp != 0] = 1L
   if (filter)
     tmp[rowSums(tmp) > 0, colSums(tmp) > 0]
   else
