@@ -4,7 +4,8 @@
 \alias{plotConservationMatrix}
 \title{plotConservationMatrix}
 \usage{
-plotConservationMatrix(x, tree, color = "transparent")
+plotConservationMatrix(x, tree, color = "transparent", show.tips = FALSE,
+  show.consensus = FALSE, size = 8)
 }
 \arguments{
 \item{x}{a matrix as obtained with conservationMatrix()}
@@ -12,6 +13,12 @@ plotConservationMatrix(x, tree, color = "transparent")
 \item{tree}{a tree of class dendrogram or that can be coerced into.}
 
 \item{color}{color for the tile borders (default: transparent).}
+
+\item{show.tips}{logical; whether to show sequence ids.}
+
+\item{show.consensus}{logical; whether to show consensus sequence.}
+
+\item{size}{text size for consensus sequence.}
 }
 \description{
 plots a heatmap with the conservation score for each residue

@@ -35,6 +35,9 @@ conservationMatrix <- function(object) {
 #' @param x a matrix as obtained with conservationMatrix()
 #' @param tree a tree of class dendrogram or that can be coerced into.
 #' @param color color for the tile borders (default: transparent).
+#' @param show.tips logical; whether to show sequence ids.
+#' @param show.consensus logical; whether to show consensus sequence.
+#' @param size text size for consensus sequence.
 #' 
 #' @export
 plotConservationMatrix <- function(x, tree, color = "transparent", show.tips = FALSE, show.consensus = FALSE, size = 8) {
