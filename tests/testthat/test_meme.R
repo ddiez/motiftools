@@ -16,4 +16,6 @@ test_that("slots", {
 test_that("accessors", {
   expect_is(m, "matrix")
   expect_type(m, "integer")
+  expect_identical(m[1, 1], 1L)
+  expect_identical(m[1, 9], 0L)
 })
