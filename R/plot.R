@@ -1,9 +1,10 @@
 #' plotMotifMatrix
 #'
-#' Get a matrix with motif counts per sequence and plot a heatmap with associated
-#' tree and barplots with motif-wise percentages.
+#' Plot a heatmap with motif counts per sequence and associated tree and 
+#' barplots with motif-wise percentages.
 #'
 #' @param object a matrix object or list of matrix objects.
+#' @param ... arguments passed down to methods.
 #' @param tree a tree object.
 #' @param fill color used for tiles.
 #' @param color color for tile borders.
@@ -14,13 +15,27 @@
 #'
 #' @return Returns a grob object invisibly.
 #' @export
+#' @rdname plotMotifMatrix-methods
 #'
 #' @examples
 #' NULL
-plotMotifMatrix <- function(object, tree, fill, color = "transparent", high, high.col, bar.percentage = TRUE, plot = TRUE) {
-  if (class(object) != "list")
-    object <- list(object)
+setGeneric("plotMotifMatrix", function(object, ...) standardGeneric("plotMotifMatrix"))
+
+#' @rdname plotMotifMatrix-methods
+#' @aliases plotMotifMatrix,list-method
+setMethod("plotMotifMatrix", "list", 
+function(object, tree, fill, color = "transparent", high, high.col, bar.percentage = TRUE, plot = TRUE) {
+  # check object type.
+  type <- unique(sapply(object, class))
+  if (length(type) > 1) stop("passing a list of objects of different class are not allowed.")
   
+  if (! type %in% c("matrix", "MotifSearchResult"))
+    stop("Only objects of class 'matrix' or 'MotifSearchResult' can be used with this function")
+  
+  if (type == "MotifSearchResult")
+    object <- lapply(object, getMotifMatrix)
+  
+  # initialize commonly used variables.
   n <- length(object) # number of heatmaps.
   nc <- ncol(object[[1]]) # number of columns of matrices.
   nr <- nrow(object[[1]]) # number of rows of matrices.
@@ -141,4 +156,18 @@ plotMotifMatrix <- function(object, tree, fill, color = "transparent", high, hig
     grid.draw(gt)
   }
   invisible(gt)
-}
+})
+
+#' @rdname plotMotifMatrix-methods
+#' @aliases plotMotifMatrix,MotifSearchResult-method
+setMethod("plotMotifMatrix", "MotifSearchResult",
+function(object, ...) {
+  plotMotifMatrix(list(getMotifMatrix(object)), ...)
+})
+
+#' @rdname plotMotifMatrix-methods
+#' @aliases plotMotifMatrix,matrix-method
+setMethod("plotMotifMatrix", "matrix",
+function(object, ...) {
+  plotMotifMatrix(list(object), ...)
+})
