@@ -27,7 +27,8 @@ Suggests:
     knitr,
     rmarkdown,
     BiocStyle,
-    motifStack
+    motifStack,
+    ggthemes
 LinkingTo: Rcpp
 License: GPL-3
 LazyLoad: yes
