@@ -84,12 +84,13 @@ plotConservationMatrix <- function(x, tree) {
   
   pheat <- ggplot(d, aes_string(x = "position", y = "sequences", fill = "conservation")) + 
     geom_tile() + 
+    scale_x_discrete(expand = c(0, 0)) +
     scale_y_discrete(expand = c(0, 0)) +
     scale_fill_manual(values = c("white", "grey80", "grey50", "steelblue", "orange"),
                       limits = c("gap (-)", "< 40%", ">= 40%", ">= 60%", ">= 80%"), guide = "legend")
   gheat <- ggplotGrob(pheat)
   
-  g <- gtable(widths = unit(c(1, 5, 1), "null"), heights = unit(c(5, 1), "null"))
+  g <- gtable(widths = unit(c(1, 5, 1.5), "null"), heights = unit(c(5, 1), "null"))
   g <- gtable_add_grob(g, gtable_filter(gtree, "panel"), t = 1, l = 1)
   g <- gtable_add_grob(g, gtable_filter(gheat, "panel"), t = 1, l = 2)
   g <- gtable_add_grob(g, gtable_filter(gheat, "guide-box"), t = 1, l =3)
