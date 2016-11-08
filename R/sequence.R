@@ -62,20 +62,15 @@ plotConservation = function(x, seq.names = FALSE, cluster.row = TRUE) {
 #' @export
 plotConservationMatrix <- function(x, tree) {
   if (!missing(tree)) {
-    tree <- as.dendrogram(tree)
-    x <- x[order.dendrogram(tree), ]
+    tree <- as.phylo(tree)
+    x <- x[tree$tip.label, ]
   }
 
   nr <- nrow(x)
   
   # tree grob.
-  ptree <- suppressMessages(
-    ggdendrogram(tree, rotate = FALSE, theme_dendro = FALSE) +
-      coord_flip() +
-      scale_x_continuous(limits = c(.5, nr + .5), expand = c(0, 0)) +
-      scale_y_reverse() + 
-      theme_void()
-    )
+  ptree <- ggtree(tree, branch.length = "none") + 
+    scale_y_continuous(limits = c(.5, nr + .5), expand = c(0, 0))
   gtree <- ggplotGrob(ptree)
   
   # heatmap.
