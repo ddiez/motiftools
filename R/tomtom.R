@@ -46,7 +46,7 @@ getTomtomMotifMatches <- function(x) {
     tmp <- do.call(rbind, tmp)
     data.frame(query_id = query_id,
                target_id = tmp[, "idx"],
-               offset = as.integer(tmp[, "idx"]),
+               offset = as.integer(tmp[, "off"]),
                p_value = as.numeric(tmp[, "pv"]),
                e_value = as.numeric(tmp[, "ev"]),
                q_value = as.numeric(tmp[, "qv"]),
