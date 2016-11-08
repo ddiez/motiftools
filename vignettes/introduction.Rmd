@@ -30,6 +30,8 @@ Motif ranges are stored as `RangedData` objects (`r Biocpkg("IRanges")`) package
 ```{r, message=FALSE}
 library(motiftools)
 library(motifStack)
+library(Biostrings)
+library(ggtree)
 ```
 
 # Plotting functions
@@ -87,9 +89,12 @@ plotMotifMatches(x_tomtom, fill = "e_value")
 
 ## Sequences
 
+We can visualize MSA conservation together with a phylogenetic tree.
+
 ```{r}
-m <- matrix(sample(1:5, 100*10, replace = TRUE), ncol = 100, nrow = 10, dimnames = list(letters[1:10], 1:100))
-h <- hclust(dist(m))
-plotConservationMatrix(m, h)
+ras_tree <- read.tree(system.file("files/ras.tree", package = "motiftools"))
+ras_aln <- readAAMultipleAlignment(system.file("files/ras.faln", package = "motiftools"))
+rownames(ras_aln) <- sub(" .*", "", rownames(ras_aln)) # need to fix sequence names.
+plotConservationMatrix(conservationMatrix(ras_aln), ras_tree, show.tips = TRUE)
 ```
 
