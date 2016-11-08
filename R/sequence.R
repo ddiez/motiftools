@@ -85,7 +85,7 @@ plotConservationMatrix <- function(x, tree) {
                       limits = c("gap (-)", "< 40%", ">= 40%", ">= 60%", ">= 80%"), guide = "legend")
   gheat <- ggplotGrob(pheat)
   
-  g <- gtable(widths = unit(c(1, 5, 1.5), "null"), heights = unit(c(5, 1), "null"))
+  g <- gtable(widths = unit(c(1, 5, 1.5), "null"), heights = unit(c(5, 1), c("null", "lines")))
   g <- gtable_add_grob(g, gtable_filter(gtree, "panel"), t = 1, l = 1)
   g <- gtable_add_grob(g, gtable_filter(gheat, "panel"), t = 1, l = 2)
   g <- gtable_add_grob(g, gtable_filter(gheat, "guide-box"), t = 1, l =3)
