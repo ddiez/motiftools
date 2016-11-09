@@ -58,43 +58,67 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   # reorder data.
   object <- lapply(object, function(o) o[tree$tip.label, , drop = FALSE])
   
+  # annotations as matrices.
   if (!is.null(annot)) {
     na <- length(annot)
+    nl <- names(annot)
+    if (is.null(nl)) nl <- paste0("annot-", seq_len(na))
     # reorder annotations.
     annot <- lapply(annot, function(o) o[tree$tip.label, , drop = FALSE])
     # create plot.
     grob_annot <- lapply(seq_len(na), function(k) {
-      d <- melt(annot[[k]], varnames = c("sequence", "variable"), value.name = "value")
-      d$value <- factor(d$value)
-      g <- ggplot(d, aes_string(x = "variable", y = "sequence", fill = "value")) +
+      l <- nl[k]
+      d <- melt(annot[[k]], varnames = c("sequence", "variable"), value.name = l)
+      d[[l]] <- factor(d[[l]])
+      g <- ggplot(d, aes_string(x = "variable", y = "sequence", fill = l)) +
         geom_tile(color = color) +
         scale_fill_manual(values = annot.fill[[k]]) +
         scale_x_discrete(expand = c(0,0)) +
-        scale_y_discrete(expand = c(0,0)) 
+        scale_y_discrete(expand = c(0,0))
       ggplotGrob(g)
     })
   }
   
+  # annotations as data.frames.
+  # if (!is.null(annot)) {
+  #   if (length(annot) == 1 && class(annot) != "list") {
+  #     annot <- list(annot = annot)
+  #   }
+  #   #annot <- lapply(annot, function(o) o[tree$tip.label, , drop = FALSE])
+  #   rob_annot <- lapply(seq_len(na), function(k) {
+  #     an <- annot[[k]]
+  #     an <- an[tree$tip.label, , drop = FALSE] # reorder.
+  #     # for data.frame:
+  #     an <- an %>% rownames_to_column("sequence")
+  #     g <- ggplot(d, aes_string(x = "variable", y = "sequence", fill = l)) +
+  #             geom_tile(color = color) +
+  #             scale_fill_manual(values = annot.fill[[k]]) +
+  #             scale_x_discrete(expand = c(0,0)) +
+  #             scale_y_discrete(expand = c(0,0))
+  #     ggplotGrob(g)
+  #   })
+  #   
+  # }
   # highlight.
-  if (!missing(high)) {
-    high <- high[tree$tip.label]
-    tmp <- melt(matrix(high), nrow = nr)
-    if (missing(high.col)) {
-      high.col <- rainbow(nlevels(tmp$value))
-    }
-    if (!is.null(names(high)))
-      high.name <- names(high)
-    else
-      high.name <- ""
-    g <- ggplot(tmp, aes_string(x = "factor(Var2)", y = "factor(Var1)", fill = "value")) +
-      geom_tile() + 
-      scale_fill_manual(high.name, values = high.col) + 
-      theme(legend.key.size = unit(.5, "lines"))  + 
-      scale_x_discrete(expand = c(0,0)) + 
-      scale_y_discrete(expand = c(0,0)) + 
-      guides(fill = guide_legend(direction = "horizontal"))
-    grob_high <- ggplotGrob(g)
-  }
+  # if (!missing(high)) {
+  #   high <- high[tree$tip.label]
+  #   tmp <- melt(matrix(high), nrow = nr)
+  #   if (missing(high.col)) {
+  #     high.col <- rainbow(nlevels(tmp$value))
+  #   }
+  #   if (!is.null(names(high)))
+  #     high.name <- names(high)
+  #   else
+  #     high.name <- ""
+  #   g <- ggplot(tmp, aes_string(x = "factor(Var2)", y = "factor(Var1)", fill = "value")) +
+  #     geom_tile() + 
+  #     scale_fill_manual(high.name, values = high.col) + 
+  #     theme(legend.key.size = unit(.5, "lines"))  + 
+  #     scale_x_discrete(expand = c(0,0)) + 
+  #     scale_y_discrete(expand = c(0,0)) + 
+  #     guides(fill = guide_legend(direction = "horizontal"))
+  #   grob_high <- ggplotGrob(g)
+  # }
   
   # heatmaps.
   if (missing(fill)) {
@@ -139,6 +163,24 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
     gt <- gtable_add_grob(gt, gg, t = 2, l = k)
   }
   
+  # # add highlights.
+  # # if (!missing(high)) {
+  # #   gt <- gtable_add_cols(gt, unit(1, "lines"), pos = -1)
+  # #   gg <- gtable_filter(grob_high, "panel")
+  # #   gt <- gtable_add_grob(gt, gg, t = 3, l = -1)
+  # # }
+  # 
+  # add annotations.
+  if (!is.null(annot)) {
+    gt <- gtable_add_cols(gt, widths = unit(rep(1, na), "null"))
+    for (k in seq_len(na)) {
+      # gg <- gtable_filter(grob_annot[[k]], "guide-box")
+      # gt <- gtable_add_grob(gt, gg, t = 1, l = n + k)
+      gg <- gtable_filter(grob_annot[[k]], "panel")
+      gt <- gtable_add_grob(gt, gg, t = 2, l = n + k)
+    }
+  }
+
   # add padding between matrices.
   gt <- gtable_add_col_space(gt, unit(.5, "lines"))
   gt <- gtable_add_row_space(gt, unit(.5, "lines"))
@@ -147,28 +189,7 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   gg <- gtable_filter(grob_barplot[[1]], "axis-l")
   gt <- gtable_add_cols(gt, gg$widths, pos = 0)
   gt <- gtable_add_grob(gt, gg, t = 1, l = 1)
-  
-  # add tree.
-  gt <- gtable_add_cols(gt, unit(.5, "null"), pos = 0)
-  gg <- gtable_filter(grob_tree, "panel")
-  gt <- gtable_add_grob(gt, gg, t = 3, l = 1, r = 2)
-  
-  # add highlights.
-  if (!missing(high)) {
-    gt <- gtable_add_cols(gt, unit(1, "lines"), pos = -1)
-    gg <- gtable_filter(grob_high, "panel")
-    gt <- gtable_add_grob(gt, gg, t = 3, l = -1)
-  }
-  
-  # add annotations.
-  if (!is.null(annot)) {
-    gt <- gtable_add_cols(gt, widths = unit(rep(1, na), "null"))
-    for (k in seq_len(na)) {
-      gg <- gtable_filter(grob_annot[[k]], "panel")
-      gt <- gtable_add_grob(gt, gg, t = 3, l = n + k + 2)
-    }
-  }
-  
+   
   # add barplot title.
   if (!is.null(names(object))) {
     gt <- gtable_add_rows(gt, unit(1, "lines"), pos = 0)
@@ -176,19 +197,24 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
       grid::textGrob(objn, x = unit(.5, "npc"), y = unit(.5, "npc"))
     })
     for (k in seq_len(n))
-      gt <- gtable_add_grob(gt, gg[[k]], t = 1, l = 2 * k + 1)
+      gt <- gtable_add_grob(gt, gg[[k]], t = 1, l = 2 * k)
   }
+  # 
+  # # add guides.
+  # # FIX: can't have this and the high legend together.
+  # # TODO: make sure all heatmaps have same guide range.
+  # #gg <- gtable_filter(grob_heatmap[[1]], "guide-box")
+  # #gt <- gtable_add_grob(gt, gg, t = 1, l = 1)
+  # 
+  # if (!missing(high)) {
+  #   gg <- gtable_filter(grob_high, "guide-box")
+  #   gt <- gtable_add_grob(gt, gg, t = 1, l = 1)
+  # }
   
-  # add guides.
-  # FIX: can't have this and the high legend together.
-  # TODO: make sure all heatmaps have same guide range.
-  #gg <- gtable_filter(grob_heatmap[[1]], "guide-box")
-  #gt <- gtable_add_grob(gt, gg, t = 1, l = 1)
-  
-  if (!missing(high)) {
-    gg <- gtable_filter(grob_high, "guide-box")
-    gt <- gtable_add_grob(gt, gg, t = 1, l = 1)
-  }
+  # add tree.
+  gt <- gtable_add_cols(gt, unit(.5, "null"), pos = 0)
+  gg <- gtable_filter(grob_tree, "panel")
+  gt <- gtable_add_grob(gt, gg, t = -1, l = 1, r = 2)
   
   gt <- gtable_add_padding(gt, unit(.5, "line"))
   if (plot) {
