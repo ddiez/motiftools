@@ -29,6 +29,10 @@ align <- function(x1, x2, score.matrix = NULL, gap.score = -1, type = "local", d
   # check alignment type.
   type <- match.arg(type, c("global", "local", "global_old", "local_old"))
   
+  # get scoring matrix.
+  if (class(score.matrix) == "character")
+    score.matrix <- get(data(list = score.matrix, package = "Biostrings"))
+  
   switch(type,
          "local" = {
            sw(x1, x2, score_matrix = score.matrix, gap_score = gap.score, debug = debug)
