@@ -8,9 +8,9 @@ align(x1, x2, score.matrix = NULL, gap.score = -1, type = "local",
   debug = FALSE)
 }
 \arguments{
-\item{x1}{sequence (a character vector).}
+\item{x1}{pattern sequence: a character vector, scalar or AAString.}
 
-\item{x2}{sequence (a character vector).}
+\item{x2}{subject sequence: a character vector, scalar or AAString.}
 
 \item{score.matrix}{substitution matrix.}
 

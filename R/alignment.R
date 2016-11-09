@@ -2,8 +2,8 @@
 #' 
 #' Align two sequences using local (Smith-Waterman) or global (Needleman-Wunsch) sequence alignment.
 #' 
-#' @param x1 sequence (a character vector).
-#' @param x2 sequence (a character vector).
+#' @param x1 pattern sequence: a character vector, scalar or AAString.
+#' @param x2 subject sequence: a character vector, scalar or AAString.
 #' @param score.matrix substitution matrix.
 #' @param gap.score gap score.
 #' @param type type of alignment: global or local (default: local).
@@ -17,11 +17,16 @@
 #' data(BLOSUM62, package = "Biostrings")
 #' align("ALVDE", "AVRES", score.matrix = BLOSUM62)
 align <- function(x1, x2, score.matrix = NULL, gap.score = -1, type = "local", debug = FALSE) {
+  # process input sequences.
+  x1 <- as.character(x1)
+  x2 <- as.character(x2)
+  
   if (length(x1) == 1 && length(x2) == 1) {
     x1 <- strsplit(x1, "")[[1]]
     x2 <- strsplit(x2, "")[[1]]
   }
   
+  # check alignment type.
   type <- match.arg(type, c("global", "local", "global_old", "local_old"))
   
   switch(type,
