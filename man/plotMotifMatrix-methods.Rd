@@ -11,7 +11,8 @@
 plotMotifMatrix(object, ...)
 
 \S4method{plotMotifMatrix}{list}(object, tree, fill, color = "transparent",
-  high, high.col, bar.percentage = TRUE, plot = TRUE)
+  annot = NULL, annot.fill = NULL, high, high.col, bar.percentage = TRUE,
+  plot = TRUE)
 
 \S4method{plotMotifMatrix}{MotifSearchResult}(object, ...)
 
@@ -27,6 +28,10 @@ plotMotifMatrix(object, ...)
 \item{fill}{color used for tiles.}
 
 \item{color}{color for tile borders.}
+
+\item{annot}{list of matrices containing annotations.}
+
+\item{annot.fill}{list of character vectors with fill colors for annotation matrices.}
 
 \item{high}{vector (factor or character) indicating row groups.}
 

@@ -8,6 +8,8 @@
 #' @param tree a tree object.
 #' @param fill color used for tiles.
 #' @param color color for tile borders.
+#' @param annot list of matrices containing annotations.
+#' @param annot.fill list of character vectors with fill colors for annotation matrices.
 #' @param high vector (factor or character) indicating row groups.
 #' @param high.col colors usef for each group in high.
 #' @param bar.percentage logical; whether to show percentages in bar plot (default: TRUE).
@@ -24,7 +26,7 @@ setGeneric("plotMotifMatrix", function(object, ...) standardGeneric("plotMotifMa
 #' @rdname plotMotifMatrix-methods
 #' @aliases plotMotifMatrix,list-method
 setMethod("plotMotifMatrix", "list", 
-function(object, tree, fill, color = "transparent", high, high.col, bar.percentage = TRUE, plot = TRUE) {
+function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = NULL, high, high.col, bar.percentage = TRUE, plot = TRUE) {
   # check object type.
   type <- unique(sapply(object, class))
   if (length(type) > 1) stop("passing a list of objects of different class are not allowed.")
@@ -55,6 +57,19 @@ function(object, tree, fill, color = "transparent", high, high.col, bar.percenta
   
   # reorder data.
   object <- lapply(object, function(o) o[tree$tip.label, ])
+  
+  if (!is.null(annot)) {
+    na <- length(annot)
+    grob_annot <- lapply(seq_len(na), function(k) {
+      d <- melt(annot[[k]], varnames = c("sequence", "variable"), value.name = "value")
+      g <- ggplot(d, aes_string(x = "variable", y = "sequence", fill = "value")) +
+        geom_tile(color = color) +
+        scale_fill_gradientn(colors = annot.fill[[k]]) +
+        scale_x_discrete(expand = c(0,0)) +
+        scale_y_discrete(expand = c(0,0)) 
+      ggplotGrob(g)
+    })
+  }
   
   # highlight.
   if (!missing(high)) {
@@ -139,6 +154,15 @@ function(object, tree, fill, color = "transparent", high, high.col, bar.percenta
     gt <- gtable_add_cols(gt, unit(1, "lines"), pos = -1)
     gg <- gtable_filter(grob_high, "panel")
     gt <- gtable_add_grob(gt, gg, t = 3, l = -1)
+  }
+  
+  # add annotations.
+  if (!is.null(annot)) {
+    gt <- gtable_add_cols(gt, widths = unit(rep(1, na), "null"))
+    for (k in seq_len(na)) {
+      gg <- gtable_filter(grob_annot[[k]], "panel")
+      gt <- gtable_add_grob(gt, gg, t = 3, l = n + k + 2)
+    }
   }
   
   # add barplot title.
