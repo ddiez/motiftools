@@ -60,6 +60,9 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   
   if (!is.null(annot)) {
     na <- length(annot)
+    # reorder annotations.
+    annot <- lapply(annot, function(o) o[tree$tip.label, ])
+    # create plot.
     grob_annot <- lapply(seq_len(na), function(k) {
       d <- melt(annot[[k]], varnames = c("sequence", "variable"), value.name = "value")
       g <- ggplot(d, aes_string(x = "variable", y = "sequence", fill = "value")) +
