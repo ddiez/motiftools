@@ -65,9 +65,10 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
     # create plot.
     grob_annot <- lapply(seq_len(na), function(k) {
       d <- melt(annot[[k]], varnames = c("sequence", "variable"), value.name = "value")
+      d$value <- factor(d$value)
       g <- ggplot(d, aes_string(x = "variable", y = "sequence", fill = "value")) +
         geom_tile(color = color) +
-        scale_fill_gradientn(colors = annot.fill[[k]]) +
+        scale_fill_manual(values = annot.fill[[k]]) +
         scale_x_discrete(expand = c(0,0)) +
         scale_y_discrete(expand = c(0,0)) 
       ggplotGrob(g)
