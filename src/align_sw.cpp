@@ -173,9 +173,8 @@ List sw(CharacterVector x, CharacterVector y, Rcpp::Nullable<IntegerMatrix> scor
     cn2[k] = k + 1;
   }
   colnames(aln) = cn2;
-  DataFrame alndf = aln; // for compatibility with previous way- may change.
-  
-  List ret; ret["alignment"] = alndf; ret["score"] = s;
+
+  List ret; ret["alignment"] = aln; ret["score"] = s;
   if (debug) ret["scores"] = m;
   return(ret);
 }
