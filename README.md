@@ -1,8 +1,7 @@
 # motiftools
 
 [![Build Status](https://travis-ci.org/ddiez/motiftools.svg?branch=master)](https://travis-ci.org/ddiez/motiftools) 
-
-[![Coverage Status](https://coveralls.io/repos/github/ddiez/motiftools/badge.svg)](https://coveralls.io/github/ddiez/motiftools)
+[![codecov](https://codecov.io/gh/ddiez/motiftools/branch/master/graph/badge.svg)](https://codecov.io/gh/ddiez/motiftools)
 
 ## Installation
 
