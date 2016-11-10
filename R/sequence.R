@@ -40,12 +40,21 @@ conservationMatrix <- function(object) {
 #' @param size text size for consensus sequence.
 #' 
 #' @export
-plotConservationMatrix <- function(x, tree, color = "transparent", show.tips = FALSE, show.consensus = FALSE, size = 8) {
+#' @rdname plotConservationMatrix-methods
+#'
+#' @examples
+#' NULL
+setGeneric("plotConservationMatrix", function(x, ...) standardGeneric("plotConservationMatrix"))
+
+#' @rdname plotConservationMatrix-methods
+#' @aliases plotConservationMatrix,matrix-method
+setMethod("plotConservationMatrix", "matrix", 
+function(x, tree, color = "transparent", show.tips = FALSE, show.consensus = FALSE, size = 8) {
   if (!missing(tree)) {
     tree <- as.phylo(tree)
     x <- x[tree$tip.label, ]
   }
-
+  
   nr <- nrow(x)
   labels <- NULL
   if (show.consensus)
@@ -65,7 +74,7 @@ plotConservationMatrix <- function(x, tree, color = "transparent", show.tips = F
   d$sequences <- factor(d$sequences)
   d$position <- factor(d$position)
   d$conservation <- factor(d$conservation, levels = 1:5, labels =  c("gap (-)","< 40%",">= 40%",">= 60%",">= 80%"))
-
+  
   pheat <- ggplot(d, aes_string(x = "position", y = "sequences", fill = "conservation")) + 
     geom_tile(color = color) + 
     scale_x_discrete(expand = c(0, 0), labels = labels) +
@@ -91,10 +100,10 @@ plotConservationMatrix <- function(x, tree, color = "transparent", show.tips = F
     gt <- gtable_add_row_space(gt, unit(0.5, "lines"))
     gt <- gtable_add_grob(gt, gg, t = 1, l = -1)
   }
-
+  
   gt <- gtable_add_rows(gt, heights = unit(1, "lines"), pos = -1)
   gt <- gtable_add_grob(gt, gtable_filter(gheat, "xlab"), t = -1, l = -1)
-    
+  
   gg <- gtable_filter(gheat, "guide-box")
   gt <- gtable_add_cols(gt, widths = gg$widths, pos = -1)
   gt <- gtable_add_grob(gt, gg, t = -2, l = -1)
@@ -103,5 +112,11 @@ plotConservationMatrix <- function(x, tree, color = "transparent", show.tips = F
   grid.newpage()
   grid.draw(gt)
   invisible(gt)
-}
+})
 
+#' @rdname plotConservationMatrix-methods
+#' @aliases plotConservationMatrix,AAMultipleAlignment-method
+setMethod("plotConservationMatrix", "AAMultipleAlignment", 
+function(x, tree, color = "transparent", show.tips = FALSE, show.consensus = FALSE, size = 8) {
+  plotConservationMatrix(conservationMatrix(x), tree = tree, color = color, show.tips = show.tips, show.consensus = show.consensus, size = size)
+})
