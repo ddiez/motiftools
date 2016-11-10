@@ -11,6 +11,7 @@ Imports:
     XML,
     xml2,
     Biobase,
+    IRanges,
     GenomicRanges,
     Biostrings,
     ape,
