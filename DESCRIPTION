@@ -29,7 +29,9 @@ Suggests:
     BiocStyle,
     motifStack,
     ggthemes
-LinkingTo: Rcpp
+LinkingTo:
+    Rcpp,
+    testthat
 License: GPL-3
 LazyLoad: yes
 ByteCompile: yes
