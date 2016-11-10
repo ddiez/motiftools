@@ -1,4 +1,4 @@
-library(motiftools)
+context("Testing readMAST")
 
 f <- system.file("files/mast_ras/mast.xml", package = "motiftools")
 x <- readMAST(f)

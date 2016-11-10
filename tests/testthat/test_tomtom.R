@@ -1,4 +1,4 @@
-library(motiftools)
+context("Testing readTOMTOM")
 
 f <- system.file("files/tomtom_ras/tomtom.xml", package = "motiftools")
 x <- readTOMTOM(f)
