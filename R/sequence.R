@@ -88,7 +88,7 @@ function(x, tree, plot.type = "tile", tile.color = "transparent", show.tips = FA
   if (plot.type == "raster")
     p <- geom_raster()
   else
-    p <- geom_tile(color = color)
+    p <- geom_tile(color = tile.color)
   
   pheat <- ggplot(d, aes_string(x = "position", y = "sequences", fill = "conservation")) + 
     p + 
