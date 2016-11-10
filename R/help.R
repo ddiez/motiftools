@@ -15,7 +15,9 @@
 #' @importFrom GenomicRanges GRanges seqnames
 #' @importFrom Rcpp evalCpp
 #' @importFrom grid grid.newpage grid.draw
-#' @importFrom stats as.dist hclust cor
+#' @importFrom stats dist as.dist hclust as.hclust cor
+#' @importFrom utils data
+#' @importFrom grDevices cm.colors rainbow
 #' 
 #' @useDynLib motiftools
 NULL

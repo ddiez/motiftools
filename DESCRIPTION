@@ -21,6 +21,8 @@ Imports:
     reshape2,
     dplyr,
     stats,
+    utils,
+    grDevices,
     viridis
 Suggests:
     testthat,
