@@ -3,6 +3,7 @@
 \docType{class}
 \name{MotifSearchResult-class}
 \alias{MotifSearchResult-class}
+\alias{[,MotifSearchResult,ANY-method}
 \alias{[,MotifSearchResult-method}
 \alias{motifNames}
 \alias{motifNames,MotifSearchResult-method}
@@ -21,7 +22,7 @@
 \usage{
 \S4method{show}{MotifSearchResult}(object)
 
-\S4method{[}{MotifSearchResult}(x, i, j, ..., drop = FALSE)
+\S4method{[}{MotifSearchResult,ANY}(x, i, j, ..., drop = FALSE)
 
 nmotif(object)
 
@@ -65,6 +66,6 @@ results from motif finding methods (e.g. MEME, FIMO and MAST).
 
 \item{\code{scores}}{list of motif scores.}
 
-\item{\code{ranges}}{RangedData with motif hits.}
+\item{\code{ranges}}{GRanges with motif hits.}
 }}
 

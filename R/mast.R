@@ -25,12 +25,13 @@ readMAST <- function(file, description = NULL) {
   nmotif <- nrow(motif_info)
   nseq <- nrow(seq_info)
   
-  rangeData <- RangedData(
-    IRanges(start = hit_info$start, width = motif_info[hit_info$motif_id, "width"]),
+  rangeData <- GRanges(
+    seqnames = hit_info$seq_id,
+    strand = "*",
+    ranges = IRanges(start = hit_info$start, width = motif_info[hit_info$motif_id, "width"]),
     motif_name = hit_info$motif_id,
     score = rep(NA, nrow(hit_info)),
-    p_value = hit_info$pvalue,
-    space = hit_info$seq_id
+    p_value = hit_info$pvalue
   )
   
   new(

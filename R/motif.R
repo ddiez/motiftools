@@ -22,7 +22,7 @@ setMethod("getMotifMatrix", "MotifSearchResult",
 function(object, simplify = TRUE, filter = FALSE) {
   r <- object@ranges
   tmp <- data.frame(
-    sequence = as.character(space(r)),
+    sequence = as.character(seqnames(r)),
     motif = r$motif_name,
     stringsAsFactors = FALSE
   )

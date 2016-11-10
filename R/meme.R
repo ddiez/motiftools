@@ -155,11 +155,12 @@ readMEME <- function(file, description = NULL) {
   motifData <- AnnotatedDataFrame(motif_info)
   
   # rangeData.
-  rangeData <- RangedData(
-    IRanges(start = motif_hit$position, width = motif_hit$width),
+  rangeData <- GRanges(
+    seqnames = getAttr(motif_hit$sequence_id, attr = "name", info = seq_info),
+    strand = "*",
+    ranges = IRanges(start = motif_hit$position, width = motif_hit$width),
     motif_name = getAttr(motif_hit$motif_id, attr = "name", info = motif_info),
-    p_value = motif_hit$pvalue,
-    space = getAttr(motif_hit$sequence_id, attr = "name", info = seq_info)
+    p_value = motif_hit$pvalue
   )
   
   new(

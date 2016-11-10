@@ -34,17 +34,20 @@ readFIMO <- function(file, description = NULL) {
   
   if (nrow(motif_hits) > 0) {
     motif_hits <-
-      RangedData(
-        IRanges(start = motif_hits$start, width = motif_info[motif_hits$motif_name, "width"]),
+      GRanges(
+        seqnames = motif_hits$seq_id,
+        ranges = IRanges(start = motif_hits$start, width = motif_info[motif_hits$motif_name, "width"]),
+        strand = "*",
         motif_name = motif_hits$motif_name,
         score = motif_hits$score,
         pvalue = motif_hits$pvalue,
         qvalue = motif_hits$qvalue,
         evalue = rep(NA, nrow(motif_hits)),
         sequence = motif_hits$sequence,
-        space = motif_hits$seq_id)
+        space = motif_hits$seq_id
+        )
   } else {
-    motif_hits <- RangedData()
+    motif_hits <- GRanges()
   }
   
   motifData <- AnnotatedDataFrame(motif_info)

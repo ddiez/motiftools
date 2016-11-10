@@ -10,7 +10,7 @@
 #' @slot motifs AnnotatedDataFrame with motif information.
 #' @slot probabilities list of motif probabilities. 
 #' @slot scores list of motif scores.
-#' @slot ranges RangedData with motif hits.
+#' @slot ranges GRanges with motif hits.
 #' @param object MotifSearchResult object.
 #' @param x MotifSearchResult object.
 #' @param i row number (motif).
@@ -25,7 +25,7 @@ setClass("MotifSearchResult",
            motifs = "AnnotatedDataFrame",
            probabilities = "list",
            scores = "list",
-           ranges = "RangedData"
+           ranges = "GRanges"
          )
 )
 
@@ -53,7 +53,7 @@ setMethod("[", "MotifSearchResult",
             }
             x@info$nseq <- unname(nrow(x@sequences))
             x@info$nmotif <- unname(nrow(x@motifs))
-            x@ranges <- x@ranges[space(x@ranges) %in% sequenceNames(x) &
+            x@ranges <- x@ranges[seqnames(x@ranges) %in% sequenceNames(x) &
                                  x@ranges$motif_name %in% motifNames(x), ]
             x
           })
