@@ -1,6 +1,7 @@
-#' MotifSearchResult
+#' MotifSearchResult-class
 #' 
-#' MotifSearchResult
+#' This document described the MotifSearchResult class and methods for storing
+#' results from motif finding methods (e.g. MEME, FIMO and MAST).
 #' 
 #' @name MotifSearchResult-class
 #' @rdname MotifSearchResult-class
@@ -94,9 +95,10 @@ pwm <- function(object) object@probabilities
 setGeneric("pwm")
 
 ##### MotifCompareResult
-#' MotifCompareResult
+#' MotifCompareResult-class
 #' 
-#' MotifCompareResult
+#'  This document described the MotifCompareResult and methods for storing information
+#'  about motif comparison methods (e.g. TOMTOM).
 #' 
 #' @name MotifCompareResult-class
 #' @rdname MotifCompareResult-class

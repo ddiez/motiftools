@@ -1,8 +1,9 @@
-#' conservationMatrix
-#' 
 #' Compute the conservation score matrix from a MSA
+#' 
+#' Compute the conservation score matrix from a multiple sequence alignment (MSA) 
+#' according to the method described in the software Jalview (htt://www.jalview.org).
 #'
-#' @param object AAMultipleAlignment alignment object.
+#' @param object AAMultipleAlignment alignment object (or a matrix).
 #' 
 #' @export
 #' @rdname conservationMatrix-methods
@@ -42,11 +43,13 @@ function(object) {
   conservationMatrix(as.matrix(object))
 })
 
-#' plotConservationMatrix
+#' Plots a heatmap with the conservation score for each residue
 #' 
-#' plots a heatmap with the conservation score for each residue
+#' Plots a heatmap with the conservation score for each residue colored according
+#' to the scheme shown in Jalview (htt://www.jalview.org).
 #'
-#' @param x a matrix as obtained with conservationMatrix()
+#' @param x a matrix as obtained with conservationMatrix() or an AAMultipleAlignment object.
+#' @param ... arguments passed down to matrix-method.
 #' @param tree a tree of class dendrogram or that can be coerced into.
 #' @param color color for the tile borders (default: transparent).
 #' @param show.tips logical; whether to show sequence ids.

@@ -17,7 +17,7 @@
 \alias{sequenceNames}
 \alias{sequenceNames,MotifSearchResult-method}
 \alias{show,MotifSearchResult-method}
-\title{MotifSearchResult}
+\title{MotifSearchResult-class}
 \usage{
 \S4method{show}{MotifSearchResult}(object)
 
@@ -49,7 +49,8 @@ pwm(object)
 \item{drop}{logical; whether to coerce to vector when number of columns equal one.}
 }
 \description{
-MotifSearchResult
+This document described the MotifSearchResult class and methods for storing
+results from motif finding methods (e.g. MEME, FIMO and MAST).
 }
 \section{Slots}{
 

@@ -8,7 +8,7 @@
 \alias{ntarget}
 \alias{ntarget,MotifCompareResult-method}
 \alias{show,MotifCompareResult-method}
-\title{MotifCompareResult}
+\title{MotifCompareResult-class}
 \usage{
 \S4method{show}{MotifCompareResult}(object)
 
@@ -20,7 +20,8 @@ ntarget(object)
 \item{object}{MotifCompareResult object.}
 }
 \description{
-MotifCompareResult
+This document described the MotifCompareResult and methods for storing information
+ about motif comparison methods (e.g. TOMTOM).
 }
 \section{Slots}{
 
