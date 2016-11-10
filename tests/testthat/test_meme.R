@@ -4,6 +4,10 @@ f <- system.file("files/meme_ras/meme.xml", package = "motiftools")
 x <- readMEME(f)
 m <- getMotifMatrix(x)
 
+test_that("class", {
+  expect_true(class(x) == "MotifSearchResult")
+})
+
 test_that("slots", {
   expect_identical(nmotif(x), 9L)
   expect_identical(nseq(x), 4L)
@@ -14,6 +18,7 @@ test_that("slots", {
 })
 
 test_that("accessors", {
+  expect_true(class(m) == "matrix")
   expect_is(m, "matrix")
   expect_type(m, "integer")
   expect_identical(m[1, 1], 1L)
