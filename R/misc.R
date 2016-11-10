@@ -1,3 +1,10 @@
+.datacache <- new.env(hash=TRUE, parent=emptyenv())
+
+getScoreMatrix <- function(score.matrix) {
+  data(list = score.matrix, package = "Biostrings", envir = .datacache)
+  score.matrix <- get(score.matrix, envir = .datacache)
+}
+
 #' dcor
 #' 
 #' Compute Pearson correlation distance on the rows.
