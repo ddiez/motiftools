@@ -6,7 +6,7 @@
 #' @aliases motiftools
 #' @docType package
 #' 
-#' @import methods Biobase Biostrings XML xml2 gtable ggplot2
+#' @import methods Biobase Biostrings xml2 gtable ggplot2
 #' @importFrom ape as.phylo
 #' @importFrom ggtree ggtree
 #' @importFrom reshape2 melt

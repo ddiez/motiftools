@@ -8,7 +8,6 @@ Description: Functions useful to analyze and interpret results from sequence
 Imports:
     methods,
     Rcpp,
-    XML,
     xml2,
     Biobase,
     IRanges,
