@@ -41,7 +41,8 @@ function(object) {
 #' @param x a matrix as obtained with conservationMatrix() or an AAMultipleAlignment object.
 #' @param ... arguments passed down to matrix-method.
 #' @param tree a tree of class dendrogram or that can be coerced into.
-#' @param color color for the tile borders (default: transparent).
+#' @param plot.type one of tile (default) or raster. Use raster for large alignments.
+#' @param tile.color color for the tile borders (default: transparent).
 #' @param show.tips logical; whether to show sequence ids.
 #' @param show.consensus logical; whether to show consensus sequence.
 #' @param size text size for consensus sequence.
@@ -56,7 +57,9 @@ setGeneric("plotConservationMatrix", function(x, ...) standardGeneric("plotConse
 #' @rdname plotConservationMatrix-methods
 #' @aliases plotConservationMatrix,matrix-method
 setMethod("plotConservationMatrix", "matrix", 
-function(x, tree, color = "transparent", show.tips = FALSE, show.consensus = FALSE, size = 8) {
+function(x, tree, plot.type = "tile", tile.color = "transparent", show.tips = FALSE, show.consensus = FALSE, size = 8) {
+  plot.type <- match.arg(plot.type, c("tile", "raster"))
+  
   if (!missing(tree)) {
     tree <- as.phylo(tree)
     x <- x[tree$tip.label, ]
@@ -82,8 +85,13 @@ function(x, tree, color = "transparent", show.tips = FALSE, show.consensus = FAL
   d$position <- factor(d$position)
   d$conservation <- factor(d$conservation, levels = 1:5, labels =  c("gap (-)","< 40%",">= 40%",">= 60%",">= 80%"))
   
+  if (plot.type == "raster")
+    p <- geom_raster()
+  else
+    p <- geom_tile(color = color)
+  
   pheat <- ggplot(d, aes_string(x = "position", y = "sequences", fill = "conservation")) + 
-    geom_tile(color = color) + 
+    p + 
     scale_x_discrete(expand = c(0, 0), labels = labels) +
     scale_y_discrete(expand = c(0, 0), labels = tips) +
     scale_fill_manual(values = c("white", "grey80", "grey50", "steelblue", "orange"),
@@ -124,6 +132,7 @@ function(x, tree, color = "transparent", show.tips = FALSE, show.consensus = FAL
 #' @rdname plotConservationMatrix-methods
 #' @aliases plotConservationMatrix,AAMultipleAlignment-method
 setMethod("plotConservationMatrix", "AAMultipleAlignment", 
-function(x, tree, color = "transparent", show.tips = FALSE, show.consensus = FALSE, size = 8) {
-  plotConservationMatrix(conservationMatrix(x), tree = tree, color = color, show.tips = show.tips, show.consensus = show.consensus, size = size)
+function(x, tree, plot.type = "tile", tile.color = "transparent", show.tips = FALSE, show.consensus = FALSE, size = 8) {
+  plot.type <- match.arg(plot.type, c("tile", "raster"))
+  plotConservationMatrix(conservationMatrix(x), tree = tree, plot.type = plot.type, tile.color = tile.color, show.tips = show.tips, show.consensus = show.consensus, size = size)
 })
