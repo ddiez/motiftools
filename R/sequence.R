@@ -13,34 +13,24 @@
 setGeneric("conservationMatrix", function(object) standardGeneric("conservationMatrix"))
 
 #' @rdname conservationMatrix-methods
-#' @aliases conservationMatrix,matrix-method
-setMethod("conservationMatrix", "matrix", 
-function(object) {
-  m <- matrix(1L, ncol = ncol(object), nrow = nrow(object))
-  rownames(m) <- rownames(object)
-  colnames(m) <- apply(object, 2, function(x) {
-    tt <- table(x)
-    names(tt)[which.max(tt)]
-    })
-
-  m[object != "-"] = 2L
-  
-  mt <- apply(object, 2, table, exclude = "-")
-  mt <- lapply(mt, function(z) 100 * z / nrow(object))
-  for (k in seq_len(length(mt))) {
-    tmp <- mt[[k]]
-    m[,k][object[,k] %in% names(tmp)[tmp >= 40]] = 3L
-    m[,k][object[,k] %in% names(tmp)[tmp >= 60]] = 4L
-    m[,k][object[,k] %in% names(tmp)[tmp >= 80]] = 5L
-  }
-  m
-})
-
-#' @rdname conservationMatrix-methods
 #' @aliases conservationMatrix,AAMultipleAlignment-method
 setMethod("conservationMatrix", "AAMultipleAlignment", 
 function(object) {
-  conservationMatrix(as.matrix(object))
+  m <- as.matrix(object)
+  nr <- nrow(m)
+  nc <- ncol(m)
+  
+  cons <- consensusMatrix(object) / nr # faster on AAMultipleAlignment object.
+  cons <- matrix(cut(cons, breaks = c(0, .4, .6, .8, 1), include.lowest = TRUE, labels = c(2L, 3L, 4L, 5L)), ncol = ncol(cons), nrow = nrow(cons), dimnames = dimnames(cons))
+  cons["-",][] <- 1L # replace gaps with "1"
+  
+  res <- lapply(seq_len(nc), function(j) {
+    cons[, j, drop = FALSE][m[, j],] %>% unname
+  })
+  res <- do.call(cbind, res)
+  rownames(res) <- rownames(m)
+  mode(res) <- "integer"
+  res
 })
 
 #' Plots a heatmap with the conservation score for each residue

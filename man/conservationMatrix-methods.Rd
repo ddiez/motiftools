@@ -4,12 +4,9 @@
 \name{conservationMatrix}
 \alias{conservationMatrix}
 \alias{conservationMatrix,AAMultipleAlignment-method}
-\alias{conservationMatrix,matrix-method}
 \title{Compute the conservation score matrix from a MSA}
 \usage{
 conservationMatrix(object)
-
-\S4method{conservationMatrix}{matrix}(object)
 
 \S4method{conservationMatrix}{AAMultipleAlignment}(object)
 }
