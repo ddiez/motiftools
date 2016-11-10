@@ -5,28 +5,42 @@
 #' @param object AAMultipleAlignment alignment object.
 #' 
 #' @export
-conservationMatrix <- function(object) {
-  x <- as.matrix(object)
+#' @rdname conservationMatrix-methods
+#'
+#' @examples
+#' NULL
+setGeneric("conservationMatrix", function(object) standardGeneric("conservationMatrix"))
 
-  m <- matrix(1L, ncol = ncol(x), nrow = nrow(x))
-  rownames(m) <- rownames(x)
-  colnames(m) <- apply(x, 2, function(xk) {
-    tt <- table(xk)
+#' @rdname conservationMatrix-methods
+#' @aliases conservationMatrix,matrix-method
+setMethod("conservationMatrix", "matrix", 
+function(object) {
+  m <- matrix(1L, ncol = ncol(object), nrow = nrow(object))
+  rownames(m) <- rownames(object)
+  colnames(m) <- apply(object, 2, function(x) {
+    tt <- table(x)
     names(tt)[which.max(tt)]
     })
 
-  m[x != "-"] = 2L
+  m[object != "-"] = 2L
   
-  mt <- apply(x, 2, table, exclude = "-")
-  mt <- lapply(mt, function(z) 100 * z / nrow(x))
+  mt <- apply(object, 2, table, exclude = "-")
+  mt <- lapply(mt, function(z) 100 * z / nrow(object))
   for (k in seq_len(length(mt))) {
     tmp <- mt[[k]]
-    m[,k][x[,k] %in% names(tmp)[tmp >= 40]] = 3L
-    m[,k][x[,k] %in% names(tmp)[tmp >= 60]] = 4L
-    m[,k][x[,k] %in% names(tmp)[tmp >= 80]] = 5L
+    m[,k][object[,k] %in% names(tmp)[tmp >= 40]] = 3L
+    m[,k][object[,k] %in% names(tmp)[tmp >= 60]] = 4L
+    m[,k][object[,k] %in% names(tmp)[tmp >= 80]] = 5L
   }
   m
-}
+})
+
+#' @rdname conservationMatrix-methods
+#' @aliases conservationMatrix,AAMultipleAlignment-method
+setMethod("conservationMatrix", "AAMultipleAlignment", 
+function(object) {
+  conservationMatrix(as.matrix(object))
+})
 
 #' plotConservationMatrix
 #' 
