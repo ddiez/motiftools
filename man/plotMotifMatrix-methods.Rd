@@ -11,7 +11,7 @@
 plotMotifMatrix(object, ...)
 
 \S4method{plotMotifMatrix}{list}(object, tree, fill, color = "transparent",
-  high, high.col, bar.percentage = TRUE, plot = TRUE)
+  annot = NULL, annot.fill = NULL, bar.percentage = TRUE, plot = TRUE)
 
 \S4method{plotMotifMatrix}{MotifSearchResult}(object, ...)
 
@@ -28,9 +28,9 @@ plotMotifMatrix(object, ...)
 
 \item{color}{color for tile borders.}
 
-\item{high}{vector (factor or character) indicating row groups.}
+\item{annot}{list of matrices containing annotations.}
 
-\item{high.col}{colors usef for each group in high.}
+\item{annot.fill}{list of character vectors with fill colors for annotation matrices.}
 
 \item{bar.percentage}{logical; whether to show percentages in bar plot (default: TRUE).}
 
