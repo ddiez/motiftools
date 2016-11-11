@@ -122,8 +122,8 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   
   # add annotations.
   if (!is.null(annot)) {
-    gt <- gtable_add_cols(gt, widths = unit(rep(1, na), "null"))
     for (k in seq_len(na)) {
+      gt <- gtable_add_cols(gt, widths = unit(ncol(annot[[k]]), "lines"))
       # gg <- gtable_filter(grob_annot[[k]], "guide-box")
       # gt <- gtable_add_grob(gt, gg, t = 1, l = n + k)
       gg <- gtable_filter(grob_annot[[k]], "panel")
