@@ -68,7 +68,7 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
     grob_annot <- lapply(seq_len(na), function(k) {
       l <- nl[k]
       d <- melt(annot[[k]], varnames = c("sequence", "variable"), value.name = l)
-      d[[l]] <- factor(d[[l]])
+      d[[l]] <- factor(d[[l]], levels = seq_len(length(annot.fill[[k]])))
       g <- ggplot(d, aes_string(x = "variable", y = "sequence", fill = l)) +
         geom_tile(color = color) +
         scale_fill_manual(values = annot.fill[[k]]) +
