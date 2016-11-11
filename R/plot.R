@@ -10,8 +10,6 @@
 #' @param color color for tile borders.
 #' @param annot list of matrices containing annotations.
 #' @param annot.fill list of character vectors with fill colors for annotation matrices.
-#' @param high vector (factor or character) indicating row groups.
-#' @param high.col colors usef for each group in high.
 #' @param bar.percentage logical; whether to show percentages in bar plot (default: TRUE).
 #' @param plot logical; whether to draw the plot (default: TRUE).
 #'
@@ -26,7 +24,7 @@ setGeneric("plotMotifMatrix", function(object, ...) standardGeneric("plotMotifMa
 #' @rdname plotMotifMatrix-methods
 #' @aliases plotMotifMatrix,list-method
 setMethod("plotMotifMatrix", "list", 
-function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = NULL, high, high.col, bar.percentage = TRUE, plot = TRUE) {
+function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = NULL, bar.percentage = TRUE, plot = TRUE) {
   # check object type.
   type <- unique(sapply(object, class))
   if (length(type) > 1) stop("passing a list of objects of different class are not allowed.")
@@ -79,47 +77,6 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
     })
   }
   
-  # annotations as data.frames.
-  # if (!is.null(annot)) {
-  #   if (length(annot) == 1 && class(annot) != "list") {
-  #     annot <- list(annot = annot)
-  #   }
-  #   #annot <- lapply(annot, function(o) o[tree$tip.label, , drop = FALSE])
-  #   rob_annot <- lapply(seq_len(na), function(k) {
-  #     an <- annot[[k]]
-  #     an <- an[tree$tip.label, , drop = FALSE] # reorder.
-  #     # for data.frame:
-  #     an <- an %>% rownames_to_column("sequence")
-  #     g <- ggplot(d, aes_string(x = "variable", y = "sequence", fill = l)) +
-  #             geom_tile(color = color) +
-  #             scale_fill_manual(values = annot.fill[[k]]) +
-  #             scale_x_discrete(expand = c(0,0)) +
-  #             scale_y_discrete(expand = c(0,0))
-  #     ggplotGrob(g)
-  #   })
-  #   
-  # }
-  # highlight.
-  # if (!missing(high)) {
-  #   high <- high[tree$tip.label]
-  #   tmp <- melt(matrix(high), nrow = nr)
-  #   if (missing(high.col)) {
-  #     high.col <- rainbow(nlevels(tmp$value))
-  #   }
-  #   if (!is.null(names(high)))
-  #     high.name <- names(high)
-  #   else
-  #     high.name <- ""
-  #   g <- ggplot(tmp, aes_string(x = "factor(Var2)", y = "factor(Var1)", fill = "value")) +
-  #     geom_tile() + 
-  #     scale_fill_manual(high.name, values = high.col) + 
-  #     theme(legend.key.size = unit(.5, "lines"))  + 
-  #     scale_x_discrete(expand = c(0,0)) + 
-  #     scale_y_discrete(expand = c(0,0)) + 
-  #     guides(fill = guide_legend(direction = "horizontal"))
-  #   grob_high <- ggplotGrob(g)
-  # }
-  
   # heatmaps.
   if (missing(fill)) {
     fill <- cm.colors(128)
@@ -163,13 +120,6 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
     gt <- gtable_add_grob(gt, gg, t = 2, l = k)
   }
   
-  # # add highlights.
-  # # if (!missing(high)) {
-  # #   gt <- gtable_add_cols(gt, unit(1, "lines"), pos = -1)
-  # #   gg <- gtable_filter(grob_high, "panel")
-  # #   gt <- gtable_add_grob(gt, gg, t = 3, l = -1)
-  # # }
-  # 
   # add annotations.
   if (!is.null(annot)) {
     gt <- gtable_add_cols(gt, widths = unit(rep(1, na), "null"))
