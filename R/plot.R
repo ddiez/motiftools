@@ -62,7 +62,7 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   if (!is.null(annot)) {
     na <- length(annot)
     nl <- names(annot)
-    if (is.null(nl)) nl <- paste0("annot-", seq_len(na))
+    if (is.null(nl)) nl <- paste0("annot", seq_len(na))
     # reorder annotations.
     annot <- lapply(annot, function(o) o[tree$tip.label, , drop = FALSE])
     # create plot.
