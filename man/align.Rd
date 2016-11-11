@@ -28,7 +28,6 @@ Align two sequences using local (Smith-Waterman) or global (Needleman-Wunsch) se
 }
 \examples{
 library(motiftools)
-data(BLOSUM62, package = "Biostrings")
-align("ALVDE", "AVRES", score.matrix = BLOSUM62)
+align("ALVDE", "AVRES", score.matrix = "BLOSUM62")
 }
 
