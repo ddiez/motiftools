@@ -11,7 +11,8 @@
 plotMotifMatrix(object, ...)
 
 \S4method{plotMotifMatrix}{list}(object, tree, fill, color = "transparent",
-  annot = NULL, annot.fill = NULL, bar.percentage = TRUE, plot = TRUE)
+  annot = NULL, annot.fill = NULL, bar.percentage = TRUE,
+  show.tips = FALSE, plot = TRUE)
 
 \S4method{plotMotifMatrix}{MotifSearchResult}(object, ...)
 
@@ -33,6 +34,8 @@ plotMotifMatrix(object, ...)
 \item{annot.fill}{list of character vectors with fill colors for annotation matrices.}
 
 \item{bar.percentage}{logical; whether to show percentages in bar plot (default: TRUE).}
+
+\item{show.tips}{logical; whether to show the sequence names near the tree tips.}
 
 \item{plot}{logical; whether to draw the plot (default: TRUE).}
 }

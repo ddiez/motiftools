@@ -11,6 +11,7 @@
 #' @param annot list of matrices containing annotations.
 #' @param annot.fill list of character vectors with fill colors for annotation matrices.
 #' @param bar.percentage logical; whether to show percentages in bar plot (default: TRUE).
+#' @param show.tips logical; whether to show the sequence names near the tree tips.
 #' @param plot logical; whether to draw the plot (default: TRUE).
 #'
 #' @return Returns a grob object invisibly.
@@ -24,7 +25,7 @@ setGeneric("plotMotifMatrix", function(object, ...) standardGeneric("plotMotifMa
 #' @rdname plotMotifMatrix-methods
 #' @aliases plotMotifMatrix,list-method
 setMethod("plotMotifMatrix", "list", 
-function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = NULL, bar.percentage = TRUE, plot = TRUE) {
+function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = NULL, bar.percentage = TRUE, show.tips = FALSE, plot = TRUE) {
   # check object type.
   type <- unique(sapply(object, class))
   if (length(type) > 1) stop("passing a list of objects of different class are not allowed.")
@@ -89,7 +90,8 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
       scale_fill_gradientn(colours = fill) +
       theme(legend.key.size = unit(.5, "lines")) +
       scale_x_discrete(expand = c(0,0)) +
-      scale_y_discrete(expand = c(0,0)) 
+      scale_y_discrete(expand = c(0,0)) +
+      theme(axis.ticks = element_blank())
     ggplotGrob(g)
   })
   
@@ -130,7 +132,7 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
       gt <- gtable_add_grob(gt, gg, t = 2, l = n + k)
     }
   }
-
+  
   # add padding between matrices.
   gt <- gtable_add_col_space(gt, unit(.5, "lines"))
   gt <- gtable_add_row_space(gt, unit(.5, "lines"))
@@ -161,10 +163,20 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   #   gt <- gtable_add_grob(gt, gg, t = 1, l = 1)
   # }
   
+  if (show.tips) {
+    gg <- gtable_filter(grob_heatmap[[1]], "axis-l")
+    gt <- gtable_add_cols(gt, widths = gg$widths, pos = 0)
+    gt <- gtable_add_grob(gt, gg, t = -1, l = 1, r = 2)
+  }
+  
   # add tree.
   gt <- gtable_add_cols(gt, unit(.5, "null"), pos = 0)
   gg <- gtable_filter(grob_tree, "panel")
-  gt <- gtable_add_grob(gt, gg, t = -1, l = 1, r = 2)
+  if (show.tips)
+    gt <- gtable_add_grob(gt, gg, t = -1, l = 1)
+  else
+    gt <- gtable_add_grob(gt, gg, t = -1, l = 1, r = 2)
+  
   
   gt <- gtable_add_padding(gt, unit(.5, "line"))
   if (plot) {
