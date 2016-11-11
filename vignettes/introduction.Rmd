@@ -71,7 +71,7 @@ plotMotifMatrix(list("MEME motifs" = m_meme, "FIMO motifs" = m_fimo, "MAST motif
 annot <- matrix(1, nrow = nseq(x_meme), ncol = 1, dimnames = list(sequenceNames(x_meme)))
 annot[grepl("RASH|RASK", rownames(annot)), ] <- 2
 annot
-plotMotifMatrix(list("MEME motifs" = m_meme, "FIMO motifs" = m_fimo, "MAST motifs" = m_mast), fill = c("white", "grey"), col = "black", annot = list(annot), annot.fill = list(c("white", "red")))
+plotMotifMatrix(list("MEME motifs" = m_meme, "FIMO motifs" = m_fimo, "MAST motifs" = m_mast), fill = c("white", "grey"), col = "black", annot = list(annot), annot.fill = list(c("white", "red")), show.tips = TRUE)
 
 # plot a motif model logo (from MEME output).
 p <- pwm(x_meme)[["motif_4"]]
