@@ -4,17 +4,29 @@
 \alias{plotMotifMatches}
 \title{plotMotifMatches}
 \usage{
-plotMotifMatches(x, fill = c("p_value", "e_value", "q_value"))
+plotMotifMatches(x, fill = c("p_value", "e_value", "q_value"),
+  color = "transparent")
 }
 \arguments{
 \item{x}{a MotifCompareResult object.}
 
-\item{fill}{the statistic to plot. One of p_value, e_value, q_value (default: p_value).}
+\item{fill}{the statistic to plot. One of p_value, e_value, q_value 
+(default: p_value).}
+
+\item{color}{color use for the tile border (default: transparent).}
 }
 \description{
-Plot a matrix with rows and columns representing motifs in the query and target databases, and the fill
-color representing one of the three statistics (p_value, e_value, q_value) measuring the significance of
-the similarity between the motifs.
+Plot a matrix with rows and columns representing motifs in the query and 
+target database, and the fill color representing one of the three statistics 
+(p_value, e_value, q_value) measuring the significance of the similarity 
+between the motifs.
+}
+\details{
+The original data only contains the mortif pairs matching. When using
+a color for the tiles different from transparent, only those tiles present in 
+the original data are present. To get around this problem the missing cells are 
+created and assigned NA values. For this expand.grid and apply are used, whic
+may slow down the method for large matrices (when comparing large motif libraries).
 }
 \examples{
 NULL

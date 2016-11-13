@@ -44,8 +44,8 @@ getTomtomMotifMatches <- function(x) {
     query_id <- xml_attr(motif, "idx")
     tmp <- xml_attrs(xml_find_all(motif, "target"))
     tmp <- do.call(rbind, tmp)
-    data.frame(query_id = query_id,
-               target_id = tmp[, "idx"],
+    data.frame(query_id = as.character(as.integer(query_id) + 1),
+               target_id = as.character(as.integer(tmp[, "idx"]) + 1),
                offset = as.integer(tmp[, "off"]),
                p_value = as.numeric(tmp[, "pv"]),
                e_value = as.numeric(tmp[, "ev"]),
@@ -107,23 +107,52 @@ readTOMTOM <- function(file, description = NULL) {
 
 #' plotMotifMatches
 #' 
-#' Plot a matrix with rows and columns representing motifs in the query and target databases, and the fill
-#' color representing one of the three statistics (p_value, e_value, q_value) measuring the significance of
-#' the similarity between the motifs.
+#' Plot a matrix with rows and columns representing motifs in the query and 
+#' target database, and the fill color representing one of the three statistics 
+#' (p_value, e_value, q_value) measuring the significance of the similarity 
+#' between the motifs.
 #'
 #' @param x a MotifCompareResult object.
-#' @param fill the statistic to plot. One of p_value, e_value, q_value (default: p_value).
+#' @param fill the statistic to plot. One of p_value, e_value, q_value 
+#' (default: p_value).
+#' @param color color use for the tile border (default: transparent).
+#' 
+#' @details The original data only contains the mortif pairs matching. When using
+#' a color for the tiles different from transparent, only those tiles present in 
+#' the original data are present. To get around this problem the missing cells are 
+#' created and assigned NA values. For this expand.grid and apply are used, whic
+#' may slow down the method for large matrices (when comparing large motif libraries).
 #'
 #' @return NULL
 #' @export
 #'
 #' @examples
 #' NULL
-plotMotifMatches <- function(x, fill = c("p_value", "e_value", "q_value")) {
-  x <- x@matches
-  ggplot(x, aes_string(x = "query_id", y = "target_id", fill = fill)) + 
-    geom_tile() + 
-    viridis::scale_fill_viridis(guide = guide_legend(), direction = -1) + 
+plotMotifMatches <- function(x, fill = c("p_value", "e_value", "q_value"), color = "transparent") {
+  matches <- x@matches
+  
+  if (color != "transparent") {
+    d <- expand.grid(seq_len(nquery(x)), seq_len(ntarget(x)))
+    d <- apply(d, 1, function(x) {
+      sel <- matches$query_id == x[1] & matches$target_id == x[2]
+      if(nrow(matches[sel,]) > 0)
+        matches[sel, ]
+      else
+        data.frame(
+          query_id = x[1],
+          target_id = x[2],
+          offset = NA,
+          p_value = NA,
+          e_value = NA,
+          q_value = NA
+        )
+    })
+    matches  <- do.call(rbind, d)
+  }
+  
+  ggplot(matches, aes_string(x = "query_id", y = "target_id", fill = fill)) + 
+    geom_tile(color = color) + 
+    viridis::scale_fill_viridis(guide = guide_legend(), direction = -1, na.value = "white") + 
     scale_x_discrete(expand = c(0, 0)) +
     scale_y_discrete(expand = c(0, 0)) +
     theme(
