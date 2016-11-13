@@ -73,20 +73,33 @@
     </div>
 
     
-    <p>Plot a matrix with rows and columns representing motifs in the query and target databases, and the fill
-color representing one of the three statistics (p_value, e_value, q_value) measuring the significance of
-the similarity between the motifs.</p>
+    <p>Plot a matrix with rows and columns representing motifs in the query and 
+target database, and the fill color representing one of the three statistics 
+(p_value, e_value, q_value) measuring the significance of the similarity 
+between the motifs.</p>
     
 
-    <pre><span class='fu'>plotMotifMatches</span>(<span class='no'>x</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"p_value"</span>, <span class='st'>"e_value"</span>, <span class='st'>"q_value"</span>))</pre>
+    <pre><span class='fu'>plotMotifMatches</span>(<span class='no'>x</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"p_value"</span>, <span class='st'>"e_value"</span>, <span class='st'>"q_value"</span>),
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"transparent"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x</dt>
       <dd>a MotifCompareResult object.</dd>
       <dt>fill</dt>
-      <dd>the statistic to plot. One of p_value, e_value, q_value (default: p_value).</dd>
+      <dd>the statistic to plot. One of p_value, e_value, q_value 
+(default: p_value).</dd>
+      <dt>color</dt>
+      <dd>color use for the tile border (default: transparent).</dd>
     </dl>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The original data only contains the mortif pairs matching. When using
+a color for the tiles different from transparent, only those tiles present in 
+the original data are present. To get around this problem the missing cells are 
+created and assigned NA values. For this expand.grid and apply are used, whic
+may slow down the method for large matrices (when comparing large motif libraries).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -96,7 +109,9 @@ the similarity between the motifs.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#details">Details</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

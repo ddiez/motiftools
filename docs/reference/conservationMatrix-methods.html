@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>plotMotifMatrix — plotMotifMatrix • motiftools</title>
+<title>Compute the conservation score matrix from a MSA — conservationMatrix • motiftools</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -69,54 +69,24 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>plotMotifMatrix</h1>
+    <h1>Compute the conservation score matrix from a MSA</h1>
     </div>
 
     
-    <p>Plot a heatmap with motif counts per sequence and associated tree and 
-barplots with motif-wise percentages.</p>
+    <p>Compute the conservation score matrix from a multiple sequence alignment (MSA) 
+according to the method described in the software Jalview (htt://www.jalview.org).</p>
     
 
-    <pre><span class='fu'>plotMotifMatrix</span>(<span class='no'>object</span>, <span class='no'>...</span>)
+    <pre><span class='fu'>conservationMatrix</span>(<span class='no'>object</span>)
 
-<span class='co'># S4 method for list</span>
-<span class='fu'>plotMotifMatrix</span>(<span class='no'>object</span>, <span class='no'>tree</span>, <span class='no'>fill</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"transparent"</span>,
-  <span class='kw'>annot</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>annot.fill</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bar.percentage</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>show.tips</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>plot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='co'># S4 method for MotifSearchResult</span>
-<span class='fu'>plotMotifMatrix</span>(<span class='no'>object</span>, <span class='no'>...</span>)
-
-<span class='co'># S4 method for matrix</span>
-<span class='fu'>plotMotifMatrix</span>(<span class='no'>object</span>, <span class='no'>...</span>)</pre>
+<span class='co'># S4 method for AAMultipleAlignment</span>
+<span class='fu'>conservationMatrix</span>(<span class='no'>object</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>object</dt>
-      <dd>a matrix object or list of matrix objects.</dd>
-      <dt>...</dt>
-      <dd>arguments passed down to methods.</dd>
-      <dt>tree</dt>
-      <dd>a tree object.</dd>
-      <dt>fill</dt>
-      <dd>color used for tiles.</dd>
-      <dt>color</dt>
-      <dd>color for tile borders.</dd>
-      <dt>annot</dt>
-      <dd>list of matrices containing annotations.</dd>
-      <dt>annot.fill</dt>
-      <dd>list of character vectors with fill colors for annotation matrices.</dd>
-      <dt>bar.percentage</dt>
-      <dd>logical; whether to show percentages in bar plot (default: TRUE).</dd>
-      <dt>show.tips</dt>
-      <dd>logical; whether to show the sequence names near the tree tips.</dd>
-      <dt>plot</dt>
-      <dd>logical; whether to draw the plot (default: TRUE).</dd>
+      <dd>AAMultipleAlignment alignment object (or a matrix).</dd>
     </dl>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Returns a grob object invisibly.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -126,9 +96,7 @@ barplots with motif-wise percentages.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 

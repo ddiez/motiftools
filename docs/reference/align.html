@@ -82,9 +82,9 @@
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
       <dt>x1</dt>
-      <dd>sequence (a character vector).</dd>
+      <dd>pattern sequence: a character vector, scalar or AAString.</dd>
       <dt>x2</dt>
-      <dd>sequence (a character vector).</dd>
+      <dd>subject sequence: a character vector, scalar or AAString.</dd>
       <dt>score.matrix</dt>
       <dd>substitution matrix.</dd>
       <dt>gap.score</dt>
@@ -102,11 +102,10 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>motiftools</span>)
-<span class='fu'>data</span>(<span class='no'>BLOSUM62</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"Biostrings"</span>)
-<span class='fu'>align</span>(<span class='st'>"ALVDE"</span>, <span class='st'>"AVRES"</span>, <span class='kw'>score.matrix</span> <span class='kw'>=</span> <span class='no'>BLOSUM62</span>)</div><div class='output co'>#&gt; $alignment
-#&gt;   1 2 3 4 5
-#&gt; x A L V D E
-#&gt; y A - V R E
+<span class='fu'>align</span>(<span class='st'>"ALVDE"</span>, <span class='st'>"AVRES"</span>, <span class='kw'>score.matrix</span> <span class='kw'>=</span> <span class='st'>"BLOSUM62"</span>)</div><div class='output co'>#&gt; $alignment
+#&gt;   1   2   3   4   5  
+#&gt; x &quot;A&quot; &quot;L&quot; &quot;V&quot; &quot;D&quot; &quot;E&quot;
+#&gt; y &quot;A&quot; &quot;-&quot; &quot;V&quot; &quot;R&quot; &quot;E&quot;
 #&gt; 
 #&gt; $score
 #&gt; [1] 26

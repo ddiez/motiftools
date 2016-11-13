@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MotifSearchResult — MotifSearchResult-class • motiftools</title>
+<title>MotifSearchResult-class — MotifSearchResult-class • motiftools</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -69,17 +69,18 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>MotifSearchResult</h1>
+    <h1>MotifSearchResult-class</h1>
     </div>
 
     
-    <p>MotifSearchResult</p>
+    <p>This document described the MotifSearchResult class and methods for storing
+results from motif finding methods (e.g. MEME, FIMO and MAST).</p>
     
 
     <pre># S4 method for MotifSearchResult
 show(object)
 
-# S4 method for MotifSearchResult
+# S4 method for MotifSearchResult,ANY
 [(x, i, j, ..., drop = FALSE)
 
 nmotif(object)
@@ -119,7 +120,7 @@ pwm(object)</pre>
     <p><dt><code>motifs</code></dt><dd>AnnotatedDataFrame with motif information.</dd></p>
     <p><dt><code>probabilities</code></dt><dd>list of motif probabilities.</dd></p>
     <p><dt><code>scores</code></dt><dd>list of motif scores.</dd></p>
-    <p><dt><code>ranges</code></dt><dd>RangedData with motif hits.</dd>
+    <p><dt><code>ranges</code></dt><dd>GRanges with motif hits.</dd>
 </dl></p>
     
 
