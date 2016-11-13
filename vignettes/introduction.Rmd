@@ -85,7 +85,7 @@ You can compare the motifs obtained with MEME using the TOMTOM tool. Then you ca
 f <- system.file("files/tomtom_ras/tomtom.xml", package = "motiftools")
 x_tomtom <- readTOMTOM(f)
 plotMotifMatches(x_tomtom)
-plotMotifMatches(x_tomtom, fill = "e_value")
+plotMotifMatches(x_tomtom, fill = "e_value", color = "black")
 ```
 
 
