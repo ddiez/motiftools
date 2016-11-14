@@ -24,3 +24,17 @@ test_that("accessors", {
   expect_identical(m[1, 1], 1L)
   expect_identical(m[1, 9], 0L)
 })
+
+test_that("scores returns the correct values", {
+  s <- scores(x)
+  expect_is(s, "list")
+  expect_is(s[[1]], "matrix")
+  expect_identical(s[[1]][1, 1], -260L)
+})
+
+test_that("pwm returns the correct values", {
+  p <- pwm(x)
+  expect_is(p, "list")
+  expect_is(p[[1]], "matrix")
+  expect_identical(p[[1]][1, 1], 0)
+})
