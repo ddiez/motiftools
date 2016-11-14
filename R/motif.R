@@ -65,7 +65,7 @@ function(object) {
   r <- object@ranges
   s <- object@sequences
   
-  p <- Biobase::pData(s)
+  p <- pData(s)
   r %>% as.data.frame %>% 
     group_by_("seqnames") %>% 
     summarize_(length = "sum(width)", tot_length = p[unique(seqnames), "length"]) %>% 
