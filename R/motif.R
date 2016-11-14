@@ -74,14 +74,33 @@ function(object) {
 })
 
 
-#### TO CHECK:
+#' getMotifTotalCoverage
+#' 
+#' Obtain the total percentage of all sequences that is covered by the motifs matching
+#' to it.
+#' 
+#' @param object a MotifSearchResult object.
+#'
+#' @return A numeric scalar with the percentage of sequence covered by motifs.
+#' @export
+#' @rdname getMotifTotalCoverage-methods
+#'
+#' @examples
+#' NULL
+setGeneric("getMotifTotalCoverage", function(object) standardGeneric("getMotifTotalCoverage"))
 
-getTotalCoverage <- function(object) {
+#' @rdname getMotifTotalCoverage-methods
+#' @aliases getMotifTotalCoverage,MotifSearchResult-method
+setMethod("getMotifTotalCoverage", "MotifSearchResult",
+function(object) {
   r <- reduce(object@ranges)
   pdata <- pData(object@sequences)
   100 * sum(width(r))/sum(pdata[, "length"])
-}
-setGeneric("getTotalCoverage")
+})
+
+
+#### TO CHECK:
+
 
 getMotifBySeq <- function(object) {
   lapply(object@ranges, function(x) x$motif_name)  # for RangedData.
