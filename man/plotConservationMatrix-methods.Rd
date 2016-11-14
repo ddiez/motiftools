@@ -9,12 +9,12 @@
 \usage{
 plotConservationMatrix(x, ...)
 
-\S4method{plotConservationMatrix}{matrix}(x, tree, plot.type = "tile",
+\S4method{plotConservationMatrix}{matrix}(x, tree, raster = FALSE,
   tile.color = "transparent", show.tips = FALSE, show.consensus = FALSE,
   size = 8)
 
 \S4method{plotConservationMatrix}{AAMultipleAlignment}(x, tree,
-  plot.type = "tile", tile.color = "transparent", show.tips = FALSE,
+  raster = FALSE, tile.color = "transparent", show.tips = FALSE,
   show.consensus = FALSE, size = 8)
 }
 \arguments{
@@ -24,7 +24,7 @@ plotConservationMatrix(x, ...)
 
 \item{tree}{a tree of class dendrogram or that can be coerced into.}
 
-\item{plot.type}{one of tile (default) or raster. Use raster for large alignments.}
+\item{raster}{logical; whether to use geom_raster (best for large alignments).}
 
 \item{tile.color}{color for the tile borders (default: transparent).}
 

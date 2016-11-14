@@ -41,7 +41,7 @@ function(object) {
 #' @param x a matrix as obtained with conservationMatrix() or an AAMultipleAlignment object.
 #' @param ... arguments passed down to matrix-method.
 #' @param tree a tree of class dendrogram or that can be coerced into.
-#' @param plot.type one of tile (default) or raster. Use raster for large alignments.
+#' @param raster logical; whether to use geom_raster (best for large alignments).
 #' @param tile.color color for the tile borders (default: transparent).
 #' @param show.tips logical; whether to show sequence ids.
 #' @param show.consensus logical; whether to show consensus sequence.
@@ -57,9 +57,7 @@ setGeneric("plotConservationMatrix", function(x, ...) standardGeneric("plotConse
 #' @rdname plotConservationMatrix-methods
 #' @aliases plotConservationMatrix,matrix-method
 setMethod("plotConservationMatrix", "matrix", 
-function(x, tree, plot.type = "tile", tile.color = "transparent", show.tips = FALSE, show.consensus = FALSE, size = 8) {
-  plot.type <- match.arg(plot.type, c("tile", "raster"))
-  
+function(x, tree, raster = FALSE, tile.color = "transparent", show.tips = FALSE, show.consensus = FALSE, size = 8) {
   if (!missing(tree)) {
     tree <- as.phylo(tree)
     x <- x[tree$tip.label, ]
@@ -85,7 +83,7 @@ function(x, tree, plot.type = "tile", tile.color = "transparent", show.tips = FA
   d$position <- factor(d$position)
   d$conservation <- factor(d$conservation, levels = 1:5, labels =  c("gap (-)","< 40%",">= 40%",">= 60%",">= 80%"))
   
-  if (plot.type == "raster")
+  if (raster)
     p <- geom_raster()
   else
     p <- geom_tile(color = tile.color)
@@ -132,7 +130,6 @@ function(x, tree, plot.type = "tile", tile.color = "transparent", show.tips = FA
 #' @rdname plotConservationMatrix-methods
 #' @aliases plotConservationMatrix,AAMultipleAlignment-method
 setMethod("plotConservationMatrix", "AAMultipleAlignment", 
-function(x, tree, plot.type = "tile", tile.color = "transparent", show.tips = FALSE, show.consensus = FALSE, size = 8) {
-  plot.type <- match.arg(plot.type, c("tile", "raster"))
-  plotConservationMatrix(conservationMatrix(x), tree = tree, plot.type = plot.type, tile.color = tile.color, show.tips = show.tips, show.consensus = show.consensus, size = size)
+function(x, tree, raster = FALSE, tile.color = "transparent", show.tips = FALSE, show.consensus = FALSE, size = 8) {
+  plotConservationMatrix(conservationMatrix(x), tree = tree, raster = raster, tile.color = tile.color, show.tips = show.tips, show.consensus = show.consensus, size = size)
 })
