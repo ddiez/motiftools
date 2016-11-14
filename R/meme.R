@@ -95,8 +95,9 @@ getMotifScores <- function(x, alphabet = NULL) {
     aa <- apply(matrix(aa, ncol = width), 1, unique)
     if (!is.null(alphabet))
       aa <- alphabet[aa, "symbol"]
-    scores <- xml_integer(nodes)
+    scores <- xml_integer(nodes) # not working? (returns "numeric").
     scores <- matrix(scores, ncol = width, dimnames = list(aa, seq_len(width)))
+    mode(scores) <- "integer"
     scores
   })
   names(scores) <- xml_attr(xml_find_all(x, ".//motif"), "id")
