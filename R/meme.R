@@ -1,11 +1,11 @@
 # handy function.
-getAttr <- function(id, attr, info) {
+getMemeAttr <- function(id, attr, info) {
   info[info["id"] == id, attr]
 }
-getAttr <- Vectorize(getAttr, vectorize.args = "id", USE.NAMES = FALSE)
+getMemeAttr <- Vectorize(getMemeAttr, vectorize.args = "id", USE.NAMES = FALSE)
 
 # get alphabet.
-getAlphabet <- function(x) {
+getMemeAlphabet <- function(x) {
   p <- xml_find_first(x, ".//training_set/alphabet")
   d <- lapply(1:xml_length(p), function(i) {
     tmp <- xml_attrs(xml_child(p, i))
@@ -15,7 +15,7 @@ getAlphabet <- function(x) {
 }
 
 # get motifs.
-getMotifs <- function(x) {
+getMemeMotifs <- function(x) {
   p <- xml_find_first(x, ".//motifs")
   d <- lapply(1:xml_length(p), function(i) {
     tmp <- xml_attrs(xml_child(p, i))
@@ -36,7 +36,7 @@ getMotifs <- function(x) {
 }
 
 # get sequences.
-getSequences <- function(x) {
+getMemeSequences <- function(x) {
   p <- xml_find_all(x, ".//sequence")
   tmp <- do.call(rbind, xml_attrs(p))
   data.frame(
@@ -50,7 +50,7 @@ getSequences <- function(x) {
 }
 
 # further sequence info (nsites and p.value).
-getSeqStats <- function(x) {
+getMemeSeqStats <- function(x) {
   p <- xml_find_all(x, ".//scanned_sites")
   
   tmp <- do.call(rbind, xml_attrs(p))
@@ -64,7 +64,7 @@ getSeqStats <- function(x) {
 }
 
 # get motif hits.
-getMotifHits <- function(x, motif_info) {
+getMemeMotifHits <- function(x, motif_info) {
   p <- xml_find_all(x, ".//scanned_sites")
   
   hits <- lapply(p, function(node) {
@@ -80,13 +80,13 @@ getMotifHits <- function(x, motif_info) {
     )
   })
   hits <- do.call(rbind, hits)
-  hits$width <- getAttr(hits$motif_id, attr = "width", info = motif_info)
+  hits$width <- getMemeAttr(hits$motif_id, attr = "width", info = motif_info)
   #hits$width <- motif_info[hits$motif_id, "width"]
   hits
 }
 
 # get motif scores.
-getMotifScores <- function(x, alphabet = NULL) {
+getMemeMotifScores <- function(x, alphabet = NULL) {
   motifs <- xml_find_first(x, ".//motifs")
   scores <- lapply(seq_len(xml_length(motifs)), function(k) {
     width <- as.integer(xml_attr(xml_child(motifs, k), "width"))
@@ -105,7 +105,7 @@ getMotifScores <- function(x, alphabet = NULL) {
 }
 
 # get motif probabilities.
-getMotifProbabilities <- function(x, alphabet = NULL) {
+getMemeMotifProbabilities <- function(x, alphabet = NULL) {
   motifs <- xml_find_first(x, ".//motifs")
   prob <- lapply(seq_len(xml_length(motifs)), function(k) {
     width <- as.integer(xml_attr(xml_child(motifs, k), "width"))
@@ -139,12 +139,12 @@ readMEME <- function(file, description = NULL) {
   doc <- read_xml(file)
   root <- xml_root(doc)
   
-  alf_info <- getAlphabet(root)
-  seq_info <- getSequences(root)
-  motif_info <- getMotifs(root)
-  motif_hit <- getMotifHits(root, motif_info)
-  motif_score <- getMotifScores(root, alf_info)
-  motif_prob <- getMotifProbabilities(root, alf_info)
+  alf_info <- getMemeAlphabet(root)
+  seq_info <- getMemeSequences(root)
+  motif_info <- getMemeMotifs(root)
+  motif_hit <- getMemeMotifHits(root, motif_info)
+  motif_score <- getMemeMotifScores(root, alf_info)
+  motif_prob <- getMemeMotifProbabilities(root, alf_info)
   
   # alphabetData.
   alphabetData <- AnnotatedDataFrame(alf_info)
@@ -157,10 +157,10 @@ readMEME <- function(file, description = NULL) {
   
   # rangeData.
   rangeData <- GRanges(
-    seqnames = getAttr(motif_hit$sequence_id, attr = "name", info = seq_info),
+    seqnames = getMemeAttr(motif_hit$sequence_id, attr = "name", info = seq_info),
     strand = "*",
     ranges = IRanges(start = motif_hit$position, width = motif_hit$width),
-    motif_name = getAttr(motif_hit$motif_id, attr = "name", info = motif_info),
+    motif_name = getMemeAttr(motif_hit$motif_id, attr = "name", info = motif_info),
     p_value = motif_hit$pvalue
   )
   
