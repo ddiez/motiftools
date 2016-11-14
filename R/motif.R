@@ -42,16 +42,39 @@ function(object, simplify = TRUE, filter = FALSE) {
   tmp
 })
 
-#### TO CHECK:
+#' getMotifCoverage
+#' 
+#' Obtain the percentage of each sequence that is covered by the motifs matching
+#' to it. This enable us to know how much the motifs are representative of the
+#' features defining each sequence.
+#'
+#' @param object a MotifSearchResult object.
+#'
+#' @return A numeric vector with the percentage of sequence covered by motifs.
+#' @export
+#' @rdname getMotifCoverage-methods
+#'
+#' @examples
+#' NULL
+setGeneric("getMotifCoverage", function(object) standardGeneric("getMotifCoverage"))
 
-getCoverage <- function(object) {
-  r <- reduce(object@ranges)
-  pdata <- pData(object@sequences)
-  sapply(names(r), function(n) {
-    100 * sum(width(r[n]))/pdata[n, "length"]
-  })
-}
-setGeneric("getCoverage")
+#' @rdname getMotifCoverage-methods
+#' @aliases getMotifCoverage,MotifSearchResult-method
+setMethod("getMotifCoverage", "MotifSearchResult",
+function(object) {
+  r <- object@ranges
+  s <- object@sequences
+  
+  p <- Biobase::pData(s)
+  r %>% as.data.frame %>% 
+    group_by(seqnames) %>% 
+    summarize(length = sum(width), tot_length = p[unique(seqnames), "length"]) %>% 
+    mutate(perc = length / tot_length) %>% 
+    select(perc) %>% unlist(use.names = FALSE)
+})
+
+
+#### TO CHECK:
 
 getTotalCoverage <- function(object) {
   r <- reduce(object@ranges)
