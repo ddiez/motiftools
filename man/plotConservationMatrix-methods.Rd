@@ -38,6 +38,11 @@ plotConservationMatrix(x, ...)
 Plots a heatmap with the conservation score for each residue colored according
 to the scheme shown in Jalview (htt://www.jalview.org).
 }
+\details{
+Sometimes computing the conservation matrix with conservationMatrix
+can be time consuming. In that case it might be better to store the output of
+conservationMatrix in a variable and pass that to plotConservationMatrix.
+}
 \examples{
 NULL
 }

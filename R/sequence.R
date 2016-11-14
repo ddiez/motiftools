@@ -47,6 +47,10 @@ function(object) {
 #' @param show.consensus logical; whether to show consensus sequence.
 #' @param size text size for consensus sequence.
 #' 
+#' @details Sometimes computing the conservation matrix with conservationMatrix
+#' can be time consuming. In that case it might be better to store the output of
+#' conservationMatrix in a variable and pass that to plotConservationMatrix.
+#' 
 #' @export
 #' @rdname plotConservationMatrix-methods
 #'

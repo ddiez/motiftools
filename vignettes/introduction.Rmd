@@ -97,6 +97,6 @@ We can visualize MSA conservation together with a phylogenetic tree.
 ras_tree <- read.tree(system.file("files/ras.tree", package = "motiftools"))
 ras_aln <- readAAMultipleAlignment(system.file("files/ras.faln", package = "motiftools"))
 rownames(ras_aln) <- sub(" .*", "", rownames(ras_aln)) # need to fix sequence names.
-plotConservationMatrix(conservationMatrix(ras_aln), ras_tree, show.tips = TRUE)
+plotConservationMatrix(ras_aln, ras_tree, show.tips = TRUE)
 ```
 
