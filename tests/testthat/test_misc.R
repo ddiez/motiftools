@@ -1,7 +1,10 @@
 context("Testing miscellaneous functions")
 
 test_that("dcor", {
-  expect_equal(dcor(t(matrix(rep(1:10, 2), ncol = 2)))[1], 0)
+  x <- dcor(t(matrix(rep(c(1:10, 10:1), 2), ncol = 4)))
+  expect_is(x, "dist")
+  expect_equal(x[1], 2)
+  expect_equal(x[2], 0)
 })
 
 test_that("getScoreMatrix", {
