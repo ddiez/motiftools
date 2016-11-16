@@ -12,7 +12,7 @@ getMotifArchString <- function(object, convert.to.letter = FALSE, return.unique 
   .codedb <- c(LETTERS, letters, as.character(0:9))
   tmp <- getMotifsBySeq(object)
   if (convert.to.letter) {
-    if (nmotif(x) > length(.codedb)) 
+    if (nmotif(object) > length(.codedb)) 
       stop("more motifs than architectures! cannot convert to index letters.")
     tmp <- sapply(tmp, .num2letter)
   } else tmp <- sapply(tmp, function(x) paste(x, collapse = "-"))
