@@ -97,35 +97,3 @@ function(object) {
   pdata <- pData(object@sequences)
   100 * sum(width(r)) / sum(pdata[, "length"])
 })
-
-
-#### TO CHECK:
-getMotifDistribution <- function(object, by.groups) {
-  m <- object
-  if (!missing(by.groups)) 
-    rownames(m) <- by.groups
-  
-  nu <- unique(rownames(m))
-  tmp <- lapply(nu, function(n) {
-    sel.n <- rownames(m) %in% n
-    l <- length(which(sel.n))
-    100 * apply(m[sel.n, , drop = FALSE], 2, sum)/l
-  })
-  names(tmp) <- nu
-  do.call(rbind, tmp)
-}
-setGeneric("getMotifDistribution")
-
-setMethod("getMotifDistribution", "MotifSearchResult", function(object, by.groups) {
-  m <- getMotifMatrix(object)
-  getMotifDistribution(m, by.groups)
-})
-
-
-getMotifCount <- function(object, percentage = FALSE) {
-  apply(getMotifMatrix(object), 2, function(m) {
-    if (percentage) 
-      100 * sum(m)/nseq(object) else sum(m)
-  })
-}
-setGeneric("getMotifCount")
