@@ -1,10 +1,13 @@
 #' getMotifArchString
 #' 
 #' Obtain  a vector of motif architectures per sequence, as a string. Optionally
-#' encode it using letter, LETTER and 0:9 symbols (if the number of motifs is 
-#' lower than the number of symbols).
+#' encode the motif numbers using letter, LETTER and 0:9 symbols (if the number
+#' of motifs is lower than the number of symbols).
 #' 
 #' @param object a MotifSearchResult object.
+#' @param convert.to.letter logical; whether to encode motif numbers as character
+#' symbols.
+#' @param return.unique logical; whether to return unique architectures.
 #' 
 #' @export
 #' @return A list of sequences.

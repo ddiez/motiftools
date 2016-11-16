@@ -8,13 +8,18 @@ getMotifArchString(object, convert.to.letter = FALSE, return.unique = FALSE)
 }
 \arguments{
 \item{object}{a MotifSearchResult object.}
+
+\item{convert.to.letter}{logical; whether to encode motif numbers as character
+symbols.}
+
+\item{return.unique}{logical; whether to return unique architectures.}
 }
 \value{
 A list of sequences.
 }
 \description{
 Obtain  a vector of motif architectures per sequence, as a string. Optionally
-encode it using letter, LETTER and 0:9 symbols (if the number of motifs is 
-lower than the number of symbols).
+encode the motif numbers using letter, LETTER and 0:9 symbols (if the number
+of motifs is lower than the number of symbols).
 }
 
