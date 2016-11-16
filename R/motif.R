@@ -95,7 +95,7 @@ setMethod("getMotifTotalCoverage", "MotifSearchResult",
 function(object) {
   r <- reduce(object@ranges)
   pdata <- pData(object@sequences)
-  100 * sum(width(r))/sum(pdata[, "length"])
+  100 * sum(width(r)) / sum(pdata[, "length"])
 })
 
 
