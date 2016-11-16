@@ -100,35 +100,6 @@ function(object) {
 
 
 #### TO CHECK:
-
-
-getMotifBySeq <- function(object) {
-  lapply(object@ranges, function(x) x$motif_name)  # for RangedData.
-}
-setGeneric("getMotifBySeq")
-
-getMotifArchBySeq <- function(object) {
-  sapply(getMotifBySeq(object), function(x) paste(x, collapse = "-"))
-}
-setGeneric("getMotifArchBySeq")
-
-# convert architectures.
-.letter2num <- function(x) {
-  .architecture.code <- c(LETTERS, letters, as.character(0:9))
-  x <- strsplit(x, "")[[1]]
-  as.character(sapply(x, function(z) which(.architecture.code %in% z), USE.NAMES = FALSE))
-}
-
-.num2letter <- function(x) {
-  .architecture.code <- c(LETTERS, letters, as.character(0:9))
-  paste(.architecture.code[as.numeric(x)], collapse = "")
-}
-
-convertArch <- function(object, to = "string") {
-  to <- match.arg(to, c("number", "string"))
-  switch(to, number = sapply(object, .letter2num), string = sapply(object, .num2letter))
-}
-
 getMotifDistribution <- function(object, by.groups) {
   m <- object
   if (!missing(by.groups)) 
