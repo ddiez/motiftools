@@ -1,5 +1,3 @@
-library(motiftools)
-
 context("Testing alignments")
 
 test_that("alignment", {

@@ -1,5 +1,3 @@
-library(motiftools)
-
 context("Testing readFIMO")
 
 f <- system.file("files/fimo_ras/fimo.xml", package = "motiftools")
