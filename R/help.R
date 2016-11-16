@@ -12,7 +12,7 @@
 #' @importFrom reshape2 melt
 #' @importFrom dplyr filter_ select_ mutate_ group_by_ summarize_ bind_rows %>%
 #' @importFrom IRanges IRanges
-#' @importFrom GenomicRanges GRanges seqnames
+#' @importFrom GenomicRanges GRanges seqnames reduce
 #' @importFrom Rcpp evalCpp
 #' @importFrom grid grid.newpage grid.draw
 #' @importFrom stats dist as.dist hclust as.hclust cor
