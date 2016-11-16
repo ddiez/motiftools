@@ -1,9 +1,19 @@
+#' getMotifArchString
+#' 
+#' Obtain  a vector of motif architectures per sequence, as a string. Optionally
+#' encode it using letter, LETTER and 0:9 symbols (if the number of motifs is 
+#' lower than the number of symbols).
+#' 
+#' @param object a MotifSearchResult object.
+#' 
+#' @export
+#' @return A list of sequences.
 getMotifArchString <- function(object, convert.to.letter = FALSE, return.unique = FALSE) {
-  .architecture.code <- c(LETTERS, letters, as.character(0:9))
+  .codedb <- c(LETTERS, letters, as.character(0:9))
   tmp <- getMotifsBySeq(object)
   if (convert.to.letter) {
-    if (max(as.numeric(unlist(tmp))) > length(.architecture.code)) 
-      stop("more motifs than architectures! cannot convert to letters.")
+    if (nmotif(x) > length(.codedb)) 
+      stop("more motifs than architectures! cannot convert to index letters.")
     tmp <- sapply(tmp, .num2letter)
   } else tmp <- sapply(tmp, function(x) paste(x, collapse = "-"))
   if (return.unique) 
@@ -24,23 +34,20 @@ getMotifsBySeq <- function(object) {
   split(tmp$motif_name, tmp$seqnames)
 }
 
-# simpler version of getMotifArchString
-getMotifArchBySeq <- function(object) {
-  sapply(getMotifsBySeq(object), function(x) paste(x, collapse = "-"))
-}
-
-# convert architectures.
+# convert architecture from letter to index.
 .letter2num <- function(x) {
-  .architecture.code <- c(LETTERS, letters, as.character(0:9))
+  .codedb <- c(LETTERS, letters, as.character(0:9))
   x <- strsplit(x, "")[[1]]
-  as.character(sapply(x, function(z) which(.architecture.code %in% z), USE.NAMES = FALSE))
+  as.character(sapply(x, function(z) which(.codedb %in% z), USE.NAMES = FALSE))
 }
 
+# convert architecture from index to letter.
 .num2letter <- function(x) {
-  .architecture.code <- c(LETTERS, letters, as.character(0:9))
-  paste(.architecture.code[as.numeric(x)], collapse = "")
+  .codedb <- c(LETTERS, letters, as.character(0:9))
+  paste(.codedb[as.numeric(x)], collapse = "")
 }
 
+# convert architectures between types.
 convertArch <- function(object, to = "string") {
   to <- match.arg(to, c("number", "string"))
   switch(to, number = sapply(object, .letter2num), string = sapply(object, .num2letter))
