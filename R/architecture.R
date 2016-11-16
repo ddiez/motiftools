@@ -11,6 +11,14 @@ getMotifArchString <- function(object, convert.to.letter = FALSE, return.unique 
 }
 
 
+#' getMotifsBySeq
+#' 
+#' Obtain list with a vector of motifs per sequence.
+#' 
+#' @param object a MotifSearchResult object.
+#' 
+#' @export
+#' @return A list of sequences.
 getMotifsBySeq <- function(object) {
   tmp <- as.data.frame(object@ranges)
   split(tmp$motif_name, tmp$seqnames)
