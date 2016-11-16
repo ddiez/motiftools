@@ -63,14 +63,14 @@ setGeneric("getMotifCoverage", function(object) standardGeneric("getMotifCoverag
 setMethod("getMotifCoverage", "MotifSearchResult",
 function(object) {
   r <- object@ranges
-  s <- object@sequences
+  p <- pData(object@sequences)
+  d <- r %>% as.data.frame
+  d$tot_length <- p[d$seqnames, "length"]
   
-  p <- pData(s)
-  r %>% as.data.frame %>% 
-    group_by(seqnames) %>% 
-    summarize(length = sum(width), tot_length = p[unique(seqnames), "length"]) %>% 
-    mutate(perc = length / tot_length) %>% 
-    select(perc) %>% unlist(use.names = FALSE)
+  d %>% group_by_("seqnames") %>% 
+    summarize_(length = "sum(width)", tot_length = "unique(tot_length)") %>% 
+    mutate_(perc = "length / tot_length") %>% 
+    select_("perc") %>% unlist(use.names = FALSE)
 })
 
 
