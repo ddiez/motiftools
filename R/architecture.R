@@ -129,3 +129,25 @@ getMotifArchSimilarity <- function(object) {
   gl <- getMotifArchGraph(object)
   graph_sim_list(gl)
 }
+
+#' plotMotifArchSimilarity
+#' 
+#' Plots heatmap with similarity between sequence motif architectures.
+#' 
+#' @param object MotifSearchResult object.
+#' 
+#' @return NULL
+#' @export
+plotMotifArchSimilarity <- function(object) {
+  m <- object
+  h <- hclust(dcor(m))
+  m <- m[h$order, h$order]
+  d <- reshape2::melt(m) # need to fix this.
+  ggplot(d, aes(x = Var1, y = Var2, fill = value)) + 
+    geom_tile(color = "black") + 
+    viridis::scale_fill_viridis("similarity", limits = c(0, 1), guide = guide_legend(reverse = TRUE)) + 
+    theme(aspect.ratio = 1, axis.text.x = element_text(angle = 90, vjust = .5, hjust = 1), plot.title = element_text(hjust = .5)) + 
+    labs(x = "", y = "", title = "Architecture similarity") + 
+    scale_x_discrete(expand = c(0, 0)) + 
+    scale_y_discrete(expand = c(0, 0))
+}
