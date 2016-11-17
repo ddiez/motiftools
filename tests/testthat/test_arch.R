@@ -31,3 +31,9 @@ test_that("getMotifArchString works as expected", {
   expect_identical(names(z), NULL)
   expect_equal(z[1], "CABDEF")
 })
+
+test_that("getMotifArchSimilarity works as expected", {
+  z <- getMotifArchSimilarity(x)
+  expect_is(z, "matrix")
+  expect_equal(dim(z), c(4, 4))
+})
