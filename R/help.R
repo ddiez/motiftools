@@ -17,7 +17,7 @@
 #' @importFrom Rcpp evalCpp
 #' @importFrom grid grid.newpage grid.draw
 #' @importFrom stats dist as.dist hclust as.hclust cor
-#' @importFrom utils data
+#' @importFrom utils data combn
 #' @importFrom grDevices cm.colors rainbow
 #' 
 #' @useDynLib motiftools
