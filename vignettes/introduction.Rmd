@@ -88,6 +88,19 @@ plotMotifMatches(x_tomtom)
 plotMotifMatches(x_tomtom, fill = "e_value", color = "black")
 ```
 
+## Architectures
+
+Sometimes different motifs are arranged in different order in different sequences, suggesting processes of reordering. Motif ordering is called in motiftools *architectures*. You can obtain the architectures from the sequences used to compute the MEME motifs and compute the similarity between them.
+
+```{r}
+getMotifsBySeq(x_meme) # returns a list with the ordered motif composition as a character vector.
+getMotifArchString(x_meme) # returns a list with a single string with the architecture encoded.
+s <- getMotifArchSimilarity(x_meme)
+s
+plotMotifArchSimilarity(s)
+```
+
+
 
 ## Sequences
 
