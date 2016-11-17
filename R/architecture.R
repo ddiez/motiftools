@@ -143,7 +143,7 @@ plotMotifArchSimilarity <- function(object) {
   h <- hclust(dcor(m))
   m <- m[h$order, h$order]
   d <- reshape2::melt(m) # need to fix this.
-  ggplot(d, aes(x = Var1, y = Var2, fill = value)) + 
+  ggplot(d, aes_string(x = "Var1", y = "Var2", fill = "value")) + 
     geom_tile(color = "black") + 
     viridis::scale_fill_viridis("similarity", limits = c(0, 1), guide = guide_legend(reverse = TRUE)) + 
     theme(aspect.ratio = 1, axis.text.x = element_text(angle = 90, vjust = .5, hjust = 1), plot.title = element_text(hjust = .5)) + 
