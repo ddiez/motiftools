@@ -7,6 +7,7 @@
 #' @docType package
 #' 
 #' @import methods Biobase Biostrings xml2 gtable ggplot2
+#' @importFrom igraph graph_from_data_frame V as_adj
 #' @importFrom ape as.phylo
 #' @importFrom ggtree ggtree
 #' @importFrom reshape2 melt

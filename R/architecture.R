@@ -55,3 +55,77 @@ convertArch <- function(object, to = "string") {
   to <- match.arg(to, c("number", "string"))
   switch(to, number = sapply(object, .letter2num), string = sapply(object, .num2letter))
 }
+
+# get architechtures encoded as data.frame.
+getMotifArchDataFrame <- function(object) {
+  tmp <- getMotifsBySeq(object)
+  lapply(tmp, function(x) {
+    x <- c("H", x, "T")
+    z <- lapply(seq_along(head(x, -1)), function(k) {
+      data.frame(from = x[k], to = x[k + 1], stringsAsFactors = FALSE)
+    })
+    z <- bind_rows(z)
+  })
+}
+
+# get architechtures encoded as graphs (igraph)
+getMotifArchGraph <- function(object) {
+  lapply(getMotifArchDataFrame(object), graph_from_data_frame)
+}
+
+# compute euclidean distance of two matrices or vectors.
+eud <- function(x, y) {
+  if (any(dim(x) != dim(x)))
+    stop("x and y have to have same dimensions.")
+  sqrt(sum((x - y) ^ 2))
+}
+
+
+# compute jaccard similarity of two matrices or vectors.
+jaccard_sim <- function(x, y) {
+  sum(x & y) / sum(x | y)
+}
+
+# compute jaccard similarity of two graphs.
+graph_sim <- function(x, y) {
+  n <- unique(c(V(x)$name, c(V(y)$name)))
+  l <- length(n)
+  m <- matrix(0, ncol = l, nrow = l, dimnames = list(n, n))
+  
+  m1 <- as_adj(x, sparse = FALSE)
+  m2 <- as_adj(y, sparse = FALSE)
+  m1e <- m2e <- m
+  
+  m1e[rownames(m1), colnames(m1)] <- m1
+  m2e[rownames(m2), colnames(m2)] <- m2
+  
+  jaccard_sim(m1e, m2e)
+}
+
+# compute jaccard similarity matrix of a list of graphs.
+graph_sim_list <- function(x) {
+  l <- length(x)
+  comb <- t(combn(l, 2))
+  m <- matrix(NA, ncol = l, nrow = l)
+  diag(m) <- 1
+  for (k in seq_len(nrow(comb))) {
+    i <- comb[k, 1]
+    j <- comb[k, 2]
+    m[i, j] <- graph_sim(x[[i]], x[[j]])
+    m[j, i] <- m[i, j]
+  }
+  m
+}
+
+#' getMotifArchSimilarity
+#' 
+#' Computes similarity between sequence motif architectures.
+#' 
+#' @param object MotifSearchResult object.
+#' 
+#' @return A matrix with Jaccard index similarity.
+#' @export
+getMotifArchSimilarity <- function(object) {
+  gl <- getMotifArchGraph(object)
+  graph_sim_list(gl)
+}
