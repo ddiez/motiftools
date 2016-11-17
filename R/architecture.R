@@ -105,8 +105,8 @@ graph_sim <- function(x, y) {
 # compute jaccard similarity matrix of a list of graphs.
 graph_sim_list <- function(x) {
   l <- length(x)
-  comb <- t(combn(l, 2))
-  m <- matrix(NA, ncol = l, nrow = l)
+  comb <- t(combn(names(x), 2))
+  m <- matrix(NA, ncol = l, nrow = l, dimnames = list(names(x), names(x)))
   diag(m) <- 1
   for (k in seq_len(nrow(comb))) {
     i <- comb[k, 1]
