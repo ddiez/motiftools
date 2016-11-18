@@ -4,10 +4,12 @@
 \alias{plotMotifArchSimilarity}
 \title{plotMotifArchSimilarity}
 \usage{
-plotMotifArchSimilarity(object)
+plotMotifArchSimilarity(object, raster = FALSE)
 }
 \arguments{
 \item{object}{MotifSearchResult object.}
+
+\item{raster}{logical; whether to use geom_raster() rather that geom_tile().}
 }
 \description{
 Plots heatmap with similarity between sequence motif architectures.

@@ -133,18 +133,23 @@ getMotifArchSimilarity <- function(object) {
 #' Plots heatmap with similarity between sequence motif architectures.
 #' 
 #' @param object MotifSearchResult object.
+#' @param raster logical; whether to use geom_raster() rather that geom_tile().
 #' 
 #' @return NULL
 #' @export
-plotMotifArchSimilarity <- function(object) {
+plotMotifArchSimilarity <- function(object, raster = FALSE) {
+  if (raster)
+    geom_heatmap <- geom_raster()
+  else
+    geom_heatmap <- geom_tile(color = "transparent")
   m <- object
   h <- hclust(dcor(m))
   m <- m[h$order, h$order]
   d <- reshape2::melt(m) # need to fix this.
   ggplot(d, aes_string(x = "Var1", y = "Var2", fill = "value")) + 
-    geom_tile(color = "black") + 
+    geom_heatmap + 
     viridis::scale_fill_viridis("similarity", limits = c(0, 1), guide = guide_legend(reverse = TRUE)) + 
-    theme(aspect.ratio = 1, axis.text.x = element_text(angle = 90, vjust = .5, hjust = 1), plot.title = element_text(hjust = .5)) + 
+    theme(aspect.ratio = 1, axis.text = element_blank(), axis.ticks = element_blank(), plot.title = element_text(hjust = .5)) + 
     labs(x = "", y = "", title = "Architecture similarity") + 
     scale_x_discrete(expand = c(0, 0)) + 
     scale_y_discrete(expand = c(0, 0))
