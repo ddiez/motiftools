@@ -13,6 +13,6 @@ getMotifArchSimilarity(object)
 A matrix with Jaccard index similarity.
 }
 \description{
-Computes similarity between sequence motif architectures.
+Computes Jaccard similarity between sequence motif architectures.
 }
 

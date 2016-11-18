@@ -89,7 +89,7 @@ adj_sim_list <- function(x) {
 
 #' getMotifArchSimilarity
 #' 
-#' Computes similarity between sequence motif architectures.
+#' Computes Jaccard similarity between sequence motif architectures.
 #' 
 #' @param object MotifSearchResult object.
 #' 
