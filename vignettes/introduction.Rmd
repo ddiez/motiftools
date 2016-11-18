@@ -95,6 +95,13 @@ Sometimes different motifs are arranged in different order in different sequence
 ```{r}
 getMotifsBySeq(x_meme) # returns a list with the ordered motif composition as a character vector.
 getMotifArchString(x_meme) # returns a list with a single string with the architecture encoded.
+
+# compute sequence motif Jaccard similarity.
+s <- getMotifSimilarity(x_meme)
+s
+plotMotifArchSimilarity(s)
+
+# compute sequence motif architecture Jaccard similarity.
 s <- getMotifArchSimilarity(x_meme)
 s
 plotMotifArchSimilarity(s)
