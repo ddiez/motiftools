@@ -26,6 +26,14 @@ test_that("getMotifArchString works as expected", {
   expect_equal(z[1], "3-1-2-4-5-6")
 })
 
+test_that("getMotifSimilarity works as expected", {
+  z <- getMotifSimilarity(x)
+  expect_is(z, "matrix")
+  expect_equal(dim(z), c(4, 4))
+  expect_identical(rownames(z), c("RASH_MOUSE", "RASK_MOUSE", "RASN_MOUSE", "RASM_HUMAN"))
+  expect_identical(colnames(z), c("RASH_MOUSE", "RASK_MOUSE", "RASN_MOUSE", "RASM_HUMAN"))
+})
+
 test_that("getMotifArchSimilarity works as expected", {
   z <- getMotifArchSimilarity(x)
   expect_is(z, "matrix")
