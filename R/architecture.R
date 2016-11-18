@@ -126,3 +126,35 @@ plotMotifArchSimilarity <- function(object, raster = FALSE) {
     scale_x_discrete(expand = c(0, 0)) + 
     scale_y_discrete(expand = c(0, 0))
 }
+
+
+vec_sim <- function(x, y) {
+  sum(x %in% y) / length(unique(c(x, y)))
+}
+
+vec_sim_list <- function(x) {
+  l <- length(x)
+  comb <- t(combn(names(x), 2))
+  m <- matrix(NA, ncol = l, nrow = l, dimnames = list(names(x), names(x)))
+  diag(m) <- 1
+  for (k in seq_len(nrow(comb))) {
+    i <- comb[k, 1]
+    j <- comb[k, 2]
+    m[i, j] <- vec_sim(x[[i]], x[[j]])
+    m[j, i] <- m[i, j]
+  }
+  m
+}
+
+#' getMotifSimilarity
+#' 
+#' Computes Jaccard similarity between sequence motifs.
+#' 
+#' @param object MotifSearchResult object.
+#' 
+#' @return NULL
+#' @export
+getMotifSimilarity <- function(object) {
+  tmp <- getMotifsBySeq(object)
+  vec_sim_list(tmp)
+}
