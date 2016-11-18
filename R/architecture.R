@@ -69,8 +69,10 @@ getMotifArchDataFrame <- function(object) {
 }
 
 # get architechtures encoded as graphs (igraph)
-getMotifArchGraph <- function(object) {
-  lapply(getMotifArchDataFrame(object), graph_from_data_frame)
+getMotifArchAdj <- function(object) {
+  lapply(getMotifArchDataFrame(object), function(x) {
+    as_adj(graph_from_data_frame(x), sparse = FALSE)
+  })
 }
 
 # compute euclidean distance of two matrices or vectors.
@@ -80,30 +82,26 @@ eud <- function(x, y) {
   sqrt(sum((x - y) ^ 2))
 }
 
-
 # compute jaccard similarity of two matrices or vectors.
 jaccard_sim <- function(x, y) {
   sum(x & y) / sum(x | y)
 }
 
-# compute jaccard similarity of two graphs.
-graph_sim <- function(x, y) {
-  n <- unique(c(V(x)$name, c(V(y)$name)))
+# compute jaccard similarity of two adjacency matrices.
+adj_sim <- function(x, y) {
+  n <- unique(c(rownames(x), rownames(y)))
   l <- length(n)
   m <- matrix(0, ncol = l, nrow = l, dimnames = list(n, n))
-  
-  m1 <- as_adj(x, sparse = FALSE)
-  m2 <- as_adj(y, sparse = FALSE)
   m1e <- m2e <- m
   
-  m1e[rownames(m1), colnames(m1)] <- m1
-  m2e[rownames(m2), colnames(m2)] <- m2
+  m1e[rownames(x), colnames(x)] <- x
+  m2e[rownames(y), colnames(y)] <- y
   
   jaccard_sim(m1e, m2e)
 }
 
-# compute jaccard similarity matrix of a list of graphs.
-graph_sim_list <- function(x) {
+# compute jaccard similarity matrix of a list of adjacency matrices.
+adj_sim_list <- function(x) {
   l <- length(x)
   comb <- t(combn(names(x), 2))
   m <- matrix(NA, ncol = l, nrow = l, dimnames = list(names(x), names(x)))
@@ -111,7 +109,7 @@ graph_sim_list <- function(x) {
   for (k in seq_len(nrow(comb))) {
     i <- comb[k, 1]
     j <- comb[k, 2]
-    m[i, j] <- graph_sim(x[[i]], x[[j]])
+    m[i, j] <- adj_sim(x[[i]], x[[j]])
     m[j, i] <- m[i, j]
   }
   m
@@ -126,8 +124,8 @@ graph_sim_list <- function(x) {
 #' @return A matrix with Jaccard index similarity.
 #' @export
 getMotifArchSimilarity <- function(object) {
-  gl <- getMotifArchGraph(object)
-  graph_sim_list(gl)
+  al <- getMotifArchAdj(object)
+  adj_sim_list(al)
 }
 
 #' plotMotifArchSimilarity
