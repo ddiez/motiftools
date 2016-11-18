@@ -24,12 +24,6 @@ test_that("getMotifArchString works as expected", {
   expect_true(length(z) == 3)
   expect_identical(names(z), NULL)
   expect_equal(z[1], "3-1-2-4-5-6")
-  
-  z <- getMotifArchString(x, convert.to.letter = TRUE, return.unique = TRUE)
-  expect_is(z, "character")
-  expect_true(length(z) == 3)
-  expect_identical(names(z), NULL)
-  expect_equal(z[1], "CABDEF")
 })
 
 test_that("getMotifArchSimilarity works as expected", {

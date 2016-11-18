@@ -4,13 +4,10 @@
 \alias{getMotifArchString}
 \title{getMotifArchString}
 \usage{
-getMotifArchString(object, convert.to.letter = FALSE, return.unique = FALSE)
+getMotifArchString(object, return.unique = FALSE)
 }
 \arguments{
 \item{object}{a MotifSearchResult object.}
-
-\item{convert.to.letter}{logical; whether to encode motif numbers as character
-symbols.}
 
 \item{return.unique}{logical; whether to return unique architectures.}
 }
