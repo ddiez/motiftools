@@ -41,3 +41,13 @@ test_that("getMotifArchSimilarity works as expected", {
   expect_identical(rownames(z), c("RASH_MOUSE", "RASK_MOUSE", "RASN_MOUSE", "RASM_HUMAN"))
   expect_identical(colnames(z), c("RASH_MOUSE", "RASK_MOUSE", "RASN_MOUSE", "RASM_HUMAN"))
 })
+
+test_that("plotMotifArchSimilarity works as expected", {
+  z <- getMotifArchSimilarity(x)
+  p <- plotMotifArchSimilarity(z)
+  expect_is(p, "gg")
+  expect_is(p$data, "data.frame")
+  expect_equal(nrow(p$data), 16)
+  expect_equal(as.character(p$data[, 1]), rep(c("RASH_MOUSE", "RASN_MOUSE", "RASK_MOUSE", "RASM_HUMAN"), 4))
+  expect_equal(as.character(p$data[, 2]), rep(c("RASH_MOUSE", "RASN_MOUSE", "RASK_MOUSE", "RASM_HUMAN"), each = 4))
+})
