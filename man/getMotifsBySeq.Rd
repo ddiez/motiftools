@@ -4,10 +4,12 @@
 \alias{getMotifsBySeq}
 \title{getMotifsBySeq}
 \usage{
-getMotifsBySeq(object)
+getMotifsBySeq(object, unique = FALSE)
 }
 \arguments{
 \item{object}{a MotifSearchResult object.}
+
+\item{unique}{logical; whether to return unique motifs per sequence.}
 }
 \value{
 A list of sequences.

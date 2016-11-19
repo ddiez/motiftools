@@ -20,12 +20,17 @@ getMotifArchString <- function(object, return.unique = FALSE) {
 #' Obtain list with a vector of motifs per sequence.
 #' 
 #' @param object a MotifSearchResult object.
+#' @param unique logical; whether to return unique motifs per sequence.
 #' 
 #' @export
 #' @return A list of sequences.
-getMotifsBySeq <- function(object) {
+getMotifsBySeq <- function(object, unique = FALSE) {
   tmp <- as.data.frame(object@ranges)
-  split(tmp$motif_name, tmp$seqnames)
+  tmp <- split(tmp$motif_name, tmp$seqnames)
+  if (unique)
+    sapply(tmp, unique)
+  else
+    tmp
 }
 
 # get architechtures encoded as data.frame.
