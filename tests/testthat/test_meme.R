@@ -40,5 +40,6 @@ test_that("pwm returns the correct values", {
 })
 
 test_that("plotMotifMatrix works", {
-  expect_is(plotMotifMatrix(x), "gtable")
+  p <- plotMotifMatrix(x)
+  expect_is(p, "gtable")
 })
