@@ -12,7 +12,7 @@ plotMotifMatrix(object, ...)
 
 \S4method{plotMotifMatrix}{list}(object, tree, fill, color = "transparent",
   annot = NULL, annot.fill = NULL, bar.percentage = TRUE,
-  show.tips = FALSE, plot = TRUE)
+  show.tips = FALSE)
 
 \S4method{plotMotifMatrix}{MotifSearchResult}(object, ...)
 
@@ -36,8 +36,6 @@ plotMotifMatrix(object, ...)
 \item{bar.percentage}{logical; whether to show percentages in bar plot (default: TRUE).}
 
 \item{show.tips}{logical; whether to show the sequence names near the tree tips.}
-
-\item{plot}{logical; whether to draw the plot (default: TRUE).}
 }
 \value{
 Returns a grob object invisibly.

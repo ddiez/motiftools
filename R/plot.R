@@ -12,7 +12,6 @@
 #' @param annot.fill list of character vectors with fill colors for annotation matrices.
 #' @param bar.percentage logical; whether to show percentages in bar plot (default: TRUE).
 #' @param show.tips logical; whether to show the sequence names near the tree tips.
-#' @param plot logical; whether to draw the plot (default: TRUE).
 #'
 #' @return Returns a grob object invisibly.
 #' @export
@@ -25,7 +24,7 @@ setGeneric("plotMotifMatrix", function(object, ...) standardGeneric("plotMotifMa
 #' @rdname plotMotifMatrix-methods
 #' @aliases plotMotifMatrix,list-method
 setMethod("plotMotifMatrix", "list", 
-function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = NULL, bar.percentage = TRUE, show.tips = FALSE, plot = TRUE) {
+function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = NULL, bar.percentage = TRUE, show.tips = FALSE) {
   # check object type.
   type <- unique(sapply(object, class))
   if (length(type) > 1) stop("passing a list of objects of different class are not allowed.")
@@ -179,10 +178,8 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   
   
   gt <- gtable_add_padding(gt, unit(.5, "line"))
-  if (plot) {
-    grid.newpage()
-    grid.draw(gt)
-  }
+  grid.newpage()
+  grid.draw(gt)
   invisible(gt)
 })
 
