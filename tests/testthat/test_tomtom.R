@@ -7,3 +7,8 @@ test_that("slots", {
   expect_identical(nquery(x), 9L)
   expect_identical(ntarget(x), 9L)
 })
+
+test_that("plotMotifMatches works", {
+  p <- plotMotifMatches(x)
+  expect_is(p, "gg")
+})
