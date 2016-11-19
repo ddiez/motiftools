@@ -38,3 +38,7 @@ test_that("pwm returns the correct values", {
   expect_is(p[[1]], "matrix")
   expect_identical(p[[1]][1, 1], 0)
 })
+
+test_that("plotMotifMatrix works", {
+  expect_is(plotMotifMatrix(x), "gtable")
+})
