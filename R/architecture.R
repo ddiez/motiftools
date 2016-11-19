@@ -134,7 +134,8 @@ plotMotifArchSimilarity <- function(object, raster = FALSE) {
 
 
 vec_sim <- function(x, y) {
-  sum(x %in% y) / length(unique(c(x, y)))
+  z <- unique(c(x, y))
+  sum(x %in% y) / length(z)
 }
 
 vec_sim_list <- function(x) {
@@ -160,6 +161,6 @@ vec_sim_list <- function(x) {
 #' @return NULL
 #' @export
 getMotifSimilarity <- function(object) {
-  tmp <- getMotifsBySeq(object)
+  tmp <- getMotifsBySeq(object, unique = TRUE)
   vec_sim_list(tmp)
 }
