@@ -44,6 +44,10 @@ test_that("plotMotifMatrix works", {
   p <- plotMotifMatrix(x)
   expect_is(p, "gtable")
   
+  # matrix.
+  p <- plotMotifMatrix(getMotifMatrix(x))
+  expect_is(p, "gtable")
+  
   # add some options.
   annot <- matrix(1, nrow = nseq(x), ncol = 1, dimnames = list(sequenceNames(x)))
   annot["RASH_MOUSE", ] <- 2
