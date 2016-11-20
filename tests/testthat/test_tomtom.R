@@ -11,4 +11,6 @@ test_that("slots", {
 test_that("plotMotifMatches works", {
   p <- plotMotifMatches(x)
   expect_is(p, "gg")
+  p <- plotMotifMatches(x, color = "black")
+  expect_is(p, "gg")
 })
