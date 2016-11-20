@@ -40,6 +40,14 @@ test_that("pwm returns the correct values", {
 })
 
 test_that("plotMotifMatrix works", {
+  # default plot.
   p <- plotMotifMatrix(x)
+  expect_is(p, "gtable")
+  
+  # add some options.
+  annot <- matrix(1, nrow = nseq(x), ncol = 1, dimnames = list(sequenceNames(x)))
+  annot["RASH_MOUSE", ] <- 2
+  annot["RASK_MOUSE", ] <- 3
+  p <- plotMotifMatrix(list("MEME motifs" = x), fill = c("white", "grey"), col = "black", annot = list(annot), annot.fill = list(c("white", "red", "blue")), show.tips = TRUE)
   expect_is(p, "gtable")
 })
