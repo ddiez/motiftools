@@ -44,6 +44,12 @@ test_that("plotMotifMatrix works", {
   p <- plotMotifMatrix(x)
   expect_is(p, "gtable")
   
+  # with tree
+  library(ape)
+  tree <- read.tree(system.file("files/ras.tree", package = "motiftools"))
+  p <- plotMotifMatrix(x, tree = tree)
+  expect_is(p, "gtable")
+  
   # matrix.
   p <- plotMotifMatrix(getMotifMatrix(x))
   expect_is(p, "gtable")
