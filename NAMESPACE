@@ -3,6 +3,7 @@
 export(align)
 export(conservationMatrix)
 export(dcor)
+export(eud)
 export(getMotifArchSimilarity)
 export(getMotifArchString)
 export(getMotifCoverage)

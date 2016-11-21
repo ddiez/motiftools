@@ -52,13 +52,6 @@ getMotifArchAdj <- function(object) {
   })
 }
 
-# compute euclidean distance of two matrices or vectors.
-eud <- function(x, y) {
-  if (any(dim(x) != dim(x)))
-    stop("x and y have to have same dimensions.")
-  sqrt(sum((x - y) ^ 2))
-}
-
 # compute jaccard similarity of two matrices or vectors.
 jaccard_sim <- function(x, y) {
   sum(x & y) / sum(x | y)

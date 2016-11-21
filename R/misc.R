@@ -22,6 +22,21 @@ dcor <- function(x, use = "pairwise", method = "pearson") {
   as.dist(1 - cor(t(x), use = use, method = method))
 }
 
+#' Euclidean distance
+#' 
+#' Compute euclidean distance of two matrices or vectors.
+#' 
+#' @param x numeric matrix or vector.
+#' @param y numeric matrix or vector.
+#' 
+#' @return Numeric matrix or vector.
+#' @export
+eud <- function(x, y) {
+  if (any(dim(x) != dim(y)))
+    stop("x and y have to have same dimensions.")
+  sqrt(sum((x - y) ^ 2))
+}
+
 # df2matrix = function(d, index.cols = c(1,2), value.col = 3, compact.fun = max) {
 #   if(anyDuplicated(d[, index.cols])) {
 #     sel = unique(d[, index.cols])
