@@ -2,7 +2,7 @@
 
 getScoreMatrix <- function(score.matrix) {
   data(list = score.matrix, package = "Biostrings", envir = .datacache)
-  score.matrix <- get(score.matrix, envir = .datacache)
+  get(score.matrix, envir = .datacache)
 }
 
 #' dcor
