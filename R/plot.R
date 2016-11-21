@@ -111,7 +111,7 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   
   ## plot.
   # create main plot structure.
-  gt <- gtable(unit(rep(1, n), "null"), unit(c(1, 5), "null"))
+  gt <- gtable(unit(rep(5, n), "null"), unit(c(1, 5), "null"))
   
   # add heatmaps and barplots.
   for (k in seq_len(n)) {
@@ -169,7 +169,7 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   }
   
   # add tree.
-  gt <- gtable_add_cols(gt, unit(.5, "null"), pos = 0)
+  gt <- gtable_add_cols(gt, unit(1, "null"), pos = 0)
   gg <- gtable_filter(grob_tree, "panel")
   if (show.tips)
     gt <- gtable_add_grob(gt, gg, t = -1, l = 1)
