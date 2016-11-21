@@ -27,7 +27,7 @@ setMethod("plotMotifMatrix", "list",
 function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = NULL, bar.percentage = TRUE, show.tips = FALSE) {
   # check object type.
   type <- unique(sapply(object, class))
-  if (length(type) > 1) stop("passing a list of objects of different class are not allowed.")
+  if (length(type) > 1) stop("passing a list of objects of different class is not allowed.")
   
   if (! type %in% c("matrix", "MotifSearchResult"))
     stop("Only objects of class 'matrix' or 'MotifSearchResult' can be used with this function")
