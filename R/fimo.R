@@ -16,10 +16,13 @@ readFIMO <- function(file, description = NULL) {
   doc <- read_xml(file)
   root <- xml_root(doc)
   
+  alfa_data <- getFimoAlphabet(root)
+  alfa_bkgd <- getFimoBackground(root)
+  alfa_info <- merge(alfa_data, alfa_bkgd, by.x = "id", by.y = "letter")
+  
   nseq <- getFimoSequenceInfo(root)$nseq
   motif_info <- getFimoMotifInfo(root)
   nmotif <- nrow(motif_info)
-  alpha_bkgd <- getFimoBackground(root)
   cisml_file <- getFimoCisml(root)
   cisml_file <- file.path(dirname(file), cisml_file)
   
@@ -59,7 +62,8 @@ readFIMO <- function(file, description = NULL) {
       tool = "FIMO",
       description = description,
       nseq = nseq,
-      nmotif = nmotif
+      nmotif = nmotif,
+      alphabet = alfa_info
     ),
     sequences = sequenceData,
     motifs = motifData,
@@ -95,7 +99,18 @@ getFimoCisml <- function(x) {
 
 # alphabet.
 getFimoAlphabet <- function(x) {
-  xml_text(xml_find_first(x, "alphabet"))
+  tmp <- xml_attrs(xml_find_all(x, ".//letter"))
+  tmp <- lapply(tmp, function(z) {
+    data.frame(id = z["id"],
+               symbol = z["symbol"],
+               name = z["name"],
+               color = z["colour"],
+               aliases = z["aliases"],
+               equals = z["equals"],
+               row.names = NULL,
+               stringsAsFactors = FALSE)
+  })
+  do.call(rbind, tmp)
 }
 
 # sequence info.
