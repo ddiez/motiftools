@@ -140,7 +140,10 @@ readMEME <- function(file, description = NULL) {
   root <- xml_root(doc)
   
   alf_info <- getMemeAlphabet(root)
-  seq_info <- getMemeSequences(root)
+  seq_data <- getMemeSequences(root)
+  seq_stats <- getMemeSeqStats(root)
+  seq_info <- merge(seq_data, seq_stats, by.x = "id", by.y = "sequence_id")
+  rownames(seq_info) <- rownames(seq_data)
   motif_info <- getMemeMotifs(root)
   motif_hit <- getMemeMotifHits(root, motif_info)
   motif_score <- getMemeMotifScores(root, alf_info)
