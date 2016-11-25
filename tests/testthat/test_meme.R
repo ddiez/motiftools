@@ -5,6 +5,10 @@ x <- readMEME(f)
 
 test_that("readMEME returns object of correct class", {
   expect_true(class(x) == "MotifSearchResult")
+  expect_message(show(x), "MotifSearchResult object.")
+  expect_message(show(x), "Motif tool: MEME")
+  expect_message(show(x), "Number of sequences: 4")
+  expect_message(show(x), "Number of motifs: 9")
 })
 
 test_that("methods return correct values", {
