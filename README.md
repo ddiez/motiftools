@@ -1,13 +1,13 @@
-# motiftools
+motiftools
+================
 
-[![Build Status](https://travis-ci.org/ddiez/motiftools.svg?branch=master)](https://travis-ci.org/ddiez/motiftools) 
-[![codecov](https://codecov.io/gh/ddiez/motiftools/branch/master/graph/badge.svg)](https://codecov.io/gh/ddiez/motiftools)
+[![Build Status](https://travis-ci.org/ddiez/motiftools.svg?branch=master)](https://travis-ci.org/ddiez/motiftools) [![codecov](https://codecov.io/gh/ddiez/motiftools/branch/master/graph/badge.svg)](https://codecov.io/gh/ddiez/motiftools)
 
-## Installation
+Installation
+------------
 
 motiftools is not currently available from CRAN, but you can install the development version from github with:
 
-```R
-# install.packages("motiftools")
+``` r
 devtools::install_github("ddiez/motiftools")
 ```
