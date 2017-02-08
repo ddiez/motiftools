@@ -11,6 +11,7 @@ Imports:
     xml2,
     Biobase,
     BiocGenerics,
+    S4Vectors,
     IRanges,
     GenomicRanges,
     Biostrings,
