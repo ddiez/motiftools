@@ -12,6 +12,7 @@ Imports:
     Biobase,
     BiocGenerics,
     S4Vectors,
+    XVector,
     IRanges,
     GenomicRanges,
     Biostrings,
