@@ -10,6 +10,7 @@ Imports:
     Rcpp,
     xml2,
     Biobase,
+    BiocGenerics,
     IRanges,
     GenomicRanges,
     Biostrings,
