@@ -8,9 +8,6 @@ output: github_document
 [![codecov](https://codecov.io/gh/ddiez/motiftools/branch/master/graph/badge.svg)](https://codecov.io/gh/ddiez/motiftools)
 
 
-```{r setup, include=FALSE}
-```
-
 ## Installation
 
 motiftools is not currently available from CRAN, but you can install the development version from github with:
