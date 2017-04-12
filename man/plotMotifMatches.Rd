@@ -31,4 +31,3 @@ may slow down the method for large matrices (when comparing large motif librarie
 \examples{
 NULL
 }
-

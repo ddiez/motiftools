@@ -19,4 +19,3 @@ Obtain  a vector of motif architectures per sequence, as a string. Optionally
 encode the motif numbers using letter, LETTER and 0:9 symbols (if the number
 of motifs is lower than the number of symbols).
 }
-

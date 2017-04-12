@@ -12,4 +12,3 @@ getMotifSimilarity(object)
 \description{
 Computes Jaccard similarity between sequence motifs.
 }
-

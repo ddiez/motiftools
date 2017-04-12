@@ -2,10 +2,9 @@
 % Please edit documentation in R/help.R
 \docType{package}
 \name{motiftools-package}
-\alias{motiftools}
 \alias{motiftools-package}
+\alias{motiftools}
 \title{motiftools}
 \description{
 Tools to analyze sequence motifs
 }
-

@@ -30,4 +30,3 @@ Align two sequences using local (Smith-Waterman) or global (Needleman-Wunsch) se
 library(motiftools)
 align("ALVDE", "AVRES", score.matrix = "BLOSUM62")
 }
-

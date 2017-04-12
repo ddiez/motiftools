@@ -29,4 +29,3 @@ with at least one non-zero entry.
 \examples{
 NULL
 }
-

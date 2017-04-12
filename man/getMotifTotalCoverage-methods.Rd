@@ -23,4 +23,3 @@ to it.
 \examples{
 NULL
 }
-

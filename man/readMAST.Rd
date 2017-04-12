@@ -21,4 +21,3 @@ MotifSearchResult object.
 \examples{
 NULL
 }
-

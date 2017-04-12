@@ -3,11 +3,11 @@
 \docType{class}
 \name{MotifCompareResult-class}
 \alias{MotifCompareResult-class}
+\alias{show,MotifCompareResult-method}
 \alias{nquery}
 \alias{nquery,MotifCompareResult-method}
 \alias{ntarget}
 \alias{ntarget,MotifCompareResult-method}
-\alias{show,MotifCompareResult-method}
 \title{MotifCompareResult-class}
 \usage{
 \S4method{show}{MotifCompareResult}(object)

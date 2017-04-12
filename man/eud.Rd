@@ -17,4 +17,3 @@ Numeric matrix or vector.
 \description{
 Compute euclidean distance of two matrices or vectors.
 }
-

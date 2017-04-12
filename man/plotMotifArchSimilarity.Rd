@@ -14,4 +14,3 @@ plotMotifArchSimilarity(object, raster = FALSE)
 \description{
 Plots heatmap with similarity between sequence motif architectures.
 }
-

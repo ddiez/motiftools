@@ -20,4 +20,3 @@ according to the method described in the software Jalview (htt://www.jalview.org
 \examples{
 NULL
 }
-

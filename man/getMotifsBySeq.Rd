@@ -17,4 +17,3 @@ A list of sequences.
 \description{
 Obtain list with a vector of motifs per sequence.
 }
-

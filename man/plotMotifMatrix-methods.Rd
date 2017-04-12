@@ -3,8 +3,8 @@
 \docType{methods}
 \name{plotMotifMatrix}
 \alias{plotMotifMatrix}
-\alias{plotMotifMatrix,MotifSearchResult-method}
 \alias{plotMotifMatrix,list-method}
+\alias{plotMotifMatrix,MotifSearchResult-method}
 \alias{plotMotifMatrix,matrix-method}
 \title{plotMotifMatrix}
 \usage{
@@ -47,4 +47,3 @@ barplots with motif-wise percentages.
 \examples{
 NULL
 }
-

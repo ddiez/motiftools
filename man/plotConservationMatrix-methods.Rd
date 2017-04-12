@@ -3,8 +3,8 @@
 \docType{methods}
 \name{plotConservationMatrix}
 \alias{plotConservationMatrix}
-\alias{plotConservationMatrix,AAMultipleAlignment-method}
 \alias{plotConservationMatrix,matrix-method}
+\alias{plotConservationMatrix,AAMultipleAlignment-method}
 \title{Plots a heatmap with the conservation score for each residue}
 \usage{
 plotConservationMatrix(x, ...)
@@ -46,4 +46,3 @@ conservationMatrix in a variable and pass that to plotConservationMatrix.
 \examples{
 NULL
 }
-

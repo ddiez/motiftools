@@ -29,4 +29,3 @@ Correlation Coefficient (PCC). Alternatively can be Euclidean distance.
 \examples{
 NULL
 }
-

@@ -15,4 +15,3 @@ A matrix with Jaccard index similarity.
 \description{
 Computes Jaccard similarity between sequence motif architectures.
 }
-

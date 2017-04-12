@@ -22,4 +22,3 @@ Compute Pearson correlation distance on the rows.
 \examples{
 NULL
 }
-

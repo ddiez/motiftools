@@ -24,4 +24,3 @@ features defining each sequence.
 \examples{
 NULL
 }
-

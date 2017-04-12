@@ -20,4 +20,3 @@ Read results from tomtom.
 \examples{
 NULL
 }
-
