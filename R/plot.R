@@ -45,7 +45,7 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   # if tree not provided cluster motif profiles based on Pearson distance.
   if (missing(tree)) {
     m <- do.call(cbind, object)
-    tree <- as.phylo(hclust(dcor(m)))
+    tree <- as.phylo(hclust(dist(m, method = "binary")))
   } else {
     if (class(tree) != "phylo")
       tree <- as.phylo(as.hclust(tree))
