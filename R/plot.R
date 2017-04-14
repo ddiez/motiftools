@@ -79,14 +79,14 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   
   # heatmaps.
   if (missing(fill)) {
-    fill <- cm.colors(128)
+    fill <- c("white", "grey")
   }
   
   grob_heatmap <- lapply(seq_len(n), function(k) {
     d <- melt(object[[k]], varnames = c("sequence", "motif"), value.name = "count")
     g <- ggplot(d, aes_string(x = "motif", y = "sequence", fill = "count")) +
       geom_tile(color = color) +
-      scale_fill_gradientn(colours = fill) +
+      scale_fill_gradientn(colours = I(fill)) +
       theme(legend.key.size = unit(.5, "lines")) +
       scale_x_discrete(expand = c(0,0)) +
       scale_y_discrete(expand = c(0,0)) +
