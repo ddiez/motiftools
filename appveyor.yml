@@ -14,7 +14,7 @@ install:
 
 build_script:
   - travis-tool.sh install_bioc_deps
-  - travis-tool.sh install_bioc zlibbioc scales
+  - travis-tool.sh install_bioc zlibbioc scales lazyeval
 
 test_script:
   - travis-tool.sh run_tests
