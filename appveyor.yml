@@ -13,8 +13,9 @@ install:
 # Adapt as necessary starting from here
 
 build_script:
+  - travis-tool.sh install_deps
   - travis-tool.sh install_bioc_deps
-  - travis-tool.sh install_bioc zlibbioc scales lazyeval tibble
+  - travis-tool.sh install_bioc zlibbioc GenomeInfoDb
 
 test_script:
   - travis-tool.sh run_tests
