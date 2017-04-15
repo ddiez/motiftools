@@ -24,6 +24,7 @@ Imports:
     ggtree,
     reshape2,
     dplyr,
+    tidyr,
     stats,
     utils,
     grDevices,

@@ -6,7 +6,7 @@
 #' @aliases motiftools
 #' @docType package
 #' 
-#' @import methods Biobase Biostrings xml2 gtable ggplot2
+#' @import methods Biobase Biostrings xml2 gtable ggplot2 tidyr
 #' @importFrom igraph graph_from_data_frame V as_adj
 #' @importFrom ape as.phylo
 #' @importFrom ggtree ggtree
