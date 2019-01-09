@@ -10,9 +10,9 @@
 \usage{
 plotMotifMatrix(object, ...)
 
-\S4method{plotMotifMatrix}{list}(object, tree, fill, color = "transparent",
-  annot = NULL, annot.fill = NULL, bar.percentage = TRUE,
-  show.tips = FALSE)
+\S4method{plotMotifMatrix}{list}(object, tree, fill,
+  color = "transparent", annot = NULL, annot.fill = NULL,
+  bar.percentage = TRUE, show.tips = FALSE)
 
 \S4method{plotMotifMatrix}{MotifSearchResult}(object, ...)
 

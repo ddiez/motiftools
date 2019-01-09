@@ -10,8 +10,8 @@
 plotConservationMatrix(x, ...)
 
 \S4method{plotConservationMatrix}{matrix}(x, tree, raster = FALSE,
-  tile.color = "transparent", show.tips = FALSE, show.consensus = FALSE,
-  size = 8)
+  tile.color = "transparent", show.tips = FALSE,
+  show.consensus = FALSE, size = 8)
 
 \S4method{plotConservationMatrix}{AAMultipleAlignment}(x, tree,
   raster = FALSE, tile.color = "transparent", show.tips = FALSE,
