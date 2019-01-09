@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // nw
 List nw(CharacterVector x, CharacterVector y, Rcpp::Nullable<IntegerMatrix> score_matrix, int gap_score, int debug);
-RcppExport SEXP motiftools_nw(SEXP xSEXP, SEXP ySEXP, SEXP score_matrixSEXP, SEXP gap_scoreSEXP, SEXP debugSEXP) {
+RcppExport SEXP _motiftools_nw(SEXP xSEXP, SEXP ySEXP, SEXP score_matrixSEXP, SEXP gap_scoreSEXP, SEXP debugSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -22,7 +22,7 @@ END_RCPP
 }
 // sw
 List sw(CharacterVector x, CharacterVector y, Rcpp::Nullable<IntegerMatrix> score_matrix, int gap_score, int debug);
-RcppExport SEXP motiftools_sw(SEXP xSEXP, SEXP ySEXP, SEXP score_matrixSEXP, SEXP gap_scoreSEXP, SEXP debugSEXP) {
+RcppExport SEXP _motiftools_sw(SEXP xSEXP, SEXP ySEXP, SEXP score_matrixSEXP, SEXP gap_scoreSEXP, SEXP debugSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -34,4 +34,15 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(sw(x, y, score_matrix, gap_score, debug));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_motiftools_nw", (DL_FUNC) &_motiftools_nw, 5},
+    {"_motiftools_sw", (DL_FUNC) &_motiftools_sw, 5},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_motiftools(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }
