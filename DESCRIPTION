@@ -27,8 +27,7 @@ Imports:
     tidyr,
     stats,
     utils,
-    grDevices,
-    viridis
+    grDevices
 Suggests:
     testthat,
     knitr,
