@@ -31,6 +31,7 @@ readFIMO <- function(file, description = NULL) {
   root <- xml_root(doc)
   
   motif_hits <- getFimoMotifHits(root)
+  motif_hits <- motif_hits %>% mutate(width = abs(stop - start) + 1)
   
   seq_names <- unique(motif_hits$seq_id)
   seq_info <- data.frame(seq_names, sequence_id = seq_names, row.names = 1, stringsAsFactors = FALSE)
@@ -39,7 +40,7 @@ readFIMO <- function(file, description = NULL) {
     motif_hits <-
       GRanges(
         seqnames = motif_hits$seq_id,
-        ranges = IRanges(start = motif_hits$start, width = motif_info[motif_hits$motif_name, "width"]),
+        ranges = IRanges(start = motif_hits$start, width = motif_hits$width),
         strand = "*",
         motif_name = motif_hits$motif_name,
         score = motif_hits$score,
