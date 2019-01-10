@@ -70,14 +70,19 @@ getMemeMotifHits <- function(x, motif_info) {
   hits <- lapply(p, function(node) {
     seq_info <- xml_attr(node, "sequence_id")
     tmp <- do.call(rbind, xml_attrs(xml_children(node)))
-    data.frame(
-      sequence_id = seq_info,
-      motif_id = tmp[, "motif_id"],
-      position = as.integer(tmp[, "position"]) + 1,
-      strand = tmp[, "strand"],
-      pvalue = as.numeric(tmp[, "pvalue"]),
-      stringsAsFactors = FALSE
-    )
+    if (!is.null(tmp)) {
+      data.frame(
+        sequence_id = seq_info,
+        motif_id = tmp[, "motif_id"],
+        position = as.integer(tmp[, "position"]) + 1,
+        strand = tmp[, "strand"],
+        pvalue = as.numeric(tmp[, "pvalue"]),
+        stringsAsFactors = FALSE
+      )  
+    } else {
+      data.frame()
+    }
+    
   })
   hits <- do.call(rbind, hits)
   hits$width <- getMemeAttr(hits$motif_id, attr = "width", info = motif_info)
