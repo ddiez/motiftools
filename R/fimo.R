@@ -22,7 +22,6 @@ readFIMO <- function(file, description = NULL) {
   
   nseq <- getFimoSequenceInfo(root)$nseq
   motif_info <- getFimoMotifInfo(root)
-  rownames(motif_info) <- motif_info[["alt"]]
   nmotif <- nrow(motif_info)
   cisml_file <- getFimoCisml(root)
   cisml_file <- file.path(dirname(file), cisml_file)
@@ -76,13 +75,19 @@ readFIMO <- function(file, description = NULL) {
 # motif info.
 getFimoMotifInfo <- function(x) {
   tmp <- do.call(rbind, xml_attrs(xml_find_all(x, "motif")))
-  data.frame(
+  motif_info <- data.frame(
     name = tmp[, "name"],
-    alt = tmp[, "alt"],
     width = as.integer(tmp[, "width"]),
     best_match = tmp[, "best-possible-match"],
     stringsAsFactors = FALSE
   )
+  
+  if ("alt" %in% colnames(tmp)) {
+    motif_info[["alt"]] <- tmp[, "alt"]
+    rownames(motif_info) <- motif_info[["alt"]]
+  }
+  
+  motif_info
 }
 
 # sequence background.
