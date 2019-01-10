@@ -4,8 +4,7 @@
 \alias{plotMotifMatches}
 \title{plotMotifMatches}
 \usage{
-plotMotifMatches(x, fill = c("p_value", "e_value", "q_value"),
-  color = "transparent")
+plotMotifMatches(x, fill = "p_value", color = "transparent")
 }
 \arguments{
 \item{x}{a MotifCompareResult object.}
