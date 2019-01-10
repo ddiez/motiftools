@@ -118,7 +118,7 @@ plotMotifArchSimilarity <- function(object, raster = FALSE) {
   d <- reshape2::melt(m) # need to fix this.
   ggplot(d, aes_string(x = "Var1", y = "Var2", fill = "value")) + 
     geom_heatmap + 
-    viridis::scale_fill_viridis("similarity", limits = c(0, 1), guide = guide_legend(reverse = TRUE)) + 
+    scale_fill_viridis_c("similarity", limits = c(0, 1), guide = guide_legend(reverse = TRUE)) + 
     theme(aspect.ratio = 1, axis.text = element_blank(), axis.ticks = element_blank(), plot.title = element_text(hjust = .5)) + 
     labs(x = "", y = "", title = "Architecture similarity") + 
     scale_x_discrete(expand = c(0, 0)) + 
