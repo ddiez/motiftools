@@ -45,7 +45,7 @@ readFIMO <- function(file, description = NULL) {
         score = motif_hits$score,
         pvalue = motif_hits$pvalue,
         qvalue = motif_hits$qvalue,
-        evalue = rep(NA, nrow(motif_hits)),
+        evalue = rep(NA_real_, nrow(motif_hits)),
         sequence = motif_hits$sequence,
         space = motif_hits$seq_id
         )
