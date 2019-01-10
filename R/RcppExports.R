@@ -2,10 +2,10 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 nw <- function(x, y, score_matrix = NULL, gap_score = -1L, debug = 0L) {
-    .Call('_motiftools_nw', PACKAGE = 'motiftools', x, y, score_matrix, gap_score, debug)
+    .Call(`_motiftools_nw`, x, y, score_matrix, gap_score, debug)
 }
 
 sw <- function(x, y, score_matrix = NULL, gap_score = -1L, debug = 0L) {
-    .Call('_motiftools_sw', PACKAGE = 'motiftools', x, y, score_matrix, gap_score, debug)
+    .Call(`_motiftools_sw`, x, y, score_matrix, gap_score, debug)
 }
 

@@ -20,5 +20,6 @@
 #' @importFrom utils data combn
 #' @importFrom grDevices cm.colors rainbow
 #' 
-#' @useDynLib motiftools
+#' @useDynLib motiftools, .registration = TRUE
+#' @importFrom Rcpp sourceCpp
 NULL

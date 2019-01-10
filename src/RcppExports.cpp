@@ -36,9 +36,12 @@ BEGIN_RCPP
 END_RCPP
 }
 
+RcppExport SEXP run_testthat_tests();
+
 static const R_CallMethodDef CallEntries[] = {
     {"_motiftools_nw", (DL_FUNC) &_motiftools_nw, 5},
     {"_motiftools_sw", (DL_FUNC) &_motiftools_sw, 5},
+    {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 0},
     {NULL, NULL, 0}
 };
 
