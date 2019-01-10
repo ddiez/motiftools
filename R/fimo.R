@@ -31,7 +31,7 @@ readFIMO <- function(file, description = NULL) {
   root <- xml_root(doc)
   
   motif_hits <- getFimoMotifHits(root)
-  motif_hits <- motif_hits %>% mutate(width = abs(stop - start) + 1)
+  motif_hits[["width"]] <- abs(motif_hits[["stop"]] - motif_hits[["start"]]) + 1
   
   seq_names <- unique(motif_hits$seq_id)
   seq_info <- data.frame(seq_names, sequence_id = seq_names, row.names = 1, stringsAsFactors = FALSE)
