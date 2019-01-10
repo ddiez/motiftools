@@ -128,36 +128,15 @@ readTOMTOM <- function(file, description = NULL) {
 #'
 #' @examples
 #' NULL
-plotMotifMatches <- function(x, fill = c("p_value", "e_value", "q_value"), color = "transparent") {
-  matches <- x@matches
+plotMotifMatches <- function(x, fill = "p_value", color = "transparent") {
+  fill <- match.arg(fill, c("p_value", "e_value", "q_value"))
   
-  if (color != "transparent") {
-    d <- expand.grid(seq_len(nquery(x)), seq_len(ntarget(x)))
-    d <- apply(d, 1, function(x) {
-      sel <- matches$query_id == x[1] & matches$target_id == x[2]
-      if(nrow(matches[sel,]) > 0)
-        matches[sel, ]
-      else
-        data.frame(
-          query_id = x[1],
-          target_id = x[2],
-          offset = NA,
-          p_value = NA,
-          e_value = NA,
-          q_value = NA
-        )
-    })
-    matches  <- do.call(rbind, d)
-  }
+  matches <- x@matches
   
   ggplot(matches, aes_string(x = "query_id", y = "target_id", fill = fill)) + 
     geom_tile(color = color) + 
-    viridis::scale_fill_viridis(guide = guide_legend(), direction = -1, na.value = "white") + 
+    scale_fill_viridis_c(direction = -1) + 
     scale_x_discrete(expand = c(0, 0)) +
-    scale_y_discrete(expand = c(0, 0)) +
-    theme(
-      aspect.ratio = 1,
-      axis.ticks = element_blank()
-    )
+    scale_y_discrete(expand = c(0, 0))
 }
 
