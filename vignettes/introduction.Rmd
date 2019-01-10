@@ -29,7 +29,7 @@ Motif ranges are stored as `RangedData` objects (`r Biocpkg("IRanges")`) package
 
 ```{r, message=FALSE}
 library(motiftools)
-library(motifStack)
+library(ggseqlogo)
 library(Biostrings)
 library(ggtree)
 ```
@@ -76,7 +76,7 @@ plotMotifMatrix(list("MEME motifs" = m_meme, "FIMO motifs" = m_fimo, "MAST motif
 
 # plot a motif model logo (from MEME output).
 p <- pwm(x_meme)[["motif_4"]]
-plotMotifLogo(p, col = rainbow(20))
+ggseqlogo(p)
 ```
 
 You can compare the motifs obtained with MEME using the TOMTOM tool. Then you can read the results and look at the comparison matrix.

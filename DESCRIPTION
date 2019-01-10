@@ -33,7 +33,7 @@ Suggests:
     knitr,
     rmarkdown,
     BiocStyle,
-    motifStack,
+    ggseqlogo,
     ggthemes
 LinkingTo:
     Rcpp,
