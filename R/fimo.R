@@ -76,6 +76,7 @@ getFimoMotifInfo <- function(x) {
   tmp <- do.call(rbind, xml_attrs(xml_find_all(x, "motif")))
   data.frame(
     name = tmp[, "name"],
+    alt = tmp[, "alt"],
     width = as.integer(tmp[, "width"]),
     best_match = tmp[, "best-possible-match"],
     stringsAsFactors = FALSE
