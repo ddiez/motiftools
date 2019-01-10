@@ -129,9 +129,11 @@ getFimoMotifHits <- function(x) {
     # check we are in a pattern.
     if (xml_name(motif) == "pattern") {
       motif_name <- xml_attr(motif, "name")
+      motif_id <- xml_attr(motif, "accession")
       tmp_seq <- lapply(xml_children(motif), function(seq) { # iterate over sequences.
         # check we are in a sequence.
         if (xml_name(seq) == "scanned-sequence") {
+          seq_name <- xml_attr(seq, "name")
           seq_id <- xml_attr(seq, "accession")
           tmp_match <- lapply(xml_children(seq), function(hit) { # iterate over hits.
             # check we are in a hit.
@@ -140,8 +142,11 @@ getFimoMotifHits <- function(x) {
               qvalue <- xml_double(xml_contents(hit)[[2]])
               data.frame(
                 motif_name = motif_name,
+                motif_id = motif_id,
+                seq_name = seq_name,
                 seq_id = seq_id,
                 start = as.integer(xml_attr(hit, "start")),
+                stop = as.integer(xml_attr(hit, "stop")),
                 score = as.numeric(xml_attr(hit, "score")),
                 pvalue = as.numeric(xml_attr(hit, "pvalue")),
                 qvalue = qvalue,
