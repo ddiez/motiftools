@@ -22,6 +22,7 @@ readFIMO <- function(file, description = NULL) {
   
   nseq <- getFimoSequenceInfo(root)$nseq
   motif_info <- getFimoMotifInfo(root)
+  rownames(motif_info) <- motif_info[["alt"]]
   nmotif <- nrow(motif_info)
   cisml_file <- getFimoCisml(root)
   cisml_file <- file.path(dirname(file), cisml_file)
