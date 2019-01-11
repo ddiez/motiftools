@@ -26,7 +26,15 @@ getMotifArchString <- function(object, return.unique = FALSE) {
 #' @return A list of sequences.
 getMotifsBySeq <- function(object, unique = FALSE) {
   tmp <- as.data.frame(object@ranges)
-  tmp <- split(tmp$motif_name, tmp$seqnames)
+
+  # return sequences in original order.
+  tmp$seqnames <- factor(tmp$seqnames, levels = object@sequences@data$name)
+  
+  tmp <- split(tmp, tmp$seqnames)
+  
+  # order motifs by start position.
+  tmp <- lapply(tmp, function(x) x[order(x[["start"]]), "motif_name"])
+  
   if (unique)
     sapply(tmp, unique)
   else
