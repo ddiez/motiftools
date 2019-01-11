@@ -63,8 +63,8 @@ getMemeSeqStats <- function(x) {
   )
 }
 
-# get motif hits.
-getMemeMotifHits <- function(x, motif_info) {
+# get scanned sites hits.
+getMemeScannedSiteHits <- function(x, motif_info) {
   p <- xml_find_all(x, ".//scanned_sites")
   
   hits <- lapply(p, function(node) {
@@ -86,9 +86,36 @@ getMemeMotifHits <- function(x, motif_info) {
   })
   hits <- do.call(rbind, hits)
   hits$width <- getMemeAttr(hits$motif_id, attr = "width", info = motif_info)
-  #hits$width <- motif_info[hits$motif_id, "width"]
   hits
 }
+
+# get motif hits.
+getMemeMotifHits <- function(x, motif_info) {
+  p <- xml_find_all(x, ".//contributing_sites")
+  
+  hits <- lapply(seq_along(p), function(k) {
+    node <- p[[k]]
+    motif_id <- motif_info[k, "id"]
+    tmp <- do.call(rbind, xml_attrs(xml_children(node)))
+    if (!is.null(tmp)) {
+      data.frame(
+        sequence_id = tmp[, "sequence_id"],
+        motif_id = motif_id,
+        position = as.integer(tmp[, "position"]) + 1,
+        strand = tmp[, "strand"],
+        pvalue = as.numeric(tmp[, "pvalue"]),
+        stringsAsFactors = FALSE
+      )  
+    } else {
+      data.frame()
+    }
+    
+  })
+  hits <- do.call(rbind, hits)
+  hits$width <- getMemeAttr(hits$motif_id, attr = "width", info = motif_info)
+  hits
+}
+
 
 # get motif scores.
 getMemeMotifScores <- function(x, alphabet = NULL) {
