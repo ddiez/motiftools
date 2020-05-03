@@ -26,13 +26,15 @@ setGeneric("plotMotifMatrix", function(object, ...) standardGeneric("plotMotifMa
 setMethod("plotMotifMatrix", "list", 
 function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = NULL, bar.percentage = TRUE, show.tips = FALSE) {
   # check object type.
-  type <- unique(sapply(object, class))
-  if (length(type) > 1) stop("passing a list of objects of different class is not allowed.")
+  type <- unique(lapply(object, class))
+  if (length(type) > 1) stop("passing a list of objects of different class is not allowed.") 
   
-  if (! type %in% c("matrix", "MotifSearchResult"))
+  type <- unlist(type)
+
+  if (! any(c("matrix", "MotifSearchResult") %in% type))
     stop("Only objects of class 'matrix' or 'MotifSearchResult' can be used with this function")
   
-  if (type == "MotifSearchResult")
+  if ("MotifSearchResult" %in% type)
     object <- lapply(object, getMotifMatrix)
   
   # initialize commonly used variables.
