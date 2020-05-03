@@ -23,21 +23,20 @@ test_that("methods return correct values", {
 test_that("scores returns the correct values", {
   s <- scores(x)
   expect_is(s, "list")
-  expect_is(s[[1]], "matrix")
+  expect_true(inherits(s[[1]], "matrix"))
   expect_identical(s[[1]][1, 1], -260L)
 })
 
 test_that("pwm returns the correct values", {
   p <- pwm(x)
   expect_is(p, "list")
-  expect_is(p[[1]], "matrix")
+  expect_true(inherits(p[[1]], "matrix"))
   expect_identical(p[[1]][1, 1], 0)
 })
 
 test_that("getMotifMatrix works as expected", {
   m <- getMotifMatrix(x)
-  expect_true(class(m) == "matrix")
-  expect_is(m, "matrix")
+  expect_true(inherits(m, "matrix"))
   expect_type(m, "integer")
   expect_identical(m[1, 1], 1L)
   expect_identical(m[1, 9], 0L)
