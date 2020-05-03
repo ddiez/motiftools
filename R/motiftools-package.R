@@ -1,11 +1,9 @@
-#' motiftools
-#' 
-#' Tools to analyze sequence motifs
-#' 
-#' @name motiftools-package
-#' @aliases motiftools
-#' @docType package
-#' 
+#' @keywords internal
+"_PACKAGE"
+
+# The following block is used by usethis to automatically manage
+# roxygen namespace tags. Modify with care!
+## usethis namespace: start
 #' @import methods Biobase Biostrings xml2 gtable ggplot2 tidyr
 #' @importFrom igraph graph_from_data_frame V as_adj
 #' @importFrom ape as.phylo
@@ -22,4 +20,5 @@
 #' 
 #' @useDynLib motiftools, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
+## usethis namespace: end
 NULL
