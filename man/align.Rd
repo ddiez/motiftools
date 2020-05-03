@@ -4,8 +4,14 @@
 \alias{align}
 \title{Align two sequences}
 \usage{
-align(x1, x2, score.matrix = NULL, gap.score = -1, type = "local",
-  debug = FALSE)
+align(
+  x1,
+  x2,
+  score.matrix = NULL,
+  gap.score = -1,
+  type = "local",
+  debug = FALSE
+)
 }
 \arguments{
 \item{x1}{pattern sequence: a character vector, scalar or AAString.}

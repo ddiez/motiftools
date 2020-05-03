@@ -4,8 +4,7 @@
 \alias{motifAlign}
 \title{Align two motifs represented as PWMs}
 \usage{
-motifAlign(x1, x2, align.method = "local", score.method = "PCC",
-  debug = FALSE)
+motifAlign(x1, x2, align.method = "local", score.method = "PCC", debug = FALSE)
 }
 \arguments{
 \item{x1}{motif 1.}
