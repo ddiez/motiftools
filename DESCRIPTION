@@ -38,7 +38,7 @@ Suggests:
 LinkingTo:
     Rcpp,
     testthat
-License: GPL-3
+License: MIT + file LICENSE
 LazyLoad: yes
 ByteCompile: yes
 VignetteBuilder: knitr
