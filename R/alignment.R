@@ -29,7 +29,7 @@ align <- function(x1, x2, score.matrix = NULL, gap.score = -1, type = "local", d
   type <- match.arg(type, c("global", "local", "global_old", "local_old"))
   
   # get scoring matrix.
-  if (class(score.matrix) == "character")
+  if (is.vector(score.matrix) & typeof(score.matrix) == "character")
     score.matrix <- getScoreMatrix(score.matrix)
 
   switch(type,
