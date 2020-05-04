@@ -1,6 +1,6 @@
 context("Testing readMAST")
 
-f <- system.file("files/mast_ras/mast.xml", package = "motiftools")
+f <- system.file("files/mast.xml", package = "motiftools")
 x <- readMAST(f)
 
 test_that("slots", {

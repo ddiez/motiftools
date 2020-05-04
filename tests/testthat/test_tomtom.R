@@ -1,6 +1,6 @@
 context("Testing readTOMTOM")
 
-f <- system.file("files/tomtom_ras/tomtom.xml", package = "motiftools")
+f <- system.file("files/tomtom.xml", package = "motiftools")
 x <- readTOMTOM(f)
 
 test_that("slots", {

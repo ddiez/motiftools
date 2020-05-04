@@ -1,6 +1,6 @@
 context("Testing motif coverage")
 
-f <- system.file("files/meme_ras/meme.xml", package = "motiftools")
+f <- system.file("files/meme.xml", package = "motiftools")
 x <- readMEME(f)
 cov <- getMotifCoverage(x)
 

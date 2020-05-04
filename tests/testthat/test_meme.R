@@ -1,6 +1,6 @@
 context("Testing readMEME")
 
-f <- system.file("files/meme_ras/meme.xml", package = "motiftools")
+f <- system.file("files/meme.xml", package = "motiftools")
 x <- readMEME(f)
 
 test_that("readMEME returns object of correct class", {

@@ -1,6 +1,6 @@
 context("Testing readFIMO")
 
-f <- system.file("files/fimo_ras/fimo.xml", package = "motiftools")
+f <- system.file("files/fimo.xml", package = "motiftools")
 x <- readFIMO(f)
 
 test_that("slots", {
