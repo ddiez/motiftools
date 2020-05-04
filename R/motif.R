@@ -67,10 +67,10 @@ function(object) {
   d <- r %>% as.data.frame
   d$tot_length <- p[d$seqnames, "length"]
   
-  d %>% group_by_("seqnames") %>% 
-    summarize_(length = "sum(width)", tot_length = "unique(tot_length)") %>% 
-    mutate_(perc = "length / tot_length") %>% 
-    select_("perc") %>% unlist(use.names = FALSE)
+  d %>% group_by_at("seqnames") %>% 
+    summarize(length = sum(.data$width), tot_length = unique(.data$tot_length)) %>% 
+    mutate(perc = .data$length / .data$tot_length) %>% 
+    select(.data$perc) %>% unlist(use.names = FALSE)
 })
 
 

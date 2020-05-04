@@ -70,7 +70,7 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
       l <- nl[k]
       d <- melt(annot[[k]], varnames = c("sequence", "variable"), value.name = l)
       d[[l]] <- factor(d[[l]], levels = seq_len(length(annot.fill[[k]])))
-      g <- ggplot(d, aes_string(x = "variable", y = "sequence", fill = l)) +
+      g <- ggplot(d, aes(x = .data$variable, y = .data$sequence, fill = !!l)) +
         geom_tile(color = color) +
         scale_fill_manual(values = annot.fill[[k]]) +
         scale_x_discrete(expand = c(0,0)) +
@@ -86,7 +86,7 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   
   grob_heatmap <- lapply(seq_len(n), function(k) {
     d <- melt(object[[k]], varnames = c("sequence", "motif"), value.name = "count")
-    g <- ggplot(d, aes_string(x = "motif", y = "sequence", fill = "count")) +
+    g <- ggplot(d, aes(x = .data$motif, y = .data$sequence, fill = .data$count)) +
       geom_tile(color = color) +
       scale_fill_gradientn(colours = I(fill)) +
       theme(legend.key.size = unit(.5, "lines")) +
@@ -99,10 +99,10 @@ function(object, tree, fill, color = "transparent", annot = NULL, annot.fill = N
   # barplots.
   grob_barplot <- lapply(seq_len(n), function(k) {
     d <- melt(object[[k]], varnames = c("sequence", "motif"), value.name = "count")
-    d <- d %>% group_by_("motif") %>% summarize_(value = "sum(count)", total = "n()")
+    d <- d %>% group_by_at("motif") %>% summarize(value = sum(.data$count), total = n())
     if (bar.percentage)
-      d <- d %>% mutate_(value = "100 * value / total")
-    g <- ggplot(d, aes_string(x = "motif", y = "value")) +
+      d <- d %>% mutate(value = 100 * .data$value / .data$total)
+    g <- ggplot(d, aes(x = .data$motif, y = .data$value)) +
       geom_bar(stat = "identity", fill = "grey", width = 1) +
       scale_x_discrete(breaks = 1:100, expand = c(0, 0)) +
       scale_y_continuous(expand = c(0, 0))

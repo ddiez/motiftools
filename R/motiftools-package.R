@@ -9,7 +9,7 @@
 #' @importFrom ape as.phylo
 #' @importFrom ggtree ggtree
 #' @importFrom reshape2 melt
-#' @importFrom dplyr filter_ select_ mutate_ group_by_ summarize_ bind_rows %>%
+#' @importFrom dplyr group_by_at select bind_rows %>% group_by mutate filter summarize n
 #' @importFrom IRanges IRanges
 #' @importFrom GenomicRanges GRanges seqnames reduce
 #' @importFrom Rcpp evalCpp
