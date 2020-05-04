@@ -5,3 +5,5 @@ README.Rmd
 ^\.github$
 ^data-raw$
 ^LICENSE\.md$
+^_pkgdown\.yml$
+^pkgdown$
